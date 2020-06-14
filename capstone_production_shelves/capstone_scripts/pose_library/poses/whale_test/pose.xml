@@ -1,0 +1,384 @@
+<Pose>
+	<Character height="24.9306640625" length="56.8509473801" rig="Adolescent_Granny" width="25.3296375275">
+		<Anim component_name="adolescent_granny:center_COG_COGChain" component_type="COGChain" limb="COG" name="center_COG_anim" side="center">
+			<Attribute id="translateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="translateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="translateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="swim_offset">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="swim_height">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="swim_length">
+				<Key frame="1.0" value="5.0" />
+			</Attribute>
+			<Attribute id="display_deformer">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_spine_FKChain" component_type="FKChain" limb="spine" name="center_spine_1_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_spine_FKChain" component_type="FKChain" limb="spine" name="center_spine_2_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_1_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="tail_flap_offset">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="tail_flap_height">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="tail_flap_length">
+				<Key frame="1.0" value="5.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="display_deformer">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_2_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_3_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_4_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_5_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tail_FKChain" component_type="FKChain" limb="tail" name="center_tail_6_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="-16.0342667124" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-20.1586848649" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="4.23512992256e-16" />
+			</Attribute>
+			<Attribute id="center_swim_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+			<Attribute id="center_tail_flap_influence">
+				<Key frame="1.0" value="1.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_neck_FKChain" component_type="FKChain" limb="neck" name="center_neck_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="parent_to">
+				<Key frame="1.0" value="0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_head_FKChain" component_type="FKChain" limb="head" name="center_head_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="parent_to">
+				<Key frame="1.0" value="0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_dorsal_fin_FKChain" component_type="FKChain" limb="dorsal_fin" name="center_dorsal_fin_1_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_dorsal_fin_FKChain" component_type="FKChain" limb="dorsal_fin" name="center_dorsal_fin_2_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_dorsal_fin_FKChain" component_type="FKChain" limb="dorsal_fin" name="center_dorsal_fin_3_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_flipper_FKChain" component_type="FKChain" limb="flipper" name="left_flipper_1_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="57.5309978175" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_flipper_FKChain" component_type="FKChain" limb="flipper" name="left_flipper_2_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_flipper_FKChain" component_type="FKChain" limb="flipper" name="left_flipper_3_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-72.0658547568" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_fluke_FKChain" component_type="FKChain" limb="fluke" name="left_fluke_1_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="43.5726122821" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_fluke_FKChain" component_type="FKChain" limb="fluke" name="left_fluke_2_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:left_fluke_FKChain" component_type="FKChain" limb="fluke" name="left_fluke_3_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_flipper_FKChain" component_type="FKChain" limb="flipper" name="right_flipper_1_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="57.5309978175" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_flipper_FKChain" component_type="FKChain" limb="flipper" name="right_flipper_2_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_flipper_FKChain" component_type="FKChain" limb="flipper" name="right_flipper_3_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="-98.7347176642" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_fluke_FKChain" component_type="FKChain" limb="fluke" name="right_fluke_1_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="43.5726122821" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_fluke_FKChain" component_type="FKChain" limb="fluke" name="right_fluke_2_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:right_fluke_FKChain" component_type="FKChain" limb="fluke" name="right_fluke_3_anim" side="right">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_jaw_FKChain" component_type="FKChain" limb="jaw" name="center_jaw_anim" side="center">
+			<Attribute id="rotateX">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" value="0.0" />
+			</Attribute>
+			<Attribute id="parent_to">
+				<Key frame="1.0" value="0" />
+			</Attribute>
+		</Anim>
+		<Anim component_name="adolescent_granny:center_tongue_FKChain" component_type="FKChain"

@@ -1,0 +1,40 @@
+// Set primary and secondary axis for the right side of the character
+S_AXIS (0,0,1)
+
+// Arm joint orientations
+P_AXIS (-1,0,0)
+S_AXIS_MODE COPLANAR right_upperarm_bind_joint right_lowerarm_bind_joint right_hand_bind_joint
+
+P_AXIS_MODE AIM_AT_TARGET right_lowerarm_bind_joint
+ORIENT right_upperarm_bind_joint
+
+P_AXIS_MODE AIM_AT_TARGET right_hand_bind_joint
+ORIENT right_lowerarm_bind_joint
+
+// Leg joint orientations
+P_AXIS_MODE AIM_AT_CHILD
+P_AXIS (-1,0,0)
+S_AXIS_MODE COPLANAR right_upperleg_bind_joint right_foot_bind_joint right_lowerleg_bind_joint 
+ORIENT right_upperleg_bind_joint 
+ORIENT right_lowerleg_bind_joint
+
+P_AXIS (1,0,0)
+S_AXIS_MODE COPLANAR left_upperleg_bind_joint left_foot_bind_joint left_lowerleg_bind_joint 
+ORIENT left_upperleg_bind_joint 
+ORIENT left_lowerleg_bind_joint
+
+// Orient the balls of the feet (before the main foot)
+P_AXIS (1,0,0)
+S_AXIS_MODE COPLANAR right_foot_bind_joint right_ball_bind_joint right_foot_end_joint
+ORIENT right_ball_bind_joint
+
+S_AXIS_MODE COPLANAR left_foot_bind_joint left_ball_bind_joint left_foot_end_joint
+ORIENT left_ball_bind_joint
+
+// Orient the main foot joint, it should be world space aligned but
+// angles of the leg should be accounted for
+ALL_AXIS_MODE MATCH_TARGET right_ball_bind_joint
+ORIENT right_foot_bind_joint
+
+ALL_AXIS_MODE MATCH_TARGET left_ball_bind_joint
+ORIENT left_foot_bind_joint

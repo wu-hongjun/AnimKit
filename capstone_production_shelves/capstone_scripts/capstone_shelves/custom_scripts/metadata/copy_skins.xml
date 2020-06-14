@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<ScriptMetadata>
+	<ScriptName text="Copy Skins"/>
+	<Information text="Mainly used for modeling. Allows the modeler to do an initial skin bind, save out weights, and copy those weights onto their model as they work to test deformations."/>
+</ScriptMetadata>

@@ -1,0 +1,28 @@
+
+'''
+THINGS TO POSSIBLY CHANGE FOR FURTHER DEVELOPMENT
+
+connectToMeta and connectChainToMeta should look like      MetaObj.connectTo(obj, attrName)
+	makes for a more fundamentally object oriented programming
+	
+	
+	
+metaNodes can be created by passing in attributes and by existing nodes, by metaNodes have to be passed many attrs to create by node
+possible to create by factory,  MetaObj().create(....) and MetaObj().node(...) 
+	separates the object to be created by multiple means easier and more efficent
+	also allows possible calls like Meta().isMetaNode(obj), for making places for meta outside functions
+	
+
+possibly get side and bodypart from joint labels
+	pro, less input into creation
+	con, component can possible be labels the same if both joints have same label, (if based on start joint l_leg and l_thigh could have same name) 
+	
+	
+possible interface classes for metaIK, metaFK, and MetaDyn for methods to help with .isIK, .getIKAnim and such
+
+make anim a class which adds the node attrs\fbik, creates shapes, swaps shapes, etc.
+
+
+make CharacterRig a subclass of RigComponent
+'''
+		

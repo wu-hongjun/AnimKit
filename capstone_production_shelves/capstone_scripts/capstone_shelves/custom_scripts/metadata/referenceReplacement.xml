@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<ScriptMetadata>
+	<ScriptName text="Replace Reference"/>
+	<Information text="A script for when things are so broken on a referenced file that you need a clean slate but also want to preserve your animation, complex constraint setups, light links, and render layer membership.   1) Save your scene!  Just in case this script fails.  2) Select at least one object associated with each reference you want to replace.  3) Run this script.  References will be completely replaced with all reference edits forgotten except for animation connections, light links, and render layer connections.  Shader overrides (like on the ambient occlusion layer) will need to be redone manually."/>
+</ScriptMetadata>

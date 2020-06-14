@@ -1,0 +1,26 @@
+<Clip end="10.0" start="1.0">
+	<Character height="159.764165416" length="58.6922283173" max="10.0" min="1.0" rig="Dazzle" width="158.203643799">
+		<Anim component_name="left_arm_FKIKBendyArm" component_type="FKIKBendyArm" limb="arm" name="left_arm_1_FK_anim" side="left">
+			<Attribute id="rotateX">
+				<Key frame="1.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="0.0" />
+				<Key frame="10.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="0.0" />
+			</Attribute>
+			<Attribute id="rotateY">
+				<Key frame="1.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="73.1326213335" />
+				<Key frame="10.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="-49.1418741676" />
+			</Attribute>
+			<Attribute id="rotateZ">
+				<Key frame="1.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="0.0" />
+				<Key frame="10.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="0.0" />
+			</Attribute>
+			<Attribute id="stretch">
+				<Key frame="1.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="1.0" />
+				<Key frame="10.0" ia="0.0" itt="auto" iw="3.0" oa="0.0" ott="auto" ow="3.0" value="1.0" />
+			</Attribute>
+			<Attribute id="parent_to">
+				<Key frame="1.0" ia="0.0" itt="spline" iw="3.0" oa="0.0" ott="step" ow="0.0" value="0.0" />
+				<Key frame="10.0" ia="0.0" itt="spline" iw="3.0" oa="0.0" ott="step" ow="0.0" value="0.0" />
+			</Attribute>
+		</Anim>
+	</Character>
+</Clip>

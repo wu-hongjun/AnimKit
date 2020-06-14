@@ -1,0 +1,1765 @@
+from pymel import *
+from metaCore import *
+
+from scene_manager.methods import *
+
+import os
+import random
+import pymel.core.animation as annie
+
+'''
+Main Manager class
+'''
+class SceneWindow:
+	def __init__(self):
+		if window("sceneManagerWindow", q =1, exists = 1):
+			deleteUI('sceneManagerWindow')
+
+		manager = window("sceneManagerWindow",title = "Scene Manager")
+		self.tabs = tabLayout('tabs')
+		self.scenePanel = self.createScenePanel(self.tabs)
+		self.lightPanel = self.createLightPanel(self.tabs)
+		self.geometryPanel = self.createGeometryPanel(self.tabs)
+		window(manager, e =1, width = 700, height = 800)
+		showWindow(manager)
+			
+#==================SCENE PANEL====================		
+	def createScenePanel(self, parentPanel):
+		'''
+		creates a panel for the scene manager nodes and basic file options
+		
+		parentPanel:
+			the parent of the panel created
+			
+		returns
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		panel = columnLayout('scene', adj =1)
+		label = text(label = 'Scene Manager')
+		saveIter = button(label = 'Save Iteration', command = lambda *args: saveIterWindow())
+		createScene = button(label = 'create Scene Meta Node', command = 'print("Not Implemented")')
+		update = button(label = 'update', command = 'print("Not Implemented")')
+		
+		return panel
+		
+
+#================LIGHT PANEL=========================
+
+	
+	def createLightPanel(self,parentPanel):
+		'''
+		creates a panel for all the lights connected to lightGroups in the scene
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		lightGroups = getMetaNodesOfType('LightGroup')
+		scroll = scrollLayout('Lights')
+		panel = columnLayout(adj=1)
+		updateBut = button(label = "update", c = lambda *args: self.updateLights())
+		batchBut = button(label = 'Batch Lights', c = lambda *args: BatchLightWindow()) 
+		for group in lightGroups:
+			self.createLightGroupPanel(panel, group)
+		return scroll
+		
+			
+	def createLightGroupPanel(self,parentPanel, meta):
+		'''
+		creates a panel for the Lightgroup and its options
+		
+		meta:
+			the lightGroup meta node
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		groupName = meta.groupName.get()
+		width = parentPanel.getWidth()
+		height = parentPanel.getHeight()
+		frame = frameLayout(groupName,label = '%s_lights'%(groupName),collapsable = 1, cl = 1)
+		panel = columnLayout('%s_lights_panel'%groupName)
+		
+		setParent(panel)
+		keysFrame = frameLayout(label = 'keys',collapsable = 1, cl = 1)
+		keys = listConnections(meta.keys)
+		keysPanel = columnLayout('%s_keys'%(groupName),adj =1)
+		self.createLightGroupOptionsPanel(keysPanel,meta,'keys')
+		for keyLight in keys:
+			self.createLightOptionsPanel(keysPanel, keyLight, meta, 'keys')
+		
+		setParent(panel)
+		fillsFrame = frameLayout(label = 'fills',collapsable = 1, cl = 1)
+		fills = listConnections(meta.fills)
+		fillsPanel = columnLayout('%s_fills'%(groupName), w = width, h = height)
+		self.createLightGroupOptionsPanel(fillsPanel,meta,'fills')
+		for fillLight in fills:
+			self.createLightOptionsPanel(fillsPanel, fillLight, meta, 'fills')
+		
+		setParent(panel)
+		rimsFrame = frameLayout(label = 'rims',collapsable = 1, cl = 1)
+		rims = listConnections(meta.rims)
+		rimsPanel = columnLayout('%s_rims'%(groupName),w = width, h = height)
+		self.createLightGroupOptionsPanel(rimsPanel,meta,'rims')
+		for rimLight in rims:
+			self.createLightOptionsPanel(rimsPanel, rimLight, meta, 'rims')
+		
+		setParent(panel)
+		othersFrame = frameLayout(label = 'others',collapsable = 1, cl = 1)
+		others = listConnections(meta.others)
+		othersPanel = columnLayout('%s_others'%(groupName),w = width, h = height)
+		self.createLightGroupOptionsPanel(othersPanel,meta,'others')
+		for otherLight in others:
+			self.createLightOptionsPanel(othersPanel, otherLight, meta, 'others')
+		
+		return panel
+	
+		
+	def createLightGroupOptionsPanel(self, parentPanel, networkNode, groupName):
+		'''
+		creates a group with options for the lightGroup MetaNode for groupName
+		
+		networkNode:
+			the lightGroup for the options
+			
+		groupName:
+			the name of the lights, example: "keys" "fills" "rims" "others"
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		lg = LightGroup('', node = networkNode)
+		panel = rowLayout(nc = 6, ct6 = ['both','both','both','both','both','both'] )
+		addSpot = button(label = "add Spot", c = lambda *args: lg.addLightToGroup(lg.createLightByType('spot'), groupName))
+		addPoint = button(label = "add Point", c = lambda *args: lg.addLightToGroup(lg.createLightByType('point'), groupName))	
+		addDirectional = button(label = "add Directional", c = lambda *args: lg.addLightToGroup(lg.createLightByType('directional'), groupName))
+		addArea = button(label = "add Area", c = lambda *args: lg.addLightToGroup(lg.createLightByType('area'), groupName))
+		addVolume = button(label = "add Volume", c = lambda *args: lg.addLightToGroup(lg.createLightByType('volume'), groupName))
+		addSelected = button(label = "add selected", c = lambda *args: lg.addSelectedLightsToGroup(ls(sl=1), groupName))
+		return panel
+		
+	
+	def createLightOptionsPanel(self,parentPanel, light, networkNode, group):
+		'''
+		creates a panel for all option for a light
+		
+		networkNode:
+			the networkNode that the light is connected to
+			
+		group:
+			the name of the group that the light belongs to
+	
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		lg = LightGroup('', node = networkNode)
+		light = PyNode(light)
+		panel = rowLayout('%s_%s_row'%(light, networkNode.groupName.get()), nc= 4, cw4 = [300,125,75,75], ct4 = ['left', 'both', 'both', 'both'])
+		named = nameField(object = light, width = 300)
+		lookButton = button(label = 'Look Through Light', c = lambda *args: self.lookThroughObject(light) )
+		selectButton = button(label = "Select Light", c = lambda *args: select(light, add =1 ))
+		deleteButton = button(label = 'delete Light', c = lambda *args: lg.RemoveLightFromGroup(light, group))
+		
+		return panel 	
+	
+	
+	def updateLights(self):
+		'''
+		updates the light panels
+		'''
+		deleteUI(self.lightPanel)
+		self.lightPanel = self.createLightPanel(self.tabs)
+		setFocus(self.lightPanel)		
+
+#====================== GEOMETRY GROUP =======================
+	
+	def createGeometryPanel(self,parentPanel):
+		'''
+		creates a panel for all the GeometryGroups metaNodes in the scene file
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		geoGroups = getMetaNodesOfType('GeometryGroup')
+		scroll = scrollLayout('Geometry')
+		panel = columnLayout(adj=1)
+		updateBut = button(label = "update", c = lambda *args: self.notImplemented())
+		for meta in geoGroups:
+			self.createGeoGroupPanel(panel, meta)
+		return scroll
+		
+		
+	
+	def createGeoGroupPanel(self, parentPanel, meta):
+		'''
+		creates a panel for the GeometryGroup node
+		
+		meta:
+			the GeometryGroup node
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		gg = GeometryGroup('', node = meta)
+		frameLayout(gg.getGroupName(), collapsable = 1, cl = 1 )
+		panel = columnLayout(adj=1)
+		row = rowLayout(nc = 5, ct5 = ['both', 'both','both', 'both','both'], cl5 = ['left', 'left','left', 'left', 'left'])
+		hideAllButton = button(label = 'hide all', c = lambda *args: gg.hideAllGeo())
+		showAllButton = button(label = 'show all', c = lambda *args: gg.showAllGeo())
+		lowAllButton = button(label = 'low Res', c = lambda *args: gg.makeLowGeo())
+		hiAllButton = button(label = 'high Res', c = lambda *args: gg.makeHighGeo())
+		addButton = button(label = "add Res Group", c = lambda *args: self.addGeometryResGroup(meta))
+		for resgroup in gg.getResGroups():
+			self.createGeoResPanel(panel, resgroup)
+		return panel
+	
+		
+	
+	def createGeoResPanel(self, parentPanel, meta):
+		'''
+		creates a panel for all the GeometryResGroup
+		
+		meta:
+			the GeometryResGroup metaNode
+		
+		parentPanel:
+			the parent to the panel created
+			
+		return:
+			the top level layout created
+		'''
+		setParent(parentPanel)
+		panel = rowLayout(nc = 5, ct5 = ["both" ,'both', 'both', 'both', 'both'], cw5 = [200,100,50,200,100], cl5 = ['left','left' ,'left', 'left', 'left'])
+		label = text(label = meta.getGroupName())
+		ren = button(label = 'REN', c = lambda *args: self.renameGroup(meta))
+		resLabel = text(label = 'Res')
+		hilow = radioButtonGrp( labelArray2 = ['Low', 'Hi'], cl2 = ['both','both'], numberOfRadioButtons= 2, on1 = lambda *args: meta.setToLow(), on2 = lambda *args: meta.setToHigh())
+		radioButtonGrp(hilow, edit =1 , select = meta.isHighRes()+1)
+		vischeck = checkBox(label = 'vis', align = 'left', cc = lambda *args: meta.toggleVis(), value = meta.isVisible())
+		return panel
+		
+	def addGeometryResGroup(self, meta):
+		'''
+		creates a window for the user to fill out to add a GeometryResGroup
+		
+		meta:
+			the GeometryGroup meta node to add the GeometryResGroup	
+		
+		'''
+		geoGrp = GeometryGroup('',node = meta)
+		if window('CreateResGroup', q =1, exists = 1):
+			deleteUI('CreateResGroup')
+		win = window('CreateResGroup', title = 'add Res Group')
+		columnLayout()
+		
+		nameLabel = text(label = 'Res Group Name: ')
+		name = textField()
+					
+		lowGeoLabel = text(label = 'Low Poly Geo')
+		lowGeo = textField()
+		loadLow = button(label = 'Load Sel', c = lambda *args: self.loadFromSelection(lowGeo))
+		
+		highGeoLabel = text(label = 'High Poly Geo')
+		highGeo = textField()
+		loadHigh = button(label = 'Load Sel', c = lambda *args: self.loadFromSelection(highGeo))
+		
+		create = button(label = 'Create', c = lambda *args: self.createResGroup(geoGrp, lowGeo, highGeo, name, win))
+		
+		showWindow(win)
+	
+	
+	def loadFromSelection(self, field):
+		'''
+		helper method to other panels, load selection into the text of the field given
+		
+		field:
+			the textfield to add the selection name to 
+		'''
+		geo = ls(sl=1)[0]
+		if geo:
+			textField(field, edit =1, text = geo.name())	
+
+	
+	def createResGroup(self, geoGrp, lowTextField, highTextField, nameTextField, win):
+		'''
+		helper method to addResGroup, uses panel info to create the ResGroup
+		'''
+		lowGeo = textField(lowTextField, q=1, text=1)
+		highGeo = textField(highTextField, q=1, text =1)
+		gn = textField(nameTextField, q=1, text =1)
+		if lowGeo and highGeo and gn:
+			if objExists(lowGeo) and objExists(highGeo):
+				grg = GeometryResGroup(gn, low = lowGeo, high = highGeo)
+				geoGrp.addResGroup(grg)
+		deleteUI(win)
+		
+	
+	def renameGroup(self, meta):
+		'''
+		rename the GeometryResGroup groupName
+		
+		meta:
+			 the GeometryResGroup  
+		'''
+		result = cmds.promptDialog(
+			title='Rename Res Group',
+			message='Enter Name:',
+			button=['Rename', 'Cancel'],
+			defaultButton='Rename',
+			cancelButton='Cancel',
+			dismissString='Cancel')
+	
+		if result == 'Rename':
+			text = cmds.promptDialog(query=True, text=True)
+			if text:
+				meta.renameGroup(text)
+			
+			
+
+#=============================MISC ===============================	
+
+
+	
+	def lookThroughObject(self,obj):
+		'''
+		creates a perspective window with the objects view as the camera
+		
+		obj:
+			the object that will be looked through
+			
+		retrurn:
+			returns the window created
+		'''
+		app = window(width = 600, height = 800)
+		paneLayout()
+		objView = modelPanel()
+		lookThru(objView, obj)
+		showWindow(app)
+		return app
+	
+			
+	def notImplemented(self):
+		'''
+		creates a window with the words "not yet implemented", good for testing code until implemeneted correctly
+		
+		return:
+			the window that contains the words
+		'''
+		app = window(width = 600, height = 100)
+		columnLayout()
+		label = text(label = 'not yet implemented')
+		showWindow(app)
+		return app
+
+		
+		
+		
+		
+		
+class BatchLightWindow:
+	def __init__(self):
+		sel = ls(sl=1)
+		types = ["volumeLight","areaLight","spotLight","pointLight", "directionalLight","ambientLight"]
+		lights = []
+		for obj in sel:
+			if obj.getShape().type() in types or obj.type() in types:
+				lights.append(obj)
+	
+		if window('BatchLights', q =1, exists = 1):
+			deleteUI('BatchLights')
+		win = window('BatchLights', title = 'Batch Lights')
+		panel = columnLayout(adj =1)
+		
+		#color
+		colorRow = rowLayout(nc = 4, ct4 = ['left','left','left','left'], cw4 = [50,400,100,100])
+		colorChange = checkBox(label = '')
+		color = colorSliderGrp( label='Color: ', rgb=(1, 1, 1))
+		colorAdd = checkBox(label = 'add')
+		colorClamp = checkBox(label = 'clamp')
+		setParent(panel)
+		
+		#intensity
+		intenRow = rowLayout(nc = 5)
+		intenChange = checkBox(label = '')
+		intenLabel = text("Intensity: ")
+		intenField = floatField()
+		intenAdd = checkBox(label = 'add')
+		intenPercent = checkBox(label = 'percent')
+		setParent(panel)
+		
+		#dropoff
+		dropoffRow = rowLayout(nc = 6)
+		dropOffLabel = text(label = 'Drop Off:')
+		dropOff = radioCollection()
+		dod = radioButton( label='No Change' )
+		radioButton( label='No Decay', align='left' )
+		radioButton( label='Linear', align='left' )
+		radioButton( label='Quadratic', align='left' )
+		radioButton( label='Cubic', align='left' )
+		radioCollection(dropOff, e=1, select = dod)
+		setParent(panel)
+		
+		#penumbra
+		penumbraRow = rowLayout(nc = 5)
+		penChange = checkBox(label = '')
+		penumbraLab = text(label = 'Penumbra')
+		penumbra = floatField()
+		penAdd = checkBox(label = 'add')
+		penPercent = checkBox(label = 'percent')
+		setParent(panel)
+		
+		#emits by defualt
+		emitsDRow = rowLayout(nc = 4)
+		emitsDefLabel = text(label = 'Emits by Default: ')
+		emitsDefault = radioCollection()
+		edd = radioButton(label = 'No Change')
+		radioButton(label = 'Yes')
+		radioButton(label = 'No')
+		radioCollection(emitsDefault, e=1, select = edd)
+		setParent(panel)
+		
+		#emits spec
+		specRow = rowLayout(nc = 4)
+		emitsSpecLabel = text(label = 'Emits Specular: ')
+		emitsSpecular = radioCollection()
+		esd = radioButton(label = 'No Change')
+		radioButton(label = 'Yes')
+		radioButton(label = 'No')
+		radioCollection(emitsSpecular, e=1, select = esd)
+		setParent(panel)
+		
+		#Light Links
+		linkRow = rowLayout(nc = 7)
+		text(label = 'Light Links:')
+		linkCol = radioCollection()
+		linkNC = radioButton(label = 'No Change')
+		radioButton(label = 'Make')
+		radioButton(label = 'Break')
+		radioCollection(linkCol, e=1, select = linkNC)
+		setParent(linkRow)
+		text(label = 'objs:')
+		linkField = textField()
+		button(label = 'Load Selection', c = lambda *args: self.loadSelection(linkField))
+		setParent(panel)
+		
+		
+		#duse depth map
+		depthRow = rowLayout(nc = 4)
+		depthLabel = text(label = 'Use Depth Map Shadows: ')
+		useDepth = radioCollection()
+		udd = radioButton(label = 'No Change')
+		radioButton(label = 'Yes')
+		radioButton(label = 'No')
+		radioCollection(useDepth, e=1, select = udd)
+		setParent(panel)
+				
+		#shadow Color
+		shadowColorRow = rowLayout(nc = 4, ct4 = ['left','left','left','left'], cw4 = [50,400,100,100])
+		shadowColorChange = checkBox(label = '')
+		shadowColor = colorSliderGrp( label='ShadowColor: ', rgb=(1, 1, 1))
+		shadowColorAdd = checkBox(label = 'add')
+		shadowColorClamp = checkBox(label = 'clamp')
+		setParent(panel)
+		
+		#shadow Resolution
+		resRow = rowLayout(nc = 3)
+		resChange = checkBox(label = '')		
+		resLabel = text("Shadow Resolution: ")
+		resField = floatField()
+		setParent(panel)
+		
+		#filter size
+		filterRow = rowLayout(nc = 4)
+		filterChange = checkBox(label = '')
+		filterSizeLabel = text("Shadow Filter Size: ")
+		filterField = floatField()
+		filterAdd = checkBox(label = 'add')
+		setParent(panel)
+		
+		batchBut = button(label = "Batch", c = lambda *args: self.batchLightsCommand(	lights, colorChange, color,colorAdd, colorClamp, intenChange, intenField, intenAdd, intenPercent, 
+																						dropOff, emitsDefault,emitsSpecular, penChange, penumbra, penAdd, penPercent, useDepth,shadowColorChange, shadowColor, 
+																						shadowColorAdd, shadowColorClamp, resChange, resField, filterChange, filterField, filterAdd, linkCol, linkField))
+		showWindow(win)
+
+	
+	
+	def batchLightsCommand(	self, lights, colorChange, color,colorAdd, colorClamp, intenChange, intenField, intenAdd, intenPercent, 
+							dropOff, emitsDefault,emitsSpecular, penChange, penumbra, penAdd, penPercent, useDepth,shadowColorChange, shadowColor, 
+							shadowColorAdd, shadowColorClamp, resChange, resField, filterChange, filterField, filterAdd, linkCol, linkField):
+		'''
+		helper method to the batchLights method, takes the info from the batchLights panel and updates the lights
+		'''					
+							
+		linkText = textField(linkField, q=1, text=1)
+		linkLights = []
+		if linkText:
+			linkLights = linkText.split(",")
+			print linkLights
+			linkLights  = map(lambda obj: PyNode(obj), linkLights)
+		lights = map(lambda obj: PyNode(obj), lights)
+		
+		for light in lights:
+			#color 
+			cch = checkBox(colorChange, q=1, value = 1)
+			if cch:
+				cA = checkBox(colorAdd, q=1, value = 1)
+				cCL = checkBox(colorClamp, q=1, value = 1)
+				colorRGB = colorSliderGrp(color, q=1, rgb = 1)
+				
+				if cA:
+					lcolor = light.color.get()
+					light.color.set([lcolor[0] + colorRGB[0],lcolor[1] + colorRGB[1],lcolor[2] + colorRGB[2]])
+				else:
+					light.color.set(colorRGB)
+				
+				print cCL
+				print colorRGB
+				if cCL:
+					cr = light.colorR.get()
+					if cr < 0: light.colorR.set(0)
+					if cr > 1: light.colorR.set(1)
+					
+					cg = light.colorG.get()
+					if cg < 0: light.colorG.set(0)
+					if cg > 1: light.colorG.set(1)
+					
+					cb = light.colorB.get()
+					if cb < 0: light.colorB.set(0)
+					if cb > 1: light.colorB.set(1)
+				
+			#intensity		
+			ich = checkBox(intenChange, q=1, value =1)
+			if ich:
+				inten = floatField(intenField, q =1, value =1)
+				iA = checkBox(intenAdd, q=1, v =1)
+				iPer= checkBox(intenPercent, q=1, v=1)
+				linten = light.intensity.get()
+				
+				if iA:
+					if iPer:
+						light.intensity.set(inten*.01 * linten + linten)
+					else:
+						light.intensity.set(inten + linten)
+				else:
+					if iPer:
+						light.intensity.set(inten*.01*linten)
+					else:
+						light.intensity.set(inten)	
+			
+			#light decay rate
+			dropoff_types = ["spotLight", 'pointLight', 'areaLight']	
+			if light.getShape().type() in dropoff_types:	
+				dropoff_index = radioCollection(dropOff, q=1, select =1)
+				dropoff_name = radioButton(dropoff_index, q=1, label = 1)
+				dropoff_dict = {'No Decay': 0, 'Linear':1, 'Quadratic':2, 'Cubic':3}
+				if dropoff_name in dropoff_dict.keys():
+					light.decayRate.set(dropoff_dict[dropoff_name])
+			
+			#light Linking
+			llindex = radioCollection(linkCol, q=1, select =1)
+			llname = radioButton(llindex, q=1, label = 1)
+			if llname == 'Make':
+				lightlink(make=1, object = linkLights, light = light)
+			elif llname == 'Break':
+				lightlink(b=1, object = linkLights, light = light)
+				
+			#emits by defualt		
+			emitsDefault_index = radioCollection(emitsDefault, q=1, select =1)
+			ed_name = radioButton(emitsDefault_index, q =1, label =1)
+			if ed_name == 'Yes':
+				connectAttr(light.instObjGroups ,PyNode('defaultLightSet').dagSetMembers, nextAvailable = 1, f=1)
+				print 'connected default lights'
+			elif ed_name == 'No':
+				list = listConnections(light.instObjGroups, s = 0, d = 1)
+				i = 0
+				for obj in list:
+					if obj.name() == 'defaultLightSet':
+						disconnectAttr(light.attr('instObjGroups[%i]'%i))
+						print 'disconnected defaults'
+					i += 1	
+				print 'NO LIGHT DELINKED'
+				
+				
+			#emits specular   NOT IMPLEMENTED
+			if light.hasAttr('emitSpecular'):
+				emitsSpec_index = radioCollection(emitsSpecular, q=1, select =1)
+				es_name = radioButton(emitsSpec_index, q =1, label =1)
+				es_dict = {'Yes':1, 'No': 0}
+				if es_name in es_dict.keys():
+					light.emitSpecular.set(es_dict[es_name])
+			
+			#penumbra
+			if light.hasAttr('penumbraAngle'):
+				pch = checkBox(penChange, q=1, value =1)
+				if pch:
+					pen = floatField(penumbra, q =1, value =1)
+					pA = checkBox(penAdd, q=1, v =1)
+					pPer= checkBox(penPercent, q=1, v=1) 
+					lpen = light.penumbraAngle.get()
+					
+					if pA:
+						if pPer:
+							light.penumbraAngle.set(lpen *.01* pen + lpen)
+						else:
+							light.penumbraAngle.set(lpen + pen)
+					else:
+						if pPer:
+							light.penumbraAngle.set(lpen * .01 *pen)
+						else:
+							light.penumbraAngle.set(pen)
+						
+			#use depth map shadows
+			if light.hasAttr('useDepthMapShadows'):
+				udepth_index = radioCollection(useDepth, q=1, select =1)
+				udepth_name = radioButton(udepth_index, q =1, label =1)
+				udepth_dict = {'Yes':1, 'No': 0}
+				if udepth_name in udepth_dict.keys():
+					light.useDepthMapShadows.set(udepth_dict[udepth_name])	
+				
+			#shadow colors
+			if light.hasAttr('shadowColor'):
+				scch = checkBox(shadowColorChange, q=1, value = 1)
+				if scch:
+					scA = checkBox(shadowColorAdd, q=1, value = 1)
+					scCL = checkBox(shadowColorClamp, q=1, value = 1)
+					scRGB = colorSliderGrp(shadowColor, q=1, rgb = 1)
+					
+					if scA:
+						lscolor = light.shadowColor.get()
+						light.color.set([lscolor[0] + scRGB[0],lscolor[1] + scRGB[1],lscolor[2] + scRGB[2]])
+					else:
+						light.shadowColor.set(scRGB)
+					
+					if scCL:
+						scr = light.shadowColorR.get()
+						if scr < 0: light.shadowColorR.set(0)
+						if scr > 1: light.shadowColorR.set(1)
+						
+						scg = light.shadowColorG.get()
+						if scg < 0: light.shadowColorG.set(0)
+						if scg > 1: light.shadowColorG.set(1)
+						
+						scb = light.shadowColorB.get()
+						if scb < 0: light.shadowColorB.set(0)
+						if scb > 1: light.shadowColorB.set(1)
+			
+			#shadow Resolution
+			if light.hasAttr('dmapResolution'):
+				if resChange:
+					if light.hasAttr('dmapResolution'):
+						res = floatField(resField, q =1, value =1)
+						res_sizes = [128,256,512,1024,2048,4096]
+						if res in res_sizes:
+							light.dmapResolution.set(res)
+			
+			#shadow filter
+			if light.hasAttr('dmapFilterSize'):
+				filterCh = checkBox(filterChange,q=1, value=1)
+				if filterCh:
+					filt = floatField(filterField, q =1, value =1)
+					fA = checkBox(filterAdd, q=1, v =1)
+					
+					if fA:
+						lfs = light.dmapFilterSize.get()	
+						light.intensity.set(filt + lfs)
+					else:
+						light.dmapFilterSize.set(lfs)
+	
+											
+	def loadSelection(self, field):
+		'''
+		load selection into the given text field
+		field:
+			textfield to add the selection to
+		'''
+		sel = ls(sl=1)
+		tex = ''
+		for obj in sel:
+			tex += "," + obj.name()
+		tex = tex.replace(",","",1)
+		textField(field, e=1, text=tex)
+		
+		
+						
+class saveIterWindow():
+	def __init__(self):
+		if window('saveIter', q =1, exists = 1):
+			deleteUI('saveIter')
+		win = window('saveIter', title = 'Save Iteration')
+		panel = columnLayout(adj =1)
+		text(label = "Iteration Notes")
+		iterText = textField()
+		textField(iterText, e=1, enterCommand = lambda *args: self.saveIteration(iterText, win))
+		button(label = 'save', c = lambda *args: self.saveIteration(iterText, win))
+		showWindow(win)
+		
+		
+	def saveIteration(self, iterField, win):
+		'''
+		helper method for when button is pressed
+		'''
+		updateNotes = textField(iterField, q=1, text=1)
+		sn = sceneName()
+		dir = sn.parent
+		name = sn.replace(dir + '/', '').replace('.ma', '').replace('.mb','')
+		iterDir = dir + '/iterations'
+		if not iterDir.exists():
+			iterDir.mkdir() 
+		
+		iterFiles = iterDir.files('*.ma')
+		numFiles = len(iterFiles)
+		iterFileName = '%s/%s_v%i.ma'%(iterDir, name, numFiles)
+		
+		notes = file(dir + "/notes.txt", mode = 'a')
+		curTime = time.strftime("%a, %B %d %Y @ %H:%M:%S")
+		notes.write('\r\n%s = %s :: %s'%(numFiles, curTime,updateNotes))
+		notes.close()
+		
+		saveAs(iterFileName, f=1, type='mayaAscii')
+		saveAs(sn, f=1, type = 'mayaAscii')
+		deleteUI(win)
+
+
+class UVWindow():
+	def __init__(self):
+		if window('UVs', q =1, exists = 1):
+			deleteUI('UVs')
+		win = window('UVs', title = 'Move UVs', sizeable = False)
+		panel = columnLayout(adj =1)
+		umber = None
+		row1 = rowLayout(nc = 3, ct3 = ['both','both','both'] )
+		mirrorU = button(label = 'Mirror right/left', c= lambda *args:polyFlipUV(flipType = 0, local = 1 ))
+		moveUp = button(label = '/\\', c = lambda *args: self.moveUVs('up', number))
+		mirrorV = button(label = 'Mirror up/down', c = lambda *args: polyFlipUV(flipType = 1, local = 1 ))
+
+		setParent(panel)
+		row2 = rowLayout(nc = 3, ct3 = ['both','both','both'] )
+		moveLeft = button(label = '<<', c= lambda *args: self.moveUVs('left', number))
+		number = textField(text = '1')
+		moveRight = button(label = '>>', c = lambda *args: self.moveUVs('right', number))
+		
+		setParent(panel)
+		row3 = rowLayout(nc = 3, ct3 = ['both','both','both'] )
+		blank = button(label = 'normalize', c = lambda *args: polyNormalizeUV(normalizeType = 1, preserveAspectRatio = 0))
+		moveDown = button(label = '\\/', c= lambda *args: self.moveUVs('down', number))
+		unfoldBut = button(label = 'unfold', c = lambda *args:unfold(i=5000, ss= .001,gb=0,ps=0,pub=1,oa=0,us=0))
+		showWindow(win)
+	
+			
+	def moveUVs(self, direction, number):
+		"""
+		move the selected UV's  in the direction and distance as given
+		direction:
+			the direction to move in, up down right or left
+		number:
+			the textField with the will contain the amount to move
+		"""	
+		#get input field
+		st = textField(number, q=1, text=1)
+		num = 0
+		try:
+			num = float(st)
+		except:
+			pass	
+		if direction == 'up':
+			polyEditUV(v = num)
+		elif direction == 'down':
+			polyEditUV(v = -num)
+		elif direction == 'right':
+			polyEditUV(u = num)
+		else: #left
+			polyEditUV(u = -num)
+
+
+			
+class MultiConstraintWindow():
+	def __init__(self, object = None):
+		"""
+		Shows the multiconstraint UI
+		"""
+		self.window = None
+		self.mainPanel = None	
+		self.objectList = None
+		
+		#delete the window if it already exists
+		if(window('MultiConstraintWindow', exists=1)):
+			deleteUI('MultiConstraintWindow')
+		
+		#main window
+		self.window = window('MultiConstraintWindow', title = "Multi Contraint")
+		windowHeight = 400
+		windowWidth = 400
+		
+		#create multi
+		self.mainPanel = columnLayout("body", adj = 1, columnAlign = "center")
+		text(label = 'Select the contraint targets then select the object')
+		
+		text(label = "", h= 15)
+		button('createButton',label  = 'Create', c= lambda *args: [self.createMultiConstraint(),self.updateObjects()])
+		
+		text(label = "", h= 15)
+		separator()
+		text(label = "", h= 15)
+		
+		#edit multi
+		self.objectList = optionMenu(changeCommand = lambda *args: self.updateParents(), label = "Child Object:", width = windowWidth/2)
+		separator()
+		
+		
+		#setParent
+		setParent("body")
+		rowLayout('setParentRow',nc=2, cw2=[(windowWidth/2), (windowWidth/2)])
+		text(label = 'Set Parent:')
+		self.parentList = optionMenu(changeCommand = lambda *args: self.changeConstraint())
+		
+		
+		#addParent
+		setParent("body")
+		rowLayout('addParentRow',nc=2, cw2=[(windowWidth/2), (windowWidth/2)])
+		text('Add Parent:')
+		button('addParentButton', label = 'Add Parent', command = lambda *args: [self.addConstraint(),self.updateParents()])
+		
+		#remove Constraint
+		setParent("body")
+		button('removeConstraint', label = 'Remove Multi Constraint', command = lambda *args: [self.removeConstraint(),self.updateObjects()])
+		
+		#update
+		
+		setParent("body")
+		text(label = "", h= 15)
+		button('updateButton', label = 'Update', c= lambda *args: self.updateObjects())
+		
+		text(label = "", h= 15)
+		
+		window(self.window, e=1, width=windowWidth, height=windowHeight)
+		showWindow(self.window);
+		
+		self.updateObjects(obj = object)		
+		
+			
+		
+		
+	
+	def updateObjects(self, obj = object):
+		"""
+			updates GUI, update button is pressed
+		"""
+		numItems = optionMenu(self.objectList, q=1, numberOfItems=1)
+		
+		for inc in xrange(numItems):
+		    deleteUI("objectListMenuItem" + str(inc));
+		
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		inc = 0
+		objNum = 0
+		found = 0
+		for node in multiNodes:
+			multi = MultiConstraint('' ,'', node = node )
+			if multi.isActive():
+				object = multi.getChild()
+				menuItem("objectListMenuItem" + str(inc), parent=self.objectList, label=object)
+				if obj == object:
+					found = 1
+					objNum = inc+1
+			inc +=1
+		if not found:
+			self.updateParents();
+		else:
+			optionMenu(self.objectList, e=1, sl = objNum)
+			self.updateParents();
+
+	def updateParents(self):
+		"""
+		updates parents list.
+		"""
+		numItems = optionMenu(self.parentList, q=1, numberOfItems=1)
+		for inc in xrange(numItems):
+			deleteUI("parentListMenuItem" + str(inc));
+		
+		object = optionMenu(self.objectList, q=1, value=1)
+		if(object == None):
+			menuItem("parentListMenuItem0", parent=self.parentList, label="No Constraint")
+			printWarning("No constraints")
+			return
+		
+		multiNode = None	
+			
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		for x in multiNodes:
+			multi = MultiConstraint('','', node = x)
+			if multi.isActive():
+				obj = multi.getChild()
+				if obj == object:
+					multiNode = multi
+		
+		targets = multiNode.getParents()
+		inc = 0
+		for target in targets:
+		    menuItem("parentListMenuItem" + str(inc), parent=self.parentList, label=target)
+		    inc +=1
+		menuItem("parentListMenuItem" + str(inc), parent=self.parentList, label="NONE")
+		#    mc.menuItem('parentList', e=1, select = getCurrentConstraint(object))
+		optionMenu(self.parentList, e=1, sl = multiNode.getCurrentConstraint()+1)
+		
+	def changeConstraint(self):
+		"""
+		Changes constraints which information in GUI
+		"""      
+		multiNode = None	
+			
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		for x in multiNodes:
+			multi = MultiConstraint('','', node = x)
+			obj = multi.getChild()
+			if obj == object:
+				multiNode = multi
+		
+		parent = optionMenu(self.parentList, q=1, select=1)-1;
+		object = optionMenu(self.objectList, q=1, value=1);
+		
+		multiNode.swapMultiConstraint(parent)	
+		
+		
+	def removeConstraint(self):
+		"""
+		remove constraint from the child object in the GUI
+		"""
+		multiNode = None	
+		object = optionMenu(self.objectList, q=1, value=1)
+			
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		for x in multiNodes:
+			multi = MultiConstraint('','', node = x)
+			obj = multi.getChild()
+			if obj == object:
+				multiNode = multi
+				
+		multiNode.delete()
+	
+	def addConstraint(self):
+		"""
+		add constraint to existing multi constraint
+		"""
+		multiNode = None	
+		object = optionMenu(self.objectList, q=1, value=1)
+			
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		for x in multiNodes:
+			multi = MultiConstraint('','', node = x)
+			obj = multi.Child()
+			if obj == object:
+				multiNode = multi
+		
+		parents = ls(sl = 1)
+		for parent in parents:
+			multiNode.addMultiConstraintTarget(parent)
+	
+	def createMultiConstraint(self):
+		'''
+		create a multiConstraint from selection
+		'''
+	
+		sel = ls(sl=1)
+		targets = sel[:-1]
+		obj = sel[-1]
+		MultiConstraint(targets, obj)
+	
+	def changeConstraint(self):
+		"""
+		Changes constraints which information in GUI
+		"""
+		parent = optionMenu(self.parentList, q=1, select=1)-1;
+		object = optionMenu(self.objectList, q=1, value=1);
+		multiNode = None	
+			
+		multiNodes = getMetaNodesOfType('MultiConstraint')
+		for x in multiNodes:
+			multi = MultiConstraint('','', node = x)
+			obj = multi.getChild()
+			if obj == object:
+				multiNode = multi
+		
+		multiNode.swapMultiConstraint(parent)
+		
+		
+class EvilWindow():
+	def __init__(self):
+		"""
+		Shows the Evil UI
+		"""
+		self.window = None
+		self.mainPanel = None	
+		self.evilList = None
+		self.evil = None
+		
+		#delete the window if it already exists
+		if(window('EvilWindow', exists=1)):
+			deleteUI('EvilWindow')
+		
+		#main window
+		self.window = window('EvilWindow', title = "Evil")
+		windowHeight = 1000
+		windowWidth = 400
+		
+		#main
+		self.mainPanel = columnLayout("body", adj = 1, columnAlign = "center")
+		
+
+		#update
+		updateButton = button(label = 'Update', c = lambda *args: self.updateEvil())
+		
+		#evil list
+		self.evilList = optionMenu(changeCommand = lambda *args: self.changeEvilFromList())
+		self.evilLabel = text(label = 'Current Evil = NONE')
+		
+		text(label = "", height = 45)		
+		separator(style = 'double')
+		text(label = "", height = 45)
+		
+		
+		#change attrs
+		
+		self.growSlider = attrFieldSliderGrp( label = 'Grow', smn=0, smx=50)
+		self.rotateSlider = attrFieldSliderGrp(label = 'Rotate', smn = 0, smx = 360)
+		self.percentSlider = attrFieldSliderGrp(label = 'Percent', smn = 0, smx = 1 )
+		
+			
+		text(label = "", height = 45)		
+		separator(style = 'double')
+		text(label = "", height = 45)
+		
+		#anims
+		button(label = 'Select Anims', c = lambda *args: self.selectAnims())
+		button(label = 'Key Anims', c = lambda *args: self.keyAnims())
+		button(label = 'Randomize Anims', c = lambda *args: self.randomizeAnims())
+		randomRow = rowLayout('randomAmountRow',nc=2, cl2 = ['right','left'])
+		text(label = 'Random Amount: ')
+		self.randomField = floatField(v= 10)
+		setParent(self.mainPanel)
+		
+		
+		text(label = "", height = 45)		
+		separator(style = 'double')
+		text(label = "", height = 45)
+		
+		#attach 
+		setParent(self.mainPanel)
+		attachChildRow = rowLayout('setChildRow',nc=2, cl2 = ['right','left'])
+		childButton = button(label = 'child', c = lambda *args: self.updateChildField())
+		self.attachChildField = textField()
+		
+		setParent(self.mainPanel)
+		attachPercentRow = rowLayout('percentRow',nc=2, cl2 = ['right','left'])
+		text(label = 'Percent')
+		self.attachPercentField = floatField( minValue=0, maxValue=1, value=.5)
+		
+		setParent(self.mainPanel)
+		button(label = 'attach' , c = lambda *args: self.attachChild())
+		button(label = 'detach' , c = lambda *args: self.detachChild())
+		
+		text(label = "", height = 45)		
+		separator(style = 'double')
+		text(label = "", height = 45)
+		
+		#create
+		setParent(self.mainPanel)
+		curveRow = rowLayout(nc=2, cl2 = ['right','left'])
+		curveButton = button(label = 'curve', c = lambda *args: self.updateCurveField())
+		self.curveField = textField()
+		
+		setParent(self.mainPanel)
+		radiusRow = rowLayout(nc=2, cl2 = ['right','left'])
+		text(label = 'Radius')
+		self.radiusField = floatField( minValue=0, value=1)
+		
+		setParent(self.mainPanel)
+		taperRow = rowLayout(nc=2, cl2 = ['right','left'])
+		text(label = 'Taper')
+		self.taperField = floatField( minValue=0, maxValue=1, value=.1)
+		
+		setParent(self.mainPanel)
+		numJointsRow = rowLayout(nc=2, cl2 = ['right','left'])
+		text(label = 'numJoints')
+		self.numJointsField = intField( minValue=0, maxValue=150, value=50)
+		
+		setParent(self.mainPanel)
+		button(label = 'Create', c = lambda *args: self.createEvil())
+		button(label = 'Recreate', c = lambda *args: self.recreateEvil())
+		
+		text(label = "", height = 45)		
+		separator(style = 'double')
+		text(label = "", height = 45)
+		
+		button(label = 'Delete', c = lambda *args: self.deleteEvil())
+			
+		#finish
+		window(self.window, e=1, rtf=1)
+		showWindow(self.window)
+		
+		#updateEvil
+		self.updateEvil()
+		
+	def setEvil(self, node):
+		'''
+		sets the evil to the current network node selected
+		'''
+		if node == None:
+			try:
+				self.evil.hideAnims()
+			except:
+				pass
+			self.evil = None
+			text(self.evilLabel, e=1, label = 'Current Evil = None')
+			return
+			
+		evil = Evil('',node = node)
+		
+		if self.evil:
+			self.evil.hideAnims()
+		
+		#self.evil		
+		self.evil = evil
+		self.evil.showAnims()
+		
+		#change label
+		text(self.evilLabel, e=1, label = 'Current Evil = %s'%self.evil.networkNode.name())
+		
+		#change attrs
+		attrFieldSliderGrp(self.growSlider, e=1, en=1, at = evil.getGrowAttr())
+		attrFieldSliderGrp(self.rotateSlider, e=1, en = evil.isAttached(), at = evil.getRotateAttr())
+		attrFieldSliderGrp(self.percentSlider, e=1, en = evil.isAttached(), at = evil.getPercentAttr())
+		
+		
+		#recreate updates
+		
+		
+	def updateEvil(self):
+		'''
+		updates evil menus
+		'''
+		#see if part of an evil is selected, if it is make that the evil
+		sel = ls(sl=1)
+		if not sel:
+			self.updateEvilList()
+			
+			if not self.evil:
+				ev = optionMenu(self.evilList, q=1, value= 1)
+				if ev:
+					self.setEvil(ev)	
+			return
+		
+		obj = sel[0]
+		evil = None
+		try:
+			metaParents = obj.metaParent.listConnections()
+			for mp in metaParents:
+				if isMetaNodeOfType(mp, 'Evil'):
+					evil = mp
+		except:
+			pass
+		if evil:
+			self.setEvil(evil)
+		else:
+			self.updateEvilList()
+			
+			if not self.evil:
+				ev = optionMenu(self.evilList, q=1, value= 1)
+				if ev:
+					self.setEvil(ev)	
+			return
+			
+			
+		self.updateEvilList()		
+				
+					 
+	def changeEvilFromList(self):
+		'''
+		switches evil when evil list is changed
+		'''
+		evil = optionMenu(self.evilList, q=1, value=1);
+		try:
+			self.setEvil(PyNode(evil))
+		except:
+			self.updateEvilList(self)
+	
+			
+	def updateEvilList(self):
+		'''
+		repopulates the  evil list
+		'''
+		numItems = optionMenu(self.evilList, q=1, numberOfItems=1)
+		for inc in xrange(numItems):
+			deleteUI("evilListMenuItem" + str(inc));
+		
+		allEvil = getMetaNodesOfType('Evil')
+		if not allEvil:
+			self.setEvil(None)
+		
+		inc = 0
+		current = 0
+		for node in allEvil:
+			evil = Evil('', node = node )	
+			try:
+				if node == self.evil.networkNode:
+					current = inc+1
+			except:
+				pass
+			menuItem("evilListMenuItem" + str(inc), parent=self.evilList, label=node.name())
+			inc +=1
+		
+		if current:
+			optionMenu(self.evilList, e=1, select = current )
+	
+	def selectAnims(self):
+		'''
+		select all the current Evils anims
+		'''
+		try:
+			select(self.evil.listAnims())
+		except:
+			pass
+			
+		
+	def keyAnims(self):
+		try:
+			self.evil.keyAnims()
+		except:
+			pass
+			
+	def randomizeAnims(self):
+		'''
+		randomize anims by set amount
+		'''
+		randAmount = floatField(self.randomField, q=1, value=1)
+		try:
+			self.evil.randomizeAnims(randAmount)
+		except:
+			pass
+		
+	
+	def updateChildField(self):
+		sel = ls(sl=1)
+		if len(sel) < 1:	
+			return
+		obj = sel[0]
+		evil = None
+		try:
+			metaParents = obj.metaParent.listConnections()
+			for mp in metaParents:
+				if isMetaNodeOfType(mp, 'Evil'):
+					evil = mp
+		except:
+			pass
+		
+		textField(self.attachChildField, e=1, text=evil.name())
+					
+	def attachChild(self):
+		percent = floatField(self.attachPercentField, q=1, value=1)
+		evil = textField(self.attachChildField, q=1, text=1)
+		print evil
+		otherEvil = Evil('',node = evil)
+		if self.evil:
+			self.evil.attachEvil(otherEvil, percent)
+			self.setEvil(otherEvil.networkNode)
+		
+		
+	def detachChild(self):
+		otherEvil = Evil('', node = textField(self.attachChildField, q=1, text=1))
+		if otherEvil:
+			otherEvil.detach()
+		self.setEvil(otherEvil.networkNode)
+			
+	def updateCurveField(self):
+		sel = ls(sl=1)
+		if not sel:
+			return
+		
+		obj = sel[0]
+		if obj.getShape().type() == 'nurbsCurve':
+			textField(self.curveField, e=1, text=obj.name())
+			
+	def createEvil(self):
+		curve = textField(self.curveField, q=1, text=1)
+		radius = floatField(self.radiusField, q=1, value =1)
+		taper = floatField( self.taperField, q=1, value =1)
+		numJoints = intField(self.numJointsField, q=1, value =1)
+		
+		evil = Evil(curve, radius = radius, taper = taper, numJoints = numJoints)
+		self.setEvil(evil.networkNode)
+		self.updateEvilList()
+		
+		
+	def recreateEvil(self):
+		pass
+		
+	def deleteEvil(self):
+		if self.evil:
+			self.evil.delete()
+			self.setEvil(None)
+			self.updateEvil()	
+
+
+
+class RigMarkingMenu():
+	def __init__(self):
+		if (popupMenu("metaMarkingMenu", exists=1)):
+			deleteUI("metaMarkingMenu")
+		main = popupMenu("metaMarkingMenu",button = 1, ctl = 1, alt =0, sh = 1, allowOptionBoxes =1, parent = "viewPanes", mm=1)
+		
+		
+		sel = ls(sl=1)
+		if sel:
+			print "getMetaRoot" in dir()
+			character = getMetaRoot(sel[0], 'CharacterRig')
+			hasAlignSwitch = getMetaRoot(sel[0], ['FKIKSplineChain','FKIKChain', 'FKIKArm', "FKIKLeg", "FKIKSpine"])
+			hasMultiConstraint = 0
+			allMultiConstraints = getMetaNodesOfType("MultiConstraint")
+			for x in allMultiConstraints:
+				multi = fromNetworkToObject(x)
+				if sel[0] == multi.getChild():
+					hasMultiConstraint = multi			
+			isRigComp = getMetaRoot(sel[0], ['FKChain',"COGChain",'ReverseChain','AdditionalTwist','FKIKSplineChain','FKIKChain', 'SingleIKChain', 'StretchyJointChain', 'FKIKArm', "FKIKLeg"])
+			print character, hasAlignSwitch, hasMultiConstraint, isRigComp
+			
+			if character:		
+				if isRigComp:
+					#mirror North
+					menuItem(label = "Mirror", subMenu=1, enable = 1, rp = "N", allowOptionBoxes = 1)
+					menuItem(label = "character", c= lambda *args:self.mirrorCharacter(character), enable=1, rp = "E", enableCommandRepeat =1)
+					menuItem(label = "both", c = lambda *args:self.mirrorBoth(isRigComp), enable =1, rp= "N", ecr=1)
+					menuItem(label = "self", c = lambda *args:self.mirrorSelf(isRigComp), enable =1, rp= "W", ecr=1)
+					setParent("..",m=1)
+			
+				#selectAllAnims NorthEast
+				menuItem(label = "select all anims", c = lambda *args:self.selectAll(character), enable =1, rp="NE", ecr =1) 
+				
+				#key all East
+				menuItem(label = "key all anims", c = lambda *args:self.keyAll(character), enable = 1, rp = "E", ecr =1)
+		
+				#default Pose South
+				menuItem(label = "Default Pose", subMenu=1, enable = 1, rp = "S", allowOptionBoxes = 1)
+				menuItem(label = "character", c = lambda *args:self.defaultPoseCharacter(character), enable = 1, rp = "E", ecr = 1)
+				menuItem(label = "self", c = lambda *args:self.defaultPoseSelf(isRigComp), enable = 1, rp = "W", ecr = 1)
+				setParent("..",m=1)
+					
+			if hasAlignSwitch:			
+				#alignSwitch SouthEast
+				menuItem(label = "switch", subMenu=1, enable = 1, rp = "SE", allowOptionBoxes = 1)
+				menuItem(label = "align switch", c = lambda *args:self.alignSwitch(hasAlignSwitch), enable = 1, rp = "SE", ecr =1)
+				menuItem(label = 'align switch and key before', c= lambda *args: self.alignSwitchAndKeyBefore(hasAlignSwitch), enable = 1, rp = "E", ecr = 1)
+				menuItem(label = "just switch", c = lambda *args:self.justSwitch(hasAlignSwitch), enable = 1, rp = "SW", ecr =1)
+				menuItem(label = "select switch", c = lambda *args: self.selectSwitch(hasAlignSwitch), enable = 1, rp = "N", ecr =1)
+				setParent("..",m=1)
+			
+			if hasMultiConstraint:
+				self.makeMultiConstraintMenu(hasMultiConstraint,sel[0],1)
+			#else:
+			#	self.makeMultiConstraintMenu(None, sel[0], 0)
+				
+			#swap shape SouthWest
+			#if len(sel) > 1:
+			#	menuItem(label = "swap shape", c = lambda *args: self.swapShape(sel[0], sel[1]), enable =1, rp = "SW", ecr = 1)
+		
+		else:
+			self.makeMultiConstraintMenu(None, None,0)
+				
+	def mirrorSelf(self, rigComp):
+		rigComp.mirror(bothSides = 0)
+				
+	def mirrorBoth(self, rigComp):
+		rigComp.mirror(bothSides = 1)
+	
+	def mirrorCharacter(self, character):
+		character.mirrorPose()
+		
+	def alignSwitch(self, rigComp):
+		rigComp.alignSwitch()
+		
+	def alignSwitchAndKeyBefore(self, rigComp):
+		rigComp.alignSwitch()
+		attr = rigComp.getSwitchAttr()
+		currentValue = attr.get()
+		beforeValue = 1-currentValue
+		node = attr.node()
+		attrName = attr.name().split(node.name() + ".")[-1]
+		print getCurrentTime()-1, node, beforeValue, attrName
+		setKeyframe(node,v=beforeValue, at = attrName, t= getCurrentTime()-1, itt='spline' , ott = 'step')
+		
+	def justSwitch(self, rigComp):
+		grp = rigComp.networkNode.switchGroup.listConnections()[0]
+		attr = rigComp.networkNode.switchAttr.get()		
+		val = grp.attr(attr).get()
+		grp.attr(attr).set(1-val)
+		
+	def selectSwitch(self, rigComp):
+		select(rigComp.networkNode.switchGroup.listConnections()[0])
+	
+	def selectAll(self, character):
+		character.selectAllAnims()
+	
+	def keyAll(self, character):
+		character.keyAllAnims()
+			
+	def defaultPoseSelf(self, rigComp):
+		rigComp.toDefaultPose()
+		
+	def defaultPoseCharacter(self, character):
+		character.toDefaultPose()
+	
+	def swapShape(self, newShape, obj):
+		swapShape(newShape, obj)
+	
+	def makeMultiConstraintMenu(self, mc, object, submenu):
+		if submenu:
+			menuItem(label = "MultiConstraint", subMenu = 1, enable = 1, rp = "W", allowOptionBoxes = 1)
+			parents = mc.getParents()
+			len(parents)
+			direction ={0:"NE",1:"E",2:"SE",3:"S",4:"SW",5:"NW"}
+			inc = 0
+			for par in parents:
+				mi = menuItem(label = par, enable = 1, c = eval("lambda *args: MultiConstraint('','',node = '"+mc.networkNode.name()+"').swapMultiConstraint("+str(inc)+")"), rp = direction[inc], ecr =1)#ugly command but only way with this version of pymel
+				inc+=1
+			menuItem(label = 'None', enable = 1, c = lambda *args: mc.swapMultiConstraint(len(parents)), rp = 'N', ecr =1)
+			
+			#menuItem(label = "MultiConstraint", c = lambda *args: MultiConstraintWindow(object), enable = 1, rp = "W", ecr =1)
+			setParent("..", m=1)
+			
+		else:
+			menuItem(label = "MultiConstraint", c = lambda *args: MultiConstraintWindow(object), enable = 1, rp = "W", ecr =1)
+		
+		
+		
+			
+def safeDeleteRigMarkingMenu():
+	if (popupMenu("metaMarkingMenu", exists=1)):
+			deleteUI("metaMarkingMenu")
+			
+
+def updatePanel(panel, directoryName, fileLocation, bigImagefileLocation, bigImageButton, largeIconSize):
+	'''
+	updates the big image panel to the specified file
+	this method is called when the small button is pressed
+	
+	'''
+	largeIconSize = int(largeIconSize)
+	text = bigImagefileLocation.split('/')[-1].split('.')[0]
+	bigImageButton = iconTextButton(bigImageButton, e=1, al = 'center', i1=bigImagefileLocation, label = text, st= "iconOnly", en=True)
+	iconTextButton(bigImageButton, e=1, dcc= lambda *args: chooseFile(directoryName, fileLocation))
+	setParent(panel)
+	
+def chooseFile(fileName, poseLibraryPath):
+	'''
+	selects the file and applies the file to the pose
+	this method is called when the big image panel is double clicked
+	'''
+	char = getMetaRoot(ls(sl=1)[0])
+	charName = char.getCharacterName()
+	namespace = ":".join(ls(sl=1)[0].name().split(":")[:-1])
+	pose = Pose().readXML('%s%s/poses/%s.xml'%(poseLibraryPath,charName,fileName))
+	pose.goToPose(namespace)
+	
+class PoseLibWindow():
+	def __init__(self):
+		'''
+		PoseLibWindow is used to save poses on characters
+		Select the character you want a pose to save to and click save
+		'''
+		
+		
+		
+		#global variables if changes are necessary
+		self.smallIconSize = 150
+		self.largeIconSize = 400
+		self.numberOfImageColumns = 6
+		self.fileDepth = 9
+		self.poseLibraryPath = 'O:/unix/projects/instr/capstone1/nebbish_production/rigs/characters/pose_library/'
+		
+		self.window = None
+		self.currentImage = None
+		self.listPanel = None
+		self.scrollPanel = None
+		self.bigImageButton = None
+		self.bigImageHolder = None
+		
+		self.currentLibrary = 'Nebbish'
+		
+		#delete the window if it already exists
+		if(window('PoseLibWindow', exists=1)):
+			deleteUI('PoseLibWindow')
+			
+		#main window
+		self.window = window('PoseLibWindow', title = "Awesome!!!", s= False)
+		
+		#main
+		self.mainPanel = columnLayout("body", columnAlign = "center", cw = 300)
+		
+		#row layout for next 4 buttons
+		optionsPanel = rowLayout(nc = 4, cw4 = [50,50,50,50])
+		#create buttons
+		saveButton = button(label = 'Save', w = 50, h = 20, c = lambda *args: self.saveFunc())
+		deleteButton = button(label = 'Delete',w = 50, h = 20, c = lambda *args: self.deleteFunc())
+		listButton = button(label = 'List',w = 50, h = 20, c = lambda *args: self.listFunc())
+		setParent(self.mainPanel)
+		
+		self.bigImageHolder = columnLayout('bigPictureHolder_micheal',  w = self.largeIconSize, h = self.largeIconSize, cal = 'center')
+		self.bigImageButton = iconTextButton(al = 'center', w = self.largeIconSize, h = self.largeIconSize)
+		
+		#files in Nebbish folder
+		path = self.poseLibraryPath + 'Nebbish'
+		files = os.listdir(path + '/poses')
+
+		amount = len(files)
+		
+		self.scrollPanel = scrollLayout(
+		mcw = self.smallIconSize, h = self.smallIconSize * 1.5, w = self.smallIconSize * self.numberOfImageColumns + 30)
+		self.listFunc()
+		
+		self.window.setWidth(self.smallIconSize * self.numberOfImageColumns + 60)
+		showWindow(self.window)
+
+	def listFunc(self):
+		'''
+		updates the panel of saved images based on the character selected
+		'''
+		setParent(self.mainPanel)
+		if not self.listPanel == None:
+			deleteUI(self.listPanel)
+		
+		try:
+			char = getMetaRoot(ls(sl=1)[0])
+			self.currentLibrary = char.getCharacterName()
+		except:
+			self.currentLibrary = 'Nebbish'
+		
+		path = self.poseLibraryPath + self.currentLibrary
+		pathExist = os.path.exists(path)
+		
+		if not pathExist:
+			print 'No poses saved'		
+		else:
+			#files in Nebbish folder
+			files = os.listdir(path + '/poses')
+			#.xml check MICHAEL
+			amount = len(files)
+			
+			setParent(self.scrollPanel)
+			self.listPanel = rowColumnLayout(nc = self.numberOfImageColumns)
+			for a in range(self.numberOfImageColumns):
+				self.listPanel.columnWidth((a + 1, self.smallIconSize))
+			
+			for a in files:
+				splitName = a.split('.')
+				name = splitName[0]
+				if os.path.exists(path + '/pose_images/small/' + name + 'small.bmp'):
+					fileLocation = path + '/pose_images/large/' + name + '.bmp'
+					imageLocation = path + '/poses/' + name + '.xml'
+					button1 = iconTextButton(st = 'iconAndTextCentered', l=name, al = 'center', w = self.smallIconSize, h = self.smallIconSize,
+					i = path + '/pose_images/small/' + name + 'small.bmp', 
+					c = eval("lambda *args: updatePanel( '"+self.bigImageHolder+"'  , '"+name+"' , '"+self.poseLibraryPath+"', '" + path +  "/pose_images/large/" +name+ "large.bmp', '"+self.bigImageButton+"','"+str(self.largeIconSize)+"')" ))
+					#iconTextButton(button1, e=1, dcc= eval("lambda *args: chooseFile('"+name+"', '"+self.poseLibraryPath+"')")) # if double click to select pose
+				else:
+					button1 = iconTextButton(bgc = (1, .5, .5), st = "textOnly",  w = self.smallIconSize, al = 'center', h = self.smallIconSize, label = name, 
+					c = eval("lambda *args: updatePanel( '"+self.bigImageHolder+"'  , '"+name+"' , '"+self.poseLibraryPath+"', '" + path +  "/pose_images/large/" +name+ "large.bmp', '"+self.bigImageButton+"','"+str(self.largeIconSize)+"')" ))
+					#iconTextButton(button1, e=1, dcc= eval("lambda *args: chooseFile('"+name+"', '"+self.poseLibraryPath+"')"))  # if double click to select pose
+			self.scrollPanel.setHeight(1)
+			self.scrollPanel.setHeight(self.smallIconSize * 1.5)
+	
+	def saveFunc(self):
+		'''
+		saves the selected pose into an xml file in the pose library
+		offers to save all anims or just the selected one
+		'''
+		if(window('SaveLibWindow', exists=1)):
+			deleteUI('SaveLibWindow')
+		
+		#save window
+		saveWindow = window('SaveLibWindow', title = "Save")
+		savePanel = columnLayout("body", adj = 1, columnAlign = "center")
+		
+		text(label = "Save Here")
+		iterText = textField()
+		textField(iterText, e=1, enterCommand = lambda *args: self.saveFile(iterText, saveWindow))
+		button(label = 'click to save', c = lambda *args: self.saveFile(iterText, saveWindow))
+		
+		window(saveWindow, e=1, w=200, h=200)
+		showWindow(saveWindow)
+		
+	def saveFile(self, iterText, saveWindow):
+		'''
+		save function called when the save button is pressed
+		'''
+		fileName = textField(iterText, q=1, text=1)
+		sel = ls(sl=1)
+		funnyQuote = random.random() < .2
+		if funnyQuote:
+			confirmDialog( title= 'Really?', message= 'Oh come on you can do better than that!  Do you really want to save THIS pose?', button= ['yes', 'no'])
+		
+		allAnims = confirmDialog( title= 'Confirm' ,message= 'All anims or just selected?' ,button= ['ALL!', 'ONLY SELECTED!'] ,defaultButton= 'ONLY SELECTED!' ,cancelButton= 'ONLY SELECTED!!' ,dismissString= 'ONLY SELECTED!');
+		
+		lastSelection = ls(sl=1)
+		char = getMetaRoot(lastSelection[0])
+		charName = char.getCharacterName()
+		
+		
+		path = self.poseLibraryPath + charName
+		pathExist = os.path.exists(path)
+		
+		#create folder of object if it does not exist
+		if not pathExist:
+			os.mkdir(path)
+			os.mkdir(path + '/poses')
+			os.mkdir(path + '/pose_images')
+			os.mkdir(path + '/pose_images/large')
+			os.mkdir(path + '/pose_images/small')
+			
+		charNamespace = getNamespace(ls(sl=1)[0])
+		
+		list = []	
+		#saving a pose
+		if allAnims == 'ALL!':
+			if charName == 'Nebbish':
+				allChars = getMetaNodesOfType('CharacterRig')
+				for x in allChars:
+					if getNamespace(x) == charNamespace and x.characterName.get() == 'Nebbish_Face':
+						list = fromNetworkToObject(x).getAllAnims()
+					
+			#anims = []
+			#map(lambda x: anims.append(x), char.getAllAnims())
+			#anims.remove(char.getTopCon())
+			map(lambda x: list.append(x), char.getAllAnims())
+			list.remove(char.getTopCon())
+			select(list)
+		else:
+			list = lastSelection
+			
+		path = self.poseLibraryPath + charName
+		posePath = path + '/poses/' + fileName + '.xml'
+		imagePath = path + '/pose_images'
+		pathExist = os.path.exists(posePath)
+		
+		if pathExist:
+			result = confirmDialog( title= 'Confirm' ,message= 'File already exist. Overwrite?' ,button= ['YES. DO IT!', 'NO WAY JOSE!'] ,defaultButton= 'YES. DO IT!' ,cancelButton= 'NO WAY JOSE!' ,dismissString= 'NO WAY JOSE!');
+			if result == 'YES. DO IT!':	
+				self.savePoseToXML(fileName, path, list, lastSelection)
+			else:
+				select(lastSelection)
+				
+		else:
+			self.savePoseToXML(fileName, path, list, lastSelection)
+		deleteUI('SaveLibWindow')
+		
+		self.listFunc()
+		
+		
+	def savePoseToXML(self, fileName, path, list, lastSelection):
+		#path for xml file
+		posePath = path + '/poses/' + fileName + '.xml'
+		#path for image file
+		imagePath = path + '/pose_images'
+		
+		characterList = []
+		for a in list:
+			tempChar = getMetaRoot(a, 'CharacterRig')
+			if not tempChar in characterList:
+				characterList.append(tempChar)
+			
+		
+		pose = Pose().create(fileName, ls(sl=1))
+		pose.saveToXML(posePath)
+		renderGlobs = PyNode("defaultRenderGlobals")
+		currentFormat = renderGlobs.imageFormat.get()
+		renderGlobs.imageFormat.set(20)
+		smallPath = imagePath + '/small/'
+		largePath = imagePath + '/large/'
+		#char = meta.getMetaRoot(ls(sl=1)[0], 'CharacterRig')
+		oldVal = .5
+		topCon = None
+		oldConnect = []
+		for a in characterList:
+			print 'entered'
+			topCon = a.getTopCon()
+			oldVal = topCon.animOpacity.get()
+			connection = topCon.animOpacity.listConnections(source = 1,d=0, p =1)
+			
+			
+
+			if connection:
+				oldConnect.append((connection[0], topCon))
+				disconnectAttr(connection[0], topCon.animOpacity)
+				print "breaking"
+			topCon.animOpacity.set(1)
+		#sel = ls(sl=1)
+		select(cl=1)
+		playblast(frame = annie.getCurrentTime(), w = self.smallIconSize, h = self.smallIconSize, format='image', viewer=False, fo=True, f = smallPath + fileName + 'small', p = 100)
+		playblast(frame = annie.getCurrentTime(), w = self.largeIconSize, h = self.largeIconSize, format='image', viewer=False, fo=True, f = largePath + fileName + 'large', p = 100)
+		select(lastSelection)
+		#topCon.animOpacity.set(oldVal)
+		for a in oldConnect:
+			connectAttr(a[0], a[1].animOpacity, f=1)
+			print "connecting"
+		else:
+			topCon.animOpacity.set(oldVal)
+		
+		#hacked. assumes image is named with .0000.bmp
+		try:
+			os.rename(smallPath + fileName + 'small' +'.0000.bmp', smallPath + fileName + 'small.bmp')
+			os.rename(largePath + fileName + 'large' + '.0000.bmp', largePath + fileName + 'large.bmp')
+			os.chmod(smallPath + fileName + 'small.bmp', stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH)
+			os.chmod(largePath + fileName + 'large.bmp', stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IWOTH | stat.S_IXOTH)
+			renderGlobs.imageFormat.set(currentFormat)
+		except:
+			print "playblast pose failed"
+
+		
+	def deleteFunc(self):
+		'''
+		deletes the current pose selected
+		also deletes the corresponding images
+		'''
+		allAnims = confirmDialog( title= 'Confirm' ,message= 'Are you sure you want to delete this file?' ,button= ['Yes =)', 'No =('] ,defaultButton= 'No =(' ,cancelButton= 'No =(' ,dismissString= 'No =(')
+		if allAnims =='Yes =)':
+			if self.bigImageButton.getImage() != None:
+				creature = self.bigImageButton.getImage().split('/')[self.fileDepth]
+				file = self.bigImageButton.getImage().split('/')[-1].split('large')[0]
+				
+				xmlPath = self.poseLibraryPath + creature + '/poses/' + file + '.xml'
+				smallPath = self.poseLibraryPath + creature + '/pose_images/small/' + file + 'small.bmp'
+				largePath = self.poseLibraryPath + creature + '/pose_images/large/' + file + 'large.bmp'
+				if os.path.exists(xmlPath):
+					os.remove(xmlPath)
+				if os.path.exists(smallPath):
+					os.remove(smallPath)
+				if os.path.exists(largePath):
+					os.remove(largePath)
+				self.listFunc()
+				iconTextButton(self.bigImageButton, e=1, en=False, i= "");
+			else:
+				print 'Unable to delete image. Ask Michael for Help'
+
+		
+		
+		

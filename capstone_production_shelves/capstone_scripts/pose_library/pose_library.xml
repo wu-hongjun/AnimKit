@@ -1,0 +1,10 @@
+<Pose_Library>
+	<Production path="//csenetid/cs/unix/projects/instr/capstone4/production/pose_library/" title="2020">
+		<Asset day="3/30/2020" name="tests" path="//csenetid/cs/unix/projects/instr/capstone4/production/pose_library/clips/tests/" time="9:31 PM" type="clip">
+			<Characters>
+				<Dazzle />
+			</Characters>
+		</Asset>
+	</Production>
+	<Production path="//csenetid/cs/unix/projects/instr/capstone2/production/pose_library/" title="Untethered (2019)" />
+</Pose_Library>

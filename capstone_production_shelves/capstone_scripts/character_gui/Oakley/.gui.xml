@@ -1,0 +1,203 @@
+<GUI>
+	<Frame name="body">
+		<Button h="20" number="0" side="center" title="COG" type="anim" w="185" x="123" y="310">
+			<Anim name="center_COG_anim" />
+		</Button>
+		<Button h="25" number="1" side="center" title="RFK" type="anim" w="60" x="186" y="338">
+			<Anim name="center_pelvis_anim" />
+		</Button>
+		<Button h="20" number="2" side="center" title="FK" type="anim" w="155" x="138" y="276">
+			<Anim name="center_spine_1_anim" />
+		</Button>
+		<Button h="20" number="3" side="center" title="FK" type="anim" w="140" x="145" y="245">
+			<Anim name="center_spine_2_anim" />
+		</Button>
+		<Button h="20" number="4" side="center" title="FK" type="anim" w="120" x="155" y="213">
+			<Anim name="center_spine_3_anim" />
+		</Button>
+		<Button h="20" number="5" side="left" title="FK" type="anim" w="35" x="218" y="185">
+			<Anim name="left_clavicle_anim" />
+		</Button>
+		<Button h="15" number="6" side="center" title="FK" type="anim" w="50" x="190" y="165">
+			<Anim name="center_neck_1_anim" />
+		</Button>
+		<Button h="15" number="7" side="center" title="FK" type="anim" w="50" x="190" y="145">
+			<Anim name="center_neck_2_anim" />
+		</Button>
+		<Button h="20" number="8" side="center" title="FK" type="anim" w="85" x="172" y="54">
+			<Anim name="center_head_anim" />
+		</Button>
+		<Button h="65" number="9" side="center" title="" type="ui" w="85" x="173" y="78">
+			<UI index="1" />
+		</Button>
+		<Button h="20" number="10" side="right" title="FK" type="anim" w="35" x="176" y="185">
+			<Anim name="right_clavicle_anim" />
+		</Button>
+		<Button h="30" number="11" side="left" title="FK" type="anim" w="55" x="256" y="178">
+			<Anim name="left_arm_1_FK_anim" />
+		</Button>
+		<Button h="30" number="12" side="right" title="FK" type="anim" w="55" x="118" y="178">
+			<Anim name="right_arm_1_FK_anim" />
+		</Button>
+		<Button h="20" number="13" side="left" title="FK" type="anim" w="20" x="374" y="184">
+			<Anim name="left_arm_3_FK_anim" />
+		</Button>
+		<Button h="25" number="14" side="left" title="FK" type="anim" w="50" x="319" y="181">
+			<Anim name="left_arm_2_FK_anim" />
+		</Button>
+		<Button h="20" number="15" side="left" title="IK" type="anim" w="20" x="373" y="183">
+			<Anim name="left_arm_IK_anim" />
+		</Button>
+		<Button h="20" number="16" side="right" title="FK" type="anim" w="20" x="34" y="184">
+			<Anim name="right_arm_3_FK_anim" />
+		</Button>
+		<Button h="20" number="17" side="right" title="IK" type="anim" w="20" x="35" y="183">
+			<Anim name="right_arm_IK_anim" />
+		</Button>
+		<Button h="25" number="18" side="right" title="FK" type="anim" w="50" x="59" y="181">
+			<Anim name="right_arm_2_FK_anim" />
+		</Button>
+		<Button h="20" number="19" side="left" title="PV " type="anim" w="20" x="304" y="153">
+			<Anim name="left_arm_PV_anim" />
+		</Button>
+		<Button h="20" number="20" side="right" title="PV " type="anim" w="20" x="104" y="153">
+			<Anim name="right_arm_PV_anim" />
+		</Button>
+		<Button h="15" number="21" side="left" title="" type="anim" w="15" x="317" y="366">
+			<Anim name="left_wing_flap_1_anim" />
+		</Button>
+		<Button h="15" number="22" side="left" title="" type="anim" w="15" x="326" y="322">
+			<Anim name="left_wing_flap_2_anim" />
+		</Button>
+		<Button h="15" number="23" side="left" title="" type="anim" w="15" x="337" y="283">
+			<Anim name="left_wing_flap_3_anim" />
+		</Button>
+		<Button h="15" number="24" side="left" title="" type="anim" w="15" x="352" y="246">
+			<Anim name="left_wing_flap_4_anim" />
+		</Button>
+		<Button h="15" number="25" side="left" title="" type="anim" w="15" x="369" y="217">
+			<Anim name="left_wing_flap_5_anim" />
+		</Button>
+		<Button h="15" number="26" side="right" title="" type="anim" w="15" x="97" y="366">
+			<Anim name="right_wing_flap_1_anim" />
+		</Button>
+		<Button h="15" number="27" side="right" title="" type="anim" w="15" x="88" y="322">
+			<Anim name="right_wing_flap_2_anim" />
+		</Button>
+		<Button h="15" number="28" side="right" title="" type="anim" w="15" x="77" y="283">
+			<Anim name="right_wing_flap_3_anim" />
+		</Button>
+		<Button h="15" number="29" side="right" title="" type="anim" w="15" x="62" y="246">
+			<Anim name="right_wing_flap_4_anim" />
+		</Button>
+		<Button h="15" number="30" side="right" title="" type="anim" w="15" x="45" y="217">
+			<Anim name="right_wing_flap_5_anim" />
+		</Button>
+		<Button h="35" number="31" side="left" title="FK" type="anim" w="35" x="265" y="344">
+			<Anim name="left_leg_1_FK_anim" />
+		</Button>
+		<Button h="35" number="32" side="left" title="FK" type="anim" w="35" x="274" y="392">
+			<Anim name="left_leg_2_FK_anim" />
+		</Button>
+		<Button h="35" number="33" side="right" title="FK" type="anim" w="35" x="120" y="392">
+			<Anim name="right_leg_2_FK_anim" />
+		</Button>
+		<Button h="35" number="34" side="right" title="FK" type="anim" w="35" x="129" y="344">
+			<Anim name="right_leg_1_FK_anim" />
+		</Button>
+		<Button h="35" number="35" side="left" title="FK" type="anim" w="20" x="287" y="433">
+			<Anim name="left_leg_3_FK_anim" />
+		</Button>
+		<Button h="15" number="36" side="left" title="FK" type="anim" w="20" x="288" y="473">
+			<Anim name="left_leg_4_FK_anim" />
+		</Button>
+		<Button h="15" number="37" side="left" title="FK" type="anim" w="20" x="292" y="491">
+			<Anim name="left_leg_5_FK_anim" />
+		</Button>
+		<Button h="20" number="38" side="left" title="PV" type="anim" w="20" x="319" y="422">
+			<Anim name="left_leg_PV_anim" />
+		</Button>
+		<Button h="20" number="39" side="right" title="PV" type="anim" w="20" x="89" y="422">
+			<Anim name="right_leg_PV_anim" />
+		</Button>
+		<Button h="25" number="40" side="left" title="IK" type="anim" w="25" x="286" y="476">
+			<Anim name="left_leg_IK_anim" />
+		</Button>
+		<Button h="35" number="41" side="left" title="IK" type="anim" w="20" x="287" y="434">
+			<Anim name="left_leg_quad_IK_anim" />
+		</Button>
+		<Button h="25" number="42" side="right" title="IK" type="anim" w="25" x="118" y="476">
+			<Anim name="right_leg_IK_anim" />
+		</Button>
+		<Button h="35" number="43" side="right" title="IK" type="anim" w="20" x="121" y="434">
+			<Anim name="right_leg_quad_IK_anim" />
+		</Button>
+		<Button h="15" number="44" side="right" title="FK" type="anim" w="20" x="120" y="473">
+			<Anim name="right_leg_4_FK_anim" />
+		</Button>
+		<Button h="15" number="45" side="right" title="FK" type="anim" w="20" x="116" y="491">
+			<Anim name="right_leg_5_FK_anim" />
+		</Button>
+		<Button h="35" number="46" side="right" title="FK" type="anim" w="20" x="121" y="433">
+			<Anim name="right_leg_3_FK_anim" />
+		</Button>
+		<Button h="25" number="47" side="left" title="Switch" type="anim" w="60" x="356" y="388">
+			<Anim name="left_leg_FKIK_switch" />
+		</Button>
+		<Button h="25" number="48" side="right" title="Switch" type="anim" w="60" x="12" y="388">
+			<Anim name="right_leg_FKIK_switch" />
+		</Button>
+		<Button h="25" number="49" side="left" title="Switch" type="anim" w="60" x="332" y="76">
+			<Anim name="left_arm_FKIK_switch" />
+		</Button>
+		<Button h="20" number="50" side="left" title="FK to IK" type="switch" w="50" x="338" y="106">
+			<Switch name="left_arm_FKIK_switch" />
+			<FK name="left_arm_1_FK_anim" />
+			<FK name="left_arm_2_FK_anim" />
+			<FK name="left_arm_3_FK_anim" />
+			<IK name="left_arm_PV_anim" />
+			<IK name="left_arm_IK_anim" />
+		</Button>
+		<Button h="25" number="51" side="right" title="Switch" type="anim" w="60" x="36" y="76">
+			<Anim name="right_arm_FKIK_switch" />
+		</Button>
+		<Button h="20" number="52" side="right" title="FK to IK" type="switch" w="50" x="40" y="106">
+			<Switch name="right_arm_FKIK_switch" />
+			<FK name="right_arm_1_FK_anim" />
+			<FK name="right_arm_2_FK_anim" />
+			<FK name="right_arm_3_FK_anim" />
+			<IK name="right_arm_PV_anim" />
+			<IK name="right_arm_IK_anim" />
+		</Button>
+		<Button h="20" number="53" side="left" title="FK to IK" type="switch" w="50" x="360" y="418">
+			<Switch name="left_leg_FKIK_switch" />
+			<FK name="left_leg_1_FK_anim" />
+			<FK name="left_leg_2_FK_anim" />
+			<FK name="left_leg_3_FK_anim" />
+			<FK name="left_leg_4_FK_anim" />
+			<FK name="left_leg_5_FK_anim" />
+			<FK name="left_leg_end_FK_anim" />
+			<IK name="left_leg_PV_anim" />
+			<IK name="left_leg_IK_anim" />
+			<IK name="left_leg_quad_IK_anim" />
+		</Button>
+		<Button h="25" number="54" side="right" title="Switch" type="anim" w="60" x="12" y="388">
+			<Anim name="right_leg_FKIK_switch" />
+		</Button>
+		<Button h="20" number="55" side="right" title="FK to IK" type="switch" w="50" x="18" y="418">
+			<Switch name="right_leg_FKIK_switch" />
+			<FK name="right_leg_1_FK_anim" />
+			<FK name="right_leg_2_FK_anim" />
+			<FK name="right_leg_3_FK_anim" />
+			<FK name="right_leg_4_FK_anim" />
+			<FK name="right_leg_5_FK_anim" />
+			<FK name="right_leg_end_FK_anim" />
+			<IK name="right_leg_PV_anim" />
+			<IK name="right_leg_IK_anim" />
+			<IK name="right_leg_quad_IK_anim" />
+		</Button>
+	</Frame>
+	<Frame name="face" />
+	<Frame name="tail" />
+	<Frame name="hands" />
+</GUI>
