@@ -2,6 +2,8 @@
 
 # install_animkit.py
 # Installs animkit shelf and its required files into the newest version of maya's /scripts folder.
+# Special thanks:
+# Cody Wilcoxon
 
 ##############################################################################################
 # Import required packages
@@ -40,23 +42,26 @@ def install_element(element_name, target_folder, category):
     target_path = os.path.join(MAYA_SCRIPT_FOLDER, element_name)
     setup_file = ANIMKIT_FOLDER + target_folder + element_name
     shutil.copy(setup_file, target_path)
-    print(category + " Copied " + element_name + " into: " + target_path)
+    print(category + " Installed " + element_name + " into: " + target_path)
 
 # install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_script(script_name):
-    install_element(script_name, "\scripts\\", "[SCRIPT]")
+    install_element(script_name, "\scripts\\", "[✓] [SCRIPT]")
     
 # install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
-    install_element(icon_name, "\icons\\", "[ ICON ]")
+    install_element(icon_name, "\icons\\", "[✓] [ ICON ]")
     
+def install_extension():
+    return True  # No extension yet
+
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(target):
     if not os.path.isdir(target): 
         os.makedirs(target)
-        print("[CHKDIR] Folder does not exist. Created script folder under: ", target)
+        print("[⍻] [CHKDIR] Folder does not exist. Created script folder under: ", target)
     if os.path.isdir(MAYA_SCRIPT_FOLDER):
-        print("[CHKDIR] Folder already exists under: ", target)
+        print("[✓] [CHKDIR] Folder already exists under: ", target)
 
 # install_shelf:
 # Installs all required elements.
@@ -70,20 +75,18 @@ def install_shelf():
         # Install all required elements
         for script in SCRIPT_LIST: install_script(script)
         for icon in ICON_LIST: install_icon(icon)
-        return "[FINISH] All required files installed successfully!"
+        # install_extension()
+        return "[✓] [FINISH] All required files installed successfully!"
     
     # Print out errors
-    except IOError as e: return "[FINISH] I/O Error:\n" + str(e)
+    except IOError as e: return "[X] [FINISH] I/O Error:\n" + str(e)
 
 
 ##############################################################################################
 
-# PLAT: Returns a string of platform type, e.g. "Windows"
-PLAT = str(platform.system())
-
-
 # Define OS type, Legacy.
-if "Darwin" in PLAT:
+if "Darwin" in str(platform.system()):
+    # macOS is actually not supported for now because I am too lazy.
     OS_TYPE = "Mac"
     USER = os.environ["HOME"]
     MAYA_FOLDER = "{0}/Library/Preferences/Autodesk/maya/".format(USER)
@@ -110,15 +113,21 @@ ANIMKIT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 SETUP_FILE = ANIMKIT_FOLDER + "\scripts\\animkit_shelf.py"
     
 # SCRIPT_LIST: A list of str of scripts in /scripts folder.
-SCRIPT_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".py")
+PYTHON_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".py")
+MEL_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".mel")
+MLL_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".mll")
+SCRIPT_LIST = PYTHON_LIST + MEL_LIST + MLL_LIST
 
 # ICON_LIST: A list of str of icons in /icons folder.
 ICON_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
 
 # Main Setup.
+print("[✓] [WELCOM] Welcome to AnimKit Installer! This script will install AnimKit to the newest version of Maya.")
+print("[✓] [WELCOM] AnimKit Installer Version 1.0.0 - 20200614.")
+print("[✓] [THANKS] Special thanks to Savor of Lights, Mighty King of Flying Squirrels, the Creator of All Clowns, Cody Wilcoxon.")
 if os.path.isfile(SETUP_FILE): 
-    print("[ BOOT ] AnimKit shelf install script is found. Begin installation.")
+    print("[✓] [ BOOT ] AnimKit shelf main script is found. Begin installation.")
     print(install_shelf())
-else: print("[ BOOT ] Cannot find the animkit shelf file.")
+else: print("[X] [ BOOT ] Cannot find the animkit shelf file.")
 
 time.sleep(3.5)

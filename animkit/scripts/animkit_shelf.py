@@ -84,11 +84,18 @@ class animkitshelf(_shelf):
 
 class animkitshelf(_shelf):
     def build(self):
-        self.addButton(label="Cody", icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody)
-        self.addButton(icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody)
+        # self.addButton(label="Cody", icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody())
+        self.addButton(label="AS", icon="animkit\\animkit_animschool.png", command=animkit_basic.load_animschool_picker())
+        self.addButton("PB", icon="animkit\\animkit_playblast.png")
         p = mc.popupMenu(b=1)
-        self.addMenuItem(p, "QuickH264")
-        self.addMenuItem(p, label="Install ff4mpeg", command=animkit_playblast.install_ff4mpeg)
-
+        self.addMenuItem(p, "Playblast H264")
+        self.addMenuItem(p, label="Install ff4mpeg", command=animkit_playblast.install_ff4mpeg())
+        
+        mc.confirmDialog(title='AnimKit', message='AnimKit loaded successfully')
+        
+        
+# Load AnimKit
 animkitshelf()
+
+
 ###################################################################################

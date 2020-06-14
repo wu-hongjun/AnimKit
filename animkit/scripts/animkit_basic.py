@@ -26,3 +26,6 @@ def confirm_box():
 # lol
 def praise_cody():
     mc.confirmDialog( title='Praise Cody', message='Praise the Savor of lights, Mighty king of squirrels, and the creator of all clowns, Cody!', button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
+
+def load_animschool_picker():
+    mc.loadPlugin('AnimSchoolPicker.mll')
