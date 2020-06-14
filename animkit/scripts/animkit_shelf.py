@@ -1,5 +1,11 @@
+# Source: https://bindpose.com/scripting-custom-shelf-in-maya-python/
+
 import maya.cmds as mc
 
+import animkit_basic
+import animkit_playblast
+reload(animkit_basic)
+reload(animkit_playblast)
 
 def _null(*args):
     pass
@@ -10,7 +16,7 @@ class _shelf():
     it should be extended by the derived class to build the necessary shelf elements.
     By default it creates an empty shelf called "customShelf".'''
 
-    def __init__(self, name="customShelf", iconPath=""):
+    def __init__(self, name="AnimKit", iconPath=""):
         self.name = name
 
         self.iconPath = iconPath
@@ -57,22 +63,32 @@ class _shelf():
 
 
 ###################################################################################
-'''This is an example shelf.'''
-# class customShelf(_shelf):
-#     def build(self):
-#         self.addButon(label="button1")
-#         self.addButon("button2")
-#         self.addButon("popup")
-#         p = mc.popupMenu(b=1)
-#         self.addMenuItem(p, "popupMenuItem1")
-#         self.addMenuItem(p, "popupMenuItem2")
-#         sub = self.addSubMenu(p, "subMenuLevel1")
-#         self.addMenuItem(sub, "subMenuLevel1Item1")
-#         sub2 = self.addSubMenu(sub, "subMenuLevel2")
-#         self.addMenuItem(sub2, "subMenuLevel2Item1")
-#         self.addMenuItem(sub2, "subMenuLevel2Item2")
-#         self.addMenuItem(sub, "subMenuLevel1Item2")
-#         self.addMenuItem(p, "popupMenuItem3")
-#         self.addButon("button3")
-# customShelf()
+'''This is an example shelf.
+class animkitshelf(_shelf):
+    def build(self):
+        self.addButon(label="button1")
+        self.addButon("button2")
+        self.addButon("popup")
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, "popupMenuItem1")
+        self.addMenuItem(p, "popupMenuItem2")
+        sub = self.addSubMenu(p, "subMenuLevel1")
+        self.addMenuItem(sub, "subMenuLevel1Item1")
+        sub2 = self.addSubMenu(sub, "subMenuLevel2")
+        self.addMenuItem(sub2, "subMenuLevel2Item1")
+        self.addMenuItem(sub2, "subMenuLevel2Item2")
+        self.addMenuItem(sub, "subMenuLevel1Item2")
+        self.addMenuItem(p, "popupMenuItem3")
+        self.addButon("button3")
+'''
+
+class animkitshelf(_shelf):
+    def build(self):
+        self.addButton(label="Cody", command=animkit_basic.praise_cody)
+        self.addButton(label="Cube", command=animkit_basic.createPolyCube)
+        self.addButon("Playblast")
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, "QuickH264")
+
+animkitshelf()
 ###################################################################################
