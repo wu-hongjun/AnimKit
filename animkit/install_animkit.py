@@ -124,7 +124,7 @@ ICON_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
 # Main Setup.
 print("[✓] [WELCOM] Welcome to AnimKit Installer! This script will install AnimKit to the newest version of Maya.")
 print("[✓] [WELCOM] AnimKit Installer Version 1.0.0 - 20200614.")
-print("[✓] [THANKS] Special thanks to Savor of Lights, Mighty King of Flying Squirrels, the Creator of All Clowns, Cody Wilcoxon.")
+print("[✓] [THANKS] Special thanks to Savor of Lights, Mighty King of Flying Squirrels, Finder of Paths, the Creator of All Clowns, Cody Wilcoxon.")
 if os.path.isfile(SETUP_FILE): 
     print("[✓] [ BOOT ] AnimKit shelf main script is found. Begin installation.")
     print(install_shelf())
