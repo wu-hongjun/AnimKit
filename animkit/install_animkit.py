@@ -2,13 +2,16 @@
 
 # install_animkit.py
 # Installs animkit shelf and its required files into the newest version of maya's /scripts folder.
-# Special thanks:
-# Cody Wilcoxon
 
 ##############################################################################################
 # Import required packages
 
 import time, os, platform, shutil, subprocess, sys
+from datetime import datetime
+
+# Info about this version of installer.
+VERSION = "1.0.0"
+BUILD = "20200614"
 
 ##############################################################################################
 # Functions
@@ -38,29 +41,29 @@ def filter_ext (directory, ext):
     return file_list
 
 # install_element: helper function for install_script, install_icon, etc. 
-def install_element(element_name, target_folder, category):
-    target_path = os.path.join(MAYA_SCRIPT_FOLDER, element_name)
+def install_element(element_name, target_folder, category, maya_path):
+    target_path = os.path.join(maya_path, element_name)
     setup_file = ANIMKIT_FOLDER + target_folder + element_name
     shutil.copy(setup_file, target_path)
     print(category + " Installed " + element_name + " into: " + target_path)
 
 # install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_script(script_name):
-    install_element(script_name, "\scripts\\", "[✓] [SCRIPT]")
+    install_element(script_name, "\scripts\\", "[✓] [SCRIPT]", MAYA_SCRIPT_FOLDER)
     
 # install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
-    install_element(icon_name, "\icons\\", "[✓] [ ICON ]")
+    install_element(icon_name, "\icons\\", "[✓] [ ICON ]", MAYA_ICON_FOLDER)
     
 def install_extension():
-    return True  # No extension yet
+    return True  # No extension yet for future scaling
 
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(target):
     if not os.path.isdir(target): 
         os.makedirs(target)
         print("[⍻] [CHKDIR] Folder does not exist. Created script folder under: ", target)
-    if os.path.isdir(MAYA_SCRIPT_FOLDER):
+    if os.path.isdir(target):
         print("[✓] [CHKDIR] Folder already exists under: ", target)
 
 # install_shelf:
@@ -121,10 +124,13 @@ SCRIPT_LIST = PYTHON_LIST + MEL_LIST + MLL_LIST
 # ICON_LIST: A list of str of icons in /icons folder.
 ICON_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
 
+# dd/mm/YY H:M:S
+date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+
 # Main Setup.
 print("[✓] [WELCOM] Welcome to AnimKit Installer! This script will install AnimKit to the newest version of Maya.")
-print("[✓] [WELCOM] AnimKit Installer Version 1.0.0 - 20200614.")
-print("[✓] [THANKS] Special thanks to Savor of Lights, Mighty King of Flying Squirrels, Finder of Paths, the Creator of All Clowns, Cody Wilcoxon.")
+print("[✓] [WELCOM] AnimKit Installer Version: " + VERSION + " | Build: " + BUILD + " | Current Time: " + date_time)
 if os.path.isfile(SETUP_FILE): 
     print("[✓] [ BOOT ] AnimKit shelf main script is found. Begin installation.")
     print(install_shelf())

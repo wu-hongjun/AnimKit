@@ -80,21 +80,24 @@ class animkitshelf(_shelf):
         self.addButon("button3")
 '''
 
+# The Shelf Class
 class animkitshelf(_shelf):
     def build(self):
-        self.addButton(label="Cody", icon="animkit\\animkit_cody.png", command=animkit_basic.createPolyCube())
-        self.addButton(label="cube", command=animkit_basic.createPolyCube)
-        # self.addButton(label="AS", icon="animkit\\animkit_animschool.png", command=animkit_basic.load_animschool_picker())
+        self.addButton(label="Cody", icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody)
+        
         self.addButton("PB", icon="animkit\\animkit_playblast.png")
         p = mc.popupMenu(b=1)
-        self.addMenuItem(p, "Playblast H264")
-        # self.addMenuItem(p, label="Install ff4mpeg", command=animkit_playblast.install_ff4mpeg())
+        avi = self.addSubMenu(p, "Playblast AVI")
+        self.addMenuItem(avi, label="Playblast Motionmatic", command=animkit_playblast.quick_playblast_motionmatic_cmd)
+        mp4 = self.addSubMenu(p, "Playblast MP4")
+        self.addMenuItem(mp4, label="Install MP4 Encoder", command=animkit_playblast.install_ffmpeg)
         
-        mc.confirmDialog(title='AnimKit', message='AnimKit loaded successfully')
+        self.addButton(label="AS", icon="animkit\\animkit-animschool.png", command=animkit_basic.load_animschool_picker)
         
         
 # Load AnimKit
 animkitshelf()
+print("Successfully loaded AnimKit!")
 
 
 ###################################################################################

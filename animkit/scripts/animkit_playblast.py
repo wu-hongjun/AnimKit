@@ -16,9 +16,13 @@ import subprocess,sys
 # Takes in a str package and calls "pip install package". 
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    msg = package + "successfully installed."
+    cmds.confirmDialog(title='Package Installed Successfully', message=msg, button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
 
-def install_ff4mpeg():
-    install("ffmpeg")  # ffmpeg is required to make playblast to mp4 work
+
+def install_ffmpeg(self):
+    install("ffmpeg-python")  # ffmpeg is required to make playblast to mp4 work
+
 
 ##############################################################################################
 
@@ -381,7 +385,7 @@ def quick_playblast_cmd():
     quick_playblast_err(result)
 
     
-def quick_playblast_motionmatic_cmd():
+def quick_playblast_motionmatic_cmd(self):
     '''
     One click playblast at 640x360 of the entire timeline.
     '''

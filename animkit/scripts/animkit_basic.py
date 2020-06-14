@@ -21,11 +21,13 @@ def createPolyCube(*args):
 
 # Create a basic Yes/No dialog.
 def confirm_box():
-    mc.confirmDialog( title='Confirm', message='Are you sure?', button=['Yes','No'], defaultButton='Yes', cancelButton='No', dismissString='No' )
+    mc.confirmDialog(title='Confirm', message='Are you sure?', button=['Yes','No'], defaultButton='Yes', cancelButton='No', dismissString='No')
 
 # lol
 def praise_cody():
-    mc.confirmDialog( title='Praise Cody', message='Praise the Savor of lights, Mighty king of squirrels, and the creator of all clowns, Cody!', button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
+    mc.confirmDialog(title='AnimKit Loaded Successfully', 
+    message='Praise the Savor of lights, Mighty king of squirrels, Finders of all Paths, and the creator of all clowns, Cody!', 
+    button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
 
 
 ############################################################################################
@@ -64,5 +66,9 @@ MAYA_VERSION = get_latest_version(MAYA_FOLDER)
 # MAYA_SCRIPT_FOLDER: Where maya stores all its scripts
 MAYA_SCRIPT_FOLDER = "{0}{1}/scripts/".format(MAYA_FOLDER,MAYA_VERSION)
 
+
 def load_animschool_picker():
     mc.loadPlugin(MAYA_SCRIPT_FOLDER + 'AnimSchoolPicker.mll')
+    mel.eval('AnimSchoolPicker();')
+
+############################################################################################
