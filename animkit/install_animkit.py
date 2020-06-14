@@ -27,7 +27,7 @@ def get_latest_version(MAYA_FOLDER):
         except: pass
     return str(max(version_folders))
 
-# filter_ext: filters out files with the same extention and returns a list of filenames that contains the list of filenames.
+# filter_ext: filters out files in a directory with the same extention and returns a list of filenames that contains the list of filenames.
 def filter_ext (directory, ext):
     file_list = []
     for basename in os.listdir(directory):
@@ -35,7 +35,7 @@ def filter_ext (directory, ext):
             file_list.append(basename)
     return file_list
 
-# install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
+# install_element: helper function for install_script, install_icon, etc. 
 def install_element(element_name, target_folder, category):
     target_path = os.path.join(MAYA_SCRIPT_FOLDER, element_name)
     setup_file = ANIMKIT_FOLDER + target_folder + element_name
@@ -46,13 +46,12 @@ def install_element(element_name, target_folder, category):
 def install_script(script_name):
     install_element(script_name, "\scripts\\", "[SCRIPT]")
     
-# install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
+# install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
     install_element(icon_name, "\icons\\", "[ ICON ]")
     
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(target):
-    # Check if the Maya script folder exists, if not, create one.
     if not os.path.isdir(target): 
         os.makedirs(target)
         print("[CHKDIR] Folder does not exist. Created script folder under: ", target)
