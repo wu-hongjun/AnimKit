@@ -33,7 +33,7 @@ class _shelf():
         elements. Otherwise, nothing is added to the shelf.'''
         pass
 
-    def addButon(self, label, icon="commandButton.png", command=_null, doubleCommand=_null):
+    def addButton(self, label, icon="commandButton.png", command=_null, doubleCommand=_null):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
         mc.setParent(self.name)
         if icon:
@@ -84,11 +84,11 @@ class animkitshelf(_shelf):
 
 class animkitshelf(_shelf):
     def build(self):
-        self.addButton(label="Cody", command=animkit_basic.praise_cody)
-        self.addButton(label="Cube", command=animkit_basic.createPolyCube)
-        self.addButon("Playblast")
+        self.addButton(label="Cody", icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody)
+        self.addButton(icon="animkit\\animkit_cody.png", command=animkit_basic.praise_cody)
         p = mc.popupMenu(b=1)
         self.addMenuItem(p, "QuickH264")
+        self.addMenuItem(p, label="Install ff4mpeg", command=animkit_playblast.install_ff4mpeg)
 
 animkitshelf()
 ###################################################################################
