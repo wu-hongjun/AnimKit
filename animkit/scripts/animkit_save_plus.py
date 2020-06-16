@@ -88,7 +88,7 @@ class SaveIterationWindow():
         showWindow(errW)
         setFocus(okayButton)
 
-def save_iteration_cmd():
+def save_iteration_cmd(self):
     SaveIterationWindow()
     
 # save_iteration_cmd()

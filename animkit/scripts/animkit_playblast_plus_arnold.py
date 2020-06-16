@@ -156,6 +156,8 @@ def quick_playblast(    renderCamName = "render_cam",
     # Error Message placeholder.
     errText = None
 
+    
+
     # Render cam name.
     possibleRenderCams = ls(renderCamName)
     
@@ -213,6 +215,9 @@ def quick_playblast(    renderCamName = "render_cam",
         
         # Choose Viewport
         cmds.modelEditor(mp, e=1, rnm=renderName)  # Default Viewport 2.0, future might add in Arnold support
+
+        # Experimental Feature: Arnold
+        if useArnold: mel.eval("setRendererAndOverrideInModelPanel vp2Renderer arnoldViewOverride;")
         
         print("ModelEditor", cmds.modelEditor(mp, query=True, rendererListUI=True))
         
@@ -335,9 +340,12 @@ def save_file(filepath):
     cmds.file(rename=filepath)
     cmds.file(save=True, type="mayaAscii") 
 
-def switch_renderer_arnold():
-    mel.eval("setRendererAndOverrideInModelPanel vp2Renderer arnoldViewOverride modelPanel4;")
 
+def test_playblast():
+    mel.eval("setRendererAndOverrideInModelPanel vp2Renderer arnoldViewOverride modelPanel4;")
+    # mc.playblast( s="ohNo", f="myMovie.avi" )
+    mc.playblast(f="C:\\Users\\hongj\\Desktop\\dev\\myMovie.avi")
+    
 # general_playblast: A more general method that children methods can inherit most of its settings.
 def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False, append_text=""):
     hudState = HeadsUpDisplayState.CURRENT()
@@ -351,7 +359,7 @@ def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False
         viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
         outputNameAppend = append_text,
         showOrnaments = True,
-        convertH264=True,
+        convertH264=convert_h264,
         useArnold=use_arnold
     )
 
@@ -362,39 +370,24 @@ def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False
     if result is not None:
         errW = window(t="ERROR PLAYBLASTING!", w=100, h=100)
         columnLayout( adjustableColumn=True )
-        text( label=errText, align="left")
+        text( label=result, align="left")
         button( label='Okay', command=Callback(errW.delete) )
         showWindow(errW)
 
 #########################################################################################
 # Different Options of Playblasting
 
-# Viewport 2.0
-# Viewport 2.0 Playblasting into AVI
-def vp2_avi_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, append_text="_nopadding")
-
-def vp2_avi_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, append_text="_w_padding")
-
-# Viewport 2.0 Playblasting into MP4
-def vp2_mp4_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding")
-
-def vp2_mp4_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding")
-
 # Arnold Renderer
 # Arnold Playblasting into AVI
 def arnold_avi_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, append_text="_nopadding")
+    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, append_text="_nopadding", use_arnold=True)
 
 def arnold_avi_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, append_text="_w_padding")
+    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, append_text="_w_padding", use_arnold=True)
 
 # Arnold Playblasting into MP4
 def arnold_mp4_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding")
+    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding", use_arnold=True)
 
 def arnold_mp4_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding")
+    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding", use_arnold=True)
