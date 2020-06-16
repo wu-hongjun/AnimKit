@@ -8,6 +8,7 @@ import getpass
 import shutil
 import subprocess,sys
 
+
 ##############################################################################################
 
 # Install required packages
@@ -16,12 +17,8 @@ import subprocess,sys
 # Takes in a str package and calls "pip install package". 
 def install(package):
     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    msg = package + "successfully installed."
+    msg = package + " successfully installed."
     cmds.confirmDialog(title='Package Installed Successfully', message=msg, button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
-
-
-def install_ffmpeg(self):
-    install("ffmpeg-python")  # ffmpeg is required to make playblast to mp4 work
 
 
 ##############################################################################################
@@ -69,7 +66,7 @@ class HeadsUpDisplayState:
         Print state.
         '''
         for e, v in self._stateTable.iteritems():
-            print str(e) + " = " + str(v)
+            print(str(e) + " = " + str(v))
             
     def set(self):
         '''
@@ -177,7 +174,7 @@ TIMELINE = TimelineProperties()
 def quick_playblast(    renderCamName = "render_cam",
                         format = "avi",
                         compression = "iyuv",
-                        quality = 70,
+                        quality = 100,
                         width = None, # Use render width
                         height = None, # Use render height
                         startTime = TIMELINE.INNER_START, # Start frame of the playblast
@@ -185,7 +182,9 @@ def quick_playblast(    renderCamName = "render_cam",
                         viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE, # Args applied to the viewport to show/hide certain types of scene elements
                         outputNameAppend = "", # String appended to the output file name
                         showOrnaments = False, # Hide display elements from the playblast
-                        usingTempFile = False # Playblast temporarily to the default project path
+                        usingTempFile = False, # Playblast temporarily to the default project path
+                        convertH264 = False, # Encode the playblast into MP4, not AVI.
+                        renderName = "vp2Renderer" # Viewport for furture Arnold support
                     ):
     '''
     Provides a means of quality playblasting from an arbitary camera.
@@ -198,7 +197,7 @@ def quick_playblast(    renderCamName = "render_cam",
     
     if not len(possibleRenderCams) > 0: return '\nNo camera in the scene\nnamed "render_cam".\n'
 
-    if len(possibleRenderCams) > 1: print 'WARNING: Multiple objects named render cam. Using the first one.'
+    if len(possibleRenderCams) > 1: print('WARNING: Multiple objects named render cam. Using the first one.')
     
     rc = possibleRenderCams[0].fullPath()
     
@@ -244,8 +243,8 @@ def quick_playblast(    renderCamName = "render_cam",
         playblastpane = paneLayout(width=pbWidth, height=pbHeight)
         mp = modelPanel()
         
-        # Force Viewport 2.0
-        cmds.modelEditor(mp, e=1, rnm='vp2Renderer')
+        # Choose Viewport
+        cmds.modelEditor(mp, e=1, rnm=renderName, rendererListUI=True)  # Default Viewport 2.0, future might add in Arnold support
         
         # Attach controls to the layout
         form.attachForm(description, 'top', 5)
@@ -282,25 +281,25 @@ def quick_playblast(    renderCamName = "render_cam",
 
         # Do playblast
         try:
-            # Playblast file target path
-            scene_path = cmds.file( location=True, query=True )
-            current_dir = os.path.dirname( scene_path )
-            basename = os.path.basename( scene_path )
+            # Handle case if the file is not saved.
+            if (cmds.file( location=True, query=True ) == "unknown"):
+                filePath = str(cmds.fileDialog2(fileFilter="*.ma", dialogStyle=2, caption='Save As')[0])
+                save_file(filePath)
+                
+
+            # Set Path of Playblast
+            scene_path = cmds.file(location=True, query=True) 
+            current_dir = os.path.dirname(scene_path)
+            basename = os.path.basename(scene_path)
             pb_basename = basename.split(".")[0]
-            pb_path = os.path.join( current_dir, pb_basename+outputNameAppend ).replace( '\\', '/' )
+            pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace( '\\', '/' )
             
-            # Playblast file temp path
-            # - Okay, so here's the deal.  Playblasting to the network using h264 is
-            #   in simple terms, "hella broke".  So we're going to find a suitable
-            #   local location to playblast to, then copy the resulting playblast to
-            #   the network.
-            temp_file_target_folder = os.getenv('MAYA_APP_DIR')
-            
-            if usingTempFile and os.path.exists(temp_file_target_folder):
-                pb_temp_path = os.path.join(temp_file_target_folder, 'TEMP_MAYA_PLAYBLAST')
-            else:
-                pb_temp_path = pb_path
-            
+
+            # Convert to mp4
+            if convertH264: pb_temp_path = (current_dir +  "/temp/" + pb_basename + outputNameAppend).replace( '\\', '/' )
+            else: pb_temp_path = pb_path
+                
+
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_temp_path,
                                             format = format,
@@ -308,7 +307,7 @@ def quick_playblast(    renderCamName = "render_cam",
                                             offScreen = False,
                                             sequenceTime = 0,
                                             clearCache = 1,
-                                            viewer = True,
+                                            viewer = False,
                                             showOrnaments = showOrnaments,
                                             framePadding = 0,
                                             compression = compression,
@@ -320,11 +319,20 @@ def quick_playblast(    renderCamName = "render_cam",
                                             startTime = startTime,
                                             endTime = endTime  )
             
-            # Copy temp file over
-            if usingTempFile:
-                pb_extension = pb_actual_path.split('.')[-1]
-                shutil.copyfile(pb_actual_path, pb_path+'.'+pb_extension)
-                        
+            # if convertH264:
+            print("pb_actual_path: ", pb_actual_path)
+            if convertH264:
+                avi_input = pb_actual_path + ".avi"
+                mp4_output = pb_actual_path + ".mp4"
+                subprocess.call("ffmpeg -y -i {input} {output}".format(input = avi_input, output = mp4_output))
+                mp4_target_location = mp4_output.replace("\\temp", "")
+                print("mp4_output: ", mp4_output)
+                print("mp4_target_location: ", mp4_target_location)
+                shutil.copyfile(mp4_output, mp4_target_location)
+                temp_folder_location = current_dir +  "/temp/"
+                shutil.rmtree(temp_folder_location)
+
+
             print("Playblast SUCCESSFUL!")
         except:
             errText = "\nThis could mean one of a few things:\n\n"+ \
@@ -347,82 +355,6 @@ def quick_playblast(    renderCamName = "render_cam",
     return errText
 
 
-def quick_playblast_cmd():
-    '''
-    One click playblast at the scene resolution.
-    '''
-    
-    """
-    OLD CODE DISABLED UNTIL ANIMATIC IS COMPLETE
-    result = quick_playblast(
-        width = None,
-        height = None,
-        startTime = TIMELINE.INNER_START, 
-        endTime = TIMELINE.INNER_END,
-        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE
-    )
-    
-    quick_playblast_err(result)
-    """
-    
-
-    hudState = HeadsUpDisplayState.CURRENT()
-    HeadsUpDisplayState.NONE().set()
-    addHeadsUpShotInfo()
-    
-    result = quick_playblast(
-        width = 640,
-        height = 360,
-        startTime = TIMELINE.INNER_START, 
-        endTime = TIMELINE.INNER_END,
-        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
-        showOrnaments = True,
-        outputNameAppend = "_range"
-    )
-    
-    removeHeadsUpShotInfo()
-    hudState.set()
-    quick_playblast_err(result)
-
-    
-def quick_playblast_motionmatic_cmd(self):
-    '''
-    One click playblast at 640x360 of the entire timeline.
-    '''
-    
-    hudState = HeadsUpDisplayState.CURRENT()
-    HeadsUpDisplayState.NONE().set()
-    addHeadsUpShotInfo()
-
-    result = quick_playblast(
-        width = 640,
-        height = 360,
-        startTime = TIMELINE.START, 
-        endTime = TIMELINE.END,
-        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
-        #outputNameAppend = "_playblast",
-        showOrnaments = True
-    )
-    
-    removeHeadsUpShotInfo()
-    hudState.set()
-    quick_playblast_err(result)
-
-    
-def quick_playblast_review_cmd():
-    '''
-    One click playblast at 640x360 of the entire timeline minus 24 frames of padding.
-    '''
-    
-    result = quick_playblast(
-        width = 640,
-        height = 360,
-        startTime = TIMELINE.START+24, 
-        endTime = TIMELINE.END-24,
-        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
-        outputNameAppend = "_for_review"
-    )
-    quick_playblast_err(result)
     
 
 def quick_playblast_err(errText):
@@ -437,3 +369,105 @@ def quick_playblast_err(errText):
         text( label=errText, align="left")
         button( label='Okay', command=Callback(errW.delete) )
         showWindow(errW)
+
+#########################################################################################
+def save_file(filepath):
+    cmds.file(rename=filepath)
+    cmds.file(save=True, type="mayaAscii") 
+
+
+def saveAs(self):
+    '''
+    Save data object to file.
+    Opens a file dialog, to allow the user to specify a file path. 
+    '''
+    # Specify File Path
+    filePath = cmds.fileDialog2(fileFilter=self.fileFilter,dialogStyle=2,fileMode=0,caption='Save As')
+     
+    # Check Path
+    if not filePath: return
+    filePath = filePath[0]
+     
+    # Save Data File
+    filePath = self.save(filePath,force=True)
+     
+    # Return Result
+    return filePath
+
+def vp2_avi_playblast_nopadding(self):
+    hudState = HeadsUpDisplayState.CURRENT()
+    HeadsUpDisplayState.NONE().set()
+    addHeadsUpShotInfo()
+
+    result = quick_playblast(
+        startTime = TIMELINE.START+24, 
+        endTime = TIMELINE.END-24,
+        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
+        outputNameAppend = "_nopadding",
+        showOrnaments = True
+    )
+    
+    removeHeadsUpShotInfo()
+    hudState.set()
+    quick_playblast_err(result)
+
+def vp2_avi_playblast_padding(self):
+    hudState = HeadsUpDisplayState.CURRENT()
+    HeadsUpDisplayState.NONE().set()
+    addHeadsUpShotInfo()
+
+    result = quick_playblast(
+        startTime = TIMELINE.START, 
+        endTime = TIMELINE.END,
+        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
+        outputNameAppend = "_w_padding",
+        showOrnaments = True
+    )
+    
+    removeHeadsUpShotInfo()
+    hudState.set()
+    quick_playblast_err(result)
+
+
+#########################################################################################
+from subprocess import check_output, STDOUT, CalledProcessError
+
+def convert_avi_to_mp4(avi_file_path, output_name):
+    os.popen("ffmpeg -i {input} {output}".format(input = avi_file_path, output = output_name))
+    return True
+
+def vp2_mp4_playblast_nopadding(self):
+    hudState = HeadsUpDisplayState.CURRENT()
+    HeadsUpDisplayState.NONE().set()
+    addHeadsUpShotInfo()
+
+    result = quick_playblast(
+        startTime = TIMELINE.START+24, 
+        endTime = TIMELINE.END-24,
+        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
+        outputNameAppend = "_nopadding",
+        showOrnaments = True,
+        convertH264=True
+    )
+    
+    removeHeadsUpShotInfo()
+    hudState.set()
+    quick_playblast_err(result)
+
+def vp2_mp4_playblast_padding(self):
+    hudState = HeadsUpDisplayState.CURRENT()
+    HeadsUpDisplayState.NONE().set()
+    addHeadsUpShotInfo()
+
+    result = quick_playblast(
+        startTime = TIMELINE.START, 
+        endTime = TIMELINE.END,
+        viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
+        outputNameAppend = "_w_padding",
+        showOrnaments = True,
+        convertH264=True
+    )
+    
+    removeHeadsUpShotInfo()
+    hudState.set()
+    quick_playblast_err(result)

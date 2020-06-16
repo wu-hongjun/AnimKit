@@ -10,8 +10,8 @@ import time, os, platform, shutil, subprocess, sys
 from datetime import datetime
 
 # Info about this version of installer.
-VERSION = "1.0.0"
-BUILD = "20200614"
+VERSION = "1.0.1"
+BUILD = "20200615"
 
 ##############################################################################################
 # Functions
