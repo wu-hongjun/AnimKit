@@ -33,12 +33,16 @@ class _shelf():
         elements. Otherwise, nothing is added to the shelf.'''
         pass
 
-    def addButton(self, label, icon="commandButton.png", command=_null, doubleCommand=_null):
+    def addButton(self, label, icon="commandButton.png", command=_null, doubleCommand=_null, transparentText=False):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
         mc.setParent(self.name)
         if icon:
             icon = self.iconPath + icon
-        mc.shelfButton(width=37, height=37, image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=self.labelColour)
+
+        if transparentText:
+            mc.shelfButton(width=37, height=37, image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=(0.0, 0.0, 0.0))
+        else:
+            mc.shelfButton(width=37, height=37, image=icon, l=label, command=command, dcc=doubleCommand, imageOverlayLabel=label, olb=self.labelBackground, olc=self.labelColour)
 
     def addMenuItem(self, parent, label, command=_null, icon=""):
         '''Adds a shelf button with the specified label, command, double click command and image.'''
@@ -82,7 +86,8 @@ class animkitshelf(_shelf):
         self.addButton("button3")
 '''
 
-# The Shelf Class
+# The AnimKit Shelf 
+# Note: When pass a command we are not using the brackets after the name (), because that would call the command instead of passing it.
 class animkitshelf(_shelf):
     def build(self):
         # The man, the legend.
@@ -106,33 +111,25 @@ class animkitshelf(_shelf):
         self.addMenuItem(arnold_mp4, label="MP4 - No Padding", command=animkit_playblast_plus.vp2_mp4_playblast_nopadding)
         self.addMenuItem(arnold_mp4, label="MP4 - With Padding", command=animkit_playblast_plus.vp2_mp4_playblast_padding)
 
-
-        # self.addButton(" ", icon="animkit\\animkit_playblast_plus.png")
-        # vp2 = mc.popupMenu(b=1)
-        # pbp = mc.popupMenu(b=1)
-        # vp2_avi = self.addSubMenu(vp2, "Playblast AVI")
-        # self.addMenuItem(vp2_avi, label="AVI - No Padding", command=animkit_playblast_plus.avi_playblast_nopadding)
-        # self.addMenuItem(vp2_avi, label="AVI - With Padding", command=animkit_playblast_plus.avi_playblast_padding)
-        # vp2_mp4 = self.addSubMenu(vp2, "Playblast MP4")
-        # self.addMenuItem(vp2_mp4, label="MP4 - No Padding", command=animkit_playblast_plus.mp4_playblast_nopadding)
-        # self.addMenuItem(vp2_mp4, label="MP4 - With Padding", command=animkit_playblast_plus.mp4_playblast_padding)
-        # arnold = mc.popupMenu(b=1)
-        # arnold_avi = self.addSubMenu(vp2, "Arnold Playblast AVI")
-        # self.addMenuItem(arnold_avi, label="AVI - No Padding", command=animkit_playblast_plus.avi_playblast_nopadding)
-        # self.addMenuItem(arnold_avi, label="AVI - With Padding", command=animkit_playblast_plus.avi_playblast_padding)
-        # arnold_mp4 = self.addSubMenu(vp2, "Arnold Playblast MP4")
-        # self.addMenuItem(arnold_mp4, label="MP4 - No Padding", command=animkit_playblast_plus.mp4_playblast_nopadding)
-        # self.addMenuItem(arnold_mp4, label="MP4 - With Padding", command=animkit_playblast_plus.mp4_playblast_padding)
-
-
         # Save+
-        self.addButton("Save+", icon="animkit\\animkit_save_plus.png", command=animkit_save_plus.save_iteration_cmd)
+        self.addButton("Save+", icon="animkit\\animkit_save_plus.png", transparentText=True)
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, label="Save Scene Iterations", command=animkit_save_plus.save_iteration_cmd)
+        spb = self.addSubMenu(p, "Save Scene + Playblast Iterations")
+        arnold_avi = self.addSubMenu(spb, "Playblast AVI")
+        self.addMenuItem(arnold_avi, label="AVI - No Padding", command=animkit_playblast_plus.vp2_avi_playblast_nopadding)
+        self.addMenuItem(arnold_avi, label="AVI - No Padding", command=animkit_playblast_plus.vp2_avi_playblast_nopadding)
+        arnold_mp4 = self.addSubMenu(arnold, "Playblast MP4")
+        self.addMenuItem(arnold_mp4, label="MP4 - No Padding", command=animkit_playblast_plus.vp2_mp4_playblast_nopadding)
+        self.addMenuItem(arnold_mp4, label="MP4 - With Padding", command=animkit_playblast_plus.vp2_mp4_playblast_padding)
+
+        self.addButton("Save+", icon="animkit\\animkit_save_plus.png", transparentText=True, command=animkit_save_plus.save_iteration_cmd)
 
         # Create render_cam from view
-        self.addButton("RenderCam+", icon="animkit\\animkit_rendercam_plus.png", command=animkit_render_cam_plus.create_render_cam_from_view)
+        self.addButton("RenderCam+", icon="animkit\\animkit_rendercam_plus.png", transparentText=True, command=animkit_render_cam_plus.create_render_cam_from_view)
         
         # Animschool Picker
-        self.addButton("Animschool Picker", icon="animkit\\animkit-animschool.png", command=animkit_basic.load_animschool_picker)
+        self.addButton("Animschool Picker", icon="animkit\\animkit-animschool.png", transparentText=True, command=animkit_basic.load_animschool_picker)
         
         
 # Load AnimKit
