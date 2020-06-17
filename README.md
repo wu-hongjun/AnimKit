@@ -22,7 +22,3 @@
 ##### Recent | [Changelog Archive](https://github.com/Errrneist/Hackintosh-Razer-Blade-Advanced/blob/master/changelog.md)
 * [20200614] Project started.
 
-
-## Help Needed
-* Thunderbolt is not working. I tested a eGPU and a NVMe drive.
-* If anyone know anything about Titan Ridge Thunderbolt 3 on OpenCore feel free to open an issue
