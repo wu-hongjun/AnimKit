@@ -147,7 +147,7 @@ def quick_playblast(    renderCamName = "render_cam",
                         usingTempFile = False, # Playblast temporarily to the default project path
                         convertH264 = False, # Encode the playblast into MP4, not AVI.
                         renderName = "vp2Renderer", # Viewport for furture Arnold support
-                        useArnold = False  # Real Arnold Support
+                        useArnold = True  # Real Arnold Support
                     ):
     '''
     Provides a means of quality playblasting from an arbitary camera.
@@ -175,15 +175,15 @@ def quick_playblast(    renderCamName = "render_cam",
     # SAVE STATE AND HIDE ANIMS
     ############################
     mel.eval( 'camera -e -displayFilmGate off -displayResolution off -overscan 1.0 ' + rc + ';' )
-    # Deselect selected objects
-    selected = ls(sl=1)
-    if (len(selected) > 0): select(selected, d=1)
-    # Hide anim shapes
-    anims = ls("*_topCon", r=1) + ls("*_anim*", r=1, typ="joint") + ls("*_anim*", r=1, typ="mesh")
-    if len(anims) > 0: anim_shapes = listRelatives(anims, s=1, f=1)
-    else: anim_shapes = []
-    anim_shapes =  filter(lambda sh: getAttr(sh+".visibility") > 0, anim_shapes) # filter out unselected shapes
-    if (len(anim_shapes) > 0): hide(anim_shapes)
+    # # Deselect selected objects
+    # selected = ls(sl=1)
+    # if (len(selected) > 0): select(selected, d=1)
+    # # Hide anim shapes
+    # anims = ls("*_topCon", r=1) + ls("*_anim*", r=1, typ="joint") + ls("*_anim*", r=1, typ="mesh")
+    # if len(anims) > 0: anim_shapes = listRelatives(anims, s=1, f=1)
+    # else: anim_shapes = []
+    # anim_shapes =  filter(lambda sh: getAttr(sh+".visibility") > 0, anim_shapes) # filter out unselected shapes
+    # if (len(anim_shapes) > 0): hide(anim_shapes)
     ############################
 
     try:
@@ -345,7 +345,7 @@ def test_playblast():
     mel.eval("setRendererAndOverrideInModelPanel vp2Renderer arnoldViewOverride modelPanel4;")
     # mc.playblast( s="ohNo", f="myMovie.avi" )
     mc.playblast(f="C:\\Users\\hongj\\Desktop\\dev\\myMovie.avi")
-    
+
 # general_playblast: A more general method that children methods can inherit most of its settings.
 def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False, append_text=""):
     hudState = HeadsUpDisplayState.CURRENT()
