@@ -140,11 +140,7 @@ class animkitshelf(_shelf):
 
 
         # Animschool Picker
-        self.addButton(label="Animschool Picker", 
-                        icon="animkit\\animkit-animschool.png", 
-                        noLabel=True, 
-                        command=animkit_basic.load_animschool_picker, 
-                        btn_annotation = "Launch Animschool Picker.")
+        # self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
 
             
         

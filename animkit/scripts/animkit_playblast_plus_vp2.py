@@ -268,10 +268,12 @@ def quick_playblast(    renderCamName = "render_cam",
 
             # Create /temp/ folder if do mp4 converting.
             if convertH264: 
+                print("Will convert final playblast into MP4.")
                 pb_final_path = (current_dir +  "/temp/" + pb_basename + outputNameAppend).replace( '\\', '/' )
             else: 
                 pb_final_path = pb_path
                 
+            print("Playblast Location: ", pb_final_path)
 
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_final_path,
@@ -297,17 +299,26 @@ def quick_playblast(    renderCamName = "render_cam",
                 # Playblast AVI into a /temp/ folder.
                 avi_input = pb_actual_path + ".avi"
                 mp4_output = pb_actual_path + ".mp4"
+                print("avi_input: ", avi_input)
+                print("mp4_output: ", mp4_output)
 
                 # Convert into MP4
+                print("Will Start to Convert to MP4. ")
                 subprocess.call("ffmpeg -y -i {input} {output}".format(input = avi_input, output = mp4_output))
+                print("Finished subprocess.call ffmpeg.")
                 
                 # move it to playblast directory
                 mp4_target_location = mp4_output.replace("\\temp", "")
+                print("mp4_target_location: ", mp4_target_location)
                 shutil.copyfile(mp4_output, mp4_target_location)
+                print("Successfully copied the MP4 output to: ", mp4_target_location)
 
                 # Get rid of that /temp/ folder. 
                 temp_folder_location = current_dir +  "/temp/"
+                print("TEMP folder location: ", temp_folder_location)
+
                 shutil.rmtree(temp_folder_location)
+                print("Successfully recursively removed TEMP folder and its contents.")
 
 
             print("AnimKit - Playblast+: Playblast successful!")
