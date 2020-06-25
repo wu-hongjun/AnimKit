@@ -3,7 +3,7 @@
 # AnimKit
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
-<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="250">
+<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="175">
 
 
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
