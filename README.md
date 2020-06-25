@@ -1,6 +1,6 @@
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/arl_logo.png" alt="ARL" width="250">
 
-# AnimKit
+# AnimKit Shelf
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="175">
