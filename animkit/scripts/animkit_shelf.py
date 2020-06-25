@@ -103,32 +103,22 @@ class animkitshelf(_shelf):
                         btn_annotation = "Playblast+ can playblast into AVI (Quality) and MP4 (Efficiency).", 
                         noLabel = True)
         p = mc.popupMenu(b=1)
-        vp2 = self.addSubMenu(p, "Viewport 2.0")
-        vp2_avi = self.addSubMenu(vp2, "Playblast AVI")
+        vp2_avi = self.addSubMenu(p, "Playblast AVI")
         self.addMenuItem(vp2_avi, label="AVI - No Padding", command=animkit_playblast_plus_vp2.vp2_avi_playblast_nopadding)
         self.addMenuItem(vp2_avi, label="AVI - With Padding", command=animkit_playblast_plus_vp2.vp2_avi_playblast_padding)
-        vp2_mp4 = self.addSubMenu(vp2, "Playblast MP4")
+        vp2_mp4 = self.addSubMenu(p, "Playblast MP4")
         self.addMenuItem(vp2_mp4, label="MP4 - No Padding", command=animkit_playblast_plus_vp2.vp2_mp4_playblast_nopadding)
         self.addMenuItem(vp2_mp4, label="MP4 - With Padding", command=animkit_playblast_plus_vp2.vp2_mp4_playblast_padding)
-        arnold = self.addSubMenu(p, "Arnold")
-        arnold_avi = self.addSubMenu(arnold, "Playblast AVI")
-        self.addMenuItem(arnold_avi, label="TEST", command=animkit_playblast_plus_arnold.test_playblast)
-        self.addMenuItem(arnold_avi, label="AVI - No Padding", command=animkit_playblast_plus_arnold.arnold_avi_playblast_nopadding)
-        self.addMenuItem(arnold_avi, label="AVI - With Padding", command=animkit_playblast_plus_arnold.arnold_avi_playblast_padding)
-        arnold_mp4 = self.addSubMenu(arnold, "Playblast MP4")
-        self.addMenuItem(arnold_mp4, label="MP4 - No Padding", command=animkit_playblast_plus_arnold.arnold_mp4_playblast_nopadding)
-        self.addMenuItem(arnold_mp4, label="MP4 - With Padding", command=animkit_playblast_plus_arnold.arnold_mp4_playblast_padding)
 
-        # Save+
-        self.addButton(label="Save+", 
-                        icon="animkit\\animkit_save_plus.png", 
+
+        # iter++
+        self.addButton(label="iter++", 
+                        icon="animkit\\animkit_iter_pp.png", 
                         noLabel=True, 
-                        btn_annotation = "Save+ is a better and faster way to save iterations.")
+                        btn_annotation = "iter++ is a better and faster way to save iterations.")
         p = mc.popupMenu(b=1)
-        self.addMenuItem(p, label="Save Scene Iterations", command=animkit_save_plus.save_iteration_cmd)
-        spb = self.addSubMenu(p, "Save Scene + Playblast Iterations")
-        self.addMenuItem(spb, label="Placeholder")
-        self.addMenuItem(spb, label="Placeholder")
+        self.addMenuItem(p, label="Save Scene Iterations", command=animkit_save_plus.save_iteration)
+        self.addMenuItem(p, label="Save Scene Iterations with Playblast", command=animkit_save_plus.save_iteration_with_playblast)
 
 
         # Create render_cam from view

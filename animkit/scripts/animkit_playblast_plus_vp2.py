@@ -147,6 +147,7 @@ def quick_playblast(    renderCamName = "render_cam",
                         usingTempFile = False, # Playblast temporarily to the default project path
                         convertH264 = False, # Encode the playblast into MP4, not AVI.
                         renderName = "vp2Renderer", # Not gonna implement Arnold in this :P Arnold is quite different!
+                        newName = "" # For iter++ to rename file name 
                     ):
     '''
     Provides a means of quality playblasting from an arbitary camera.
@@ -263,6 +264,14 @@ def quick_playblast(    renderCamName = "render_cam",
             current_dir = os.path.dirname(scene_path)
             basename = os.path.basename(scene_path)
             pb_basename = basename.split(".")[0]
+
+            # For iter++ to override name
+            if(newName != ""):
+                pb_basename = newName
+                print("iter++ override name: ", newName)
+            
+            print("new pb_base_name", pb_basename)
+
             pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace( '\\', '/' )
             
 
@@ -348,7 +357,7 @@ def save_file(filepath):
     cmds.file(save=True, type="mayaAscii") 
 
 # general_playblast: A more general method that children methods can inherit most of its settings.
-def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False, append_text=""):
+def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False, append_text="", newNameGeneral=""):
     hudState = HeadsUpDisplayState.CURRENT()
     HeadsUpDisplayState.NONE().set()
     addHeadsUpShotInfo()
@@ -361,6 +370,7 @@ def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False
         outputNameAppend = append_text,
         showOrnaments = True,
         convertH264=convert_h264,
+        newName = newNameGeneral
     )
 
     removeHeadsUpShotInfo()
@@ -391,3 +401,10 @@ def vp2_mp4_playblast_nopadding(self):
 
 def vp2_mp4_playblast_padding(self):
     general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding")
+
+# Viewport 2.0 Playblasting into MP4 for i++
+def vp2_mp4_playblast_ipp_nopadding(new_name):
+    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
+
+def vp2_mp4_playblast_ipp_padding(new_name):
+    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
