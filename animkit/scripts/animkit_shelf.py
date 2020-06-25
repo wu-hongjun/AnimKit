@@ -5,7 +5,7 @@ import maya.cmds as mc
 import animkit_basic
 import animkit_playblast_plus_vp2
 import animkit_playblast_plus_arnold
-import animkit_save_plus
+import animkit_iter_pp
 import animkit_render_cam_plus
 
 def _null(*args):
@@ -117,8 +117,8 @@ class animkitshelf(_shelf):
                         noLabel=True, 
                         btn_annotation = "iter++ is a better and faster way to save iterations.")
         p = mc.popupMenu(b=1)
-        self.addMenuItem(p, label="Save Scene Iterations", command=animkit_save_plus.save_iteration)
-        self.addMenuItem(p, label="Save Scene Iterations with Playblast", command=animkit_save_plus.save_iteration_with_playblast)
+        self.addMenuItem(p, label="Save Scene Iterations", command=animkit_iter_pp.save_iteration)
+        self.addMenuItem(p, label="Save Scene Iterations with Playblast", command=animkit_iter_pp.save_iteration_with_playblast)
 
 
         # Create render_cam from view
