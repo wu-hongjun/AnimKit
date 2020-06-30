@@ -7,8 +7,8 @@
 
 
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
-### Current Release: [???](https://github.com/Errrneist/AnimKit/releases)
-#### Developer: [@Errrneist](https://www.tonymacx86.com/members/errrneist.1550861/)
+### Current Release: [1.0](https://github.com/Errrneist/AnimKit/releases)
+#### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it! 
 #### READ THE ENTIRE README.MD BEFORE YOU TAKE ANY ACTION.
 
@@ -18,10 +18,9 @@
 * This project is issued under the [MIT License](https://opensource.org/licenses/MIT) provided as-is, can potentially brick your machine, and may break your warranty. I am not responsible for any damage that is caused by you using anything in this Repo.
 
 ## Tools
-* PraiseCody: The man, the legend. Click to receive blessings.
-
-
-* Playblast+: Provide functionality in playblasting AVI, but also MP4, with padding or without padding.
+* Playblast+: Provide functionality in playblasting AVI and MP4, with padding or without padding.
 * iter++: Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-* render_cam+: One click create a camera called "render_cam"
+* render_cam+: One click create a camera from current view called "render_cam"
+* Graduator: Removes student version info from file.
+* Zoetrope: Background one click script no watermark batch renderer for Arnold.
 
