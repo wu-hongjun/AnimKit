@@ -7,6 +7,8 @@ import animkit_playblast_plus_vp2
 import animkit_playblast_plus_arnold
 import animkit_iter_pp
 import animkit_render_cam_plus
+import animkit_graduator
+import animkit_zoetrope
 
 def _null(*args):
     pass
@@ -121,6 +123,14 @@ class animkitshelf(_shelf):
         self.addMenuItem(p, label="Save Scene Iterations with Playblast", command=animkit_iter_pp.save_iteration_with_playblast)
 
 
+        # graduator
+        self.addButton(label="graduator", 
+                        icon="animkit\\animkit_graduator.png", 
+                        noLabel=True, 
+                        btn_annotation = "graduator gets rid of the student information")
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, label="Graduator", command=animkit_graduator.graduator)
+
         # Create render_cam from view
         self.addButton(label="RenderCam+", 
                         icon="animkit\\animkit_rendercam_plus.png", 
@@ -128,6 +138,18 @@ class animkitshelf(_shelf):
                         command=animkit_render_cam_plus.create_render_cam_from_view, 
                         btn_annotation = "render_cam+ creates a render_cam from one click.")
 
+        # zoetrope
+        self.addButton(label="zoetrope", 
+                        icon="animkit\\animkit_zoetrope.png", 
+                        noLabel=True, 
+                        btn_annotation = "Zoetrope is a one click foreground batch renderer.")
+        p = mc.popupMenu(b=1)
+        render_all_layers = self.addSubMenu(p, "Render All Layers")
+        self.addMenuItem(render_all_layers, label="Render With Padding", command=animkit_zoetrope.render_w_padding)
+        self.addMenuItem(render_all_layers, label="Render Without Padding", command=animkit_zoetrope.render_nopadding)
+        render_default_layers = self.addSubMenu(p, "Render Default Layer Only")
+        self.addMenuItem(render_default_layers, label="Render Default Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
+        self.addMenuItem(render_default_layers, label="Render Default Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
 
         # Animschool Picker
         # self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
