@@ -144,10 +144,10 @@ class animkitshelf(_shelf):
                         noLabel=True, 
                         btn_annotation = "Zoetrope is a one click foreground batch renderer.")
         p = mc.popupMenu(b=1)
-        render_all_layers = self.addSubMenu(p, "Render All Layers")
+        render_all_layers = self.addSubMenu(p, "Render All Separate Render Layers")
         self.addMenuItem(render_all_layers, label="Render With Padding", command=animkit_zoetrope.render_w_padding)
         self.addMenuItem(render_all_layers, label="Render Without Padding", command=animkit_zoetrope.render_nopadding)
-        render_default_layers = self.addSubMenu(p, "Render Default Layer Only")
+        render_default_layers = self.addSubMenu(p, "Render Only Default Render Layer")
         self.addMenuItem(render_default_layers, label="Render Default Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
         self.addMenuItem(render_default_layers, label="Render Default Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
 

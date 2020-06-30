@@ -42,6 +42,7 @@ def batch_render(start, end, width, height, target_format = "png", usePadding = 
         renderEnd = end
 
     render_layers = {cmds.getAttr( i + ".displayOrder") : i for i in cmds.ls(type='renderLayer')}
+    render_layers.pop(0)  # Gets rid of "defaultRenderLayer"
 
     if useDefaultRenderLayer: render_layers = {0: "defaultRenderLayer"}
 
