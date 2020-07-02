@@ -4,7 +4,6 @@ import maya.cmds as mc
 
 import animkit_basic
 import animkit_playblast_plus_vp2
-import animkit_playblast_plus_arnold
 import animkit_iter_pp
 import animkit_render_cam_plus
 import animkit_graduator
@@ -142,7 +141,7 @@ class animkitshelf(_shelf):
         self.addButton(label="zoetrope", 
                         icon="animkit\\animkit_zoetrope.png", 
                         noLabel=True, 
-                        btn_annotation = "Zoetrope is a one click foreground batch renderer.")
+                        btn_annotation = "Zoetrope is a one click background batch renderer.")
         p = mc.popupMenu(b=1)
         render_all_layers = self.addSubMenu(p, "Render All Separate Render Layers")
         self.addMenuItem(render_all_layers, label="Render With Padding", command=animkit_zoetrope.render_w_padding)
@@ -152,7 +151,7 @@ class animkitshelf(_shelf):
         self.addMenuItem(render_default_layers, label="Render Default Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
 
         # Animschool Picker
-        # self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
+        self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
 
             
         
