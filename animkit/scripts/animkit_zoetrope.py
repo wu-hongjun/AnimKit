@@ -19,13 +19,14 @@ class TimelineProperties:
     def INNER_END(self):
         return playbackOptions(q=1, maxTime=1)
 
-def render_frame(width, height, frame, file_format="png", render_layer = "defaultRenderLayer"):
+def render_frame(width, height, frame, file_format="tif", render_layer = "defaultRenderLayer"):
     file_dir = os.path.join(sceneName().parent, render_layer).replace('\\', '/')
     print("file_dir: ", file_dir)
     prepend = os.path.basename(sceneName()).split('.')[0] + "_" +str(frame)
     print("prepend: ", prepend)
     cmds.setAttr("defaultArnoldDriver.ai_translator", file_format, type="string")
     cmds.setAttr("defaultArnoldDriver.pre", file_dir + "\\" + prepend, type="string")
+    cmds.setAttr("render_camShape.mask", 1)
     arnoldRender(width, height, True, True,'render_cam', ' -layer ' + render_layer)
 
 def prompt_exit():
@@ -33,7 +34,7 @@ def prompt_exit():
         message='Task finished. Successfully batch rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
 
-def batch_render(start, end, width, height, target_format = "png", usePadding = False, useDefaultRenderLayer = False):
+def batch_render(start, end, width, height, target_format = "tif", usePadding = False, useDefaultRenderLayer = False):
     if usePadding:
         renderStart = start - 25
         renderEnd = end + 24
@@ -59,8 +60,8 @@ def batch_render(start, end, width, height, target_format = "png", usePadding = 
         # Get rid of the weird _1 file name issue.
         file_dir = os.path.join(sceneName().parent, layer).replace('\\', '/')
         for render in os.listdir(file_dir):
-            if render.endswith(".png"):
-                os.rename(file_dir + "\\" + render, file_dir + "\\" + render.replace("_1.png", ".png"))
+            if render.endswith(".tif"):
+                os.rename(file_dir + "\\" + render, file_dir + "\\" + render.replace("_1.tif", ".tif"))
 
     prompt_exit()
 
@@ -77,7 +78,7 @@ def render_w_padding(self):
                     end = int(TIMELINE.INNER_END), 
                     width = get_resolution_settings("width"), 
                     height = get_resolution_settings("height"), 
-                    target_format = "png", 
+                    target_format = "tif", 
                     usePadding = True)
 
 def render_nopadding(self):
@@ -86,7 +87,7 @@ def render_nopadding(self):
                     end = int(TIMELINE.INNER_END), 
                     width = get_resolution_settings("width"), 
                     height = get_resolution_settings("height"), 
-                    target_format = "png", 
+                    target_format = "tif", 
                     usePadding = False)
 
 def render_default_w_padding(self):
@@ -95,7 +96,7 @@ def render_default_w_padding(self):
                     end = int(TIMELINE.INNER_END), 
                     width = get_resolution_settings("width"), 
                     height = get_resolution_settings("height"), 
-                    target_format = "png", 
+                    target_format = "tif", 
                     usePadding = True,
                     useDefaultRenderLayer = True)
 
@@ -105,6 +106,6 @@ def render_default_nopadding(self):
                     end = int(TIMELINE.INNER_END), 
                     width = get_resolution_settings("width"), 
                     height = get_resolution_settings("height"), 
-                    target_format = "png", 
+                    target_format = "tif", 
                     usePadding = False, 
                     useDefaultRenderLayer = True)
