@@ -1,4 +1,0 @@
-import sys
-sys.path.append('C:/Users/nguyeash/Documents/maya/2016/scripts/edgeFlowMirror.py')
-import edgeFlowMirrorUI
-edgeFlowMirrorUI.showUI()

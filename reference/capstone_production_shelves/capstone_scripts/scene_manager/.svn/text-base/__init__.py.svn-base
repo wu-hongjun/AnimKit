@@ -1,5 +1,0 @@
-from pymel import *
-from metaCore import *
-from methods import *
-from gui import *
-from test import *

@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<ScriptMetadata>
-	<ScriptName text="Create Block Model Rig"/>
-	<Information text="Given a joint skeleton using the animation capstone's naming convention for bipedal rigs and block parented to their corresponding joints, produce a simple block model rig."/>
-</ScriptMetadata>
