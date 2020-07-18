@@ -4,13 +4,12 @@
 [![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
 
 
-<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="175">
+<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="200">
 
 
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
-### Current Release: [1.0](https://github.com/Errrneist/AnimKit/releases)
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
-#### Don't forget to star this project if you like it! 
+#### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 
 ## AnimKit Utilities
 #### AnimKit Installation Script
@@ -37,10 +36,10 @@
 * The easiest way to create breakdown poses in Maya.
 
 ## External Tools 
-> You will have to acquire them separately and add them to `/scripts` and `/icons` folder.
-#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `AnimSchoolPicker.mll`
+> You will have to acquire them separately and add them to folders.
+#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `\plug-ins\AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
-#### [reParentPRO](https://gumroad.com/l/reParentPro) → `reparent_pro_v158.mel`
+#### [reParentPRO](https://gumroad.com/l/reParentPro) → `\scripts\reparent_pro_v158.mel`
 * Tool for transfering animation from control to locator for polishing animation.
 
 ## License
