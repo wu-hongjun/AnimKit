@@ -4,11 +4,11 @@
 [![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
 
 
-<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="175">
+<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="250">
 
 
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
-### Release: [Current Release](https://github.com/Errrneist/AnimKit/releases)
+### Release: [Current](https://github.com/Errrneist/AnimKit/releases)
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 
