@@ -10,8 +10,8 @@ import time, os, platform, shutil, subprocess, sys
 from datetime import datetime
 
 # Info about this version of installer.
-VERSION = "1.0.2"
-BUILD = "20200616"
+VERSION = "1.1.0"
+BUILD = "20200717"
 
 ##############################################################################################
 # Functions
@@ -50,6 +50,9 @@ def install_element(element_name, target_folder, category, maya_path):
 # install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_script(script_name):
     install_element(script_name, "\scripts\\", "[✓] [SCRIPT]", MAYA_SCRIPT_FOLDER)
+
+def install_plugin(plugin_name):
+    install_element(plugin_name, "\plug-ins\\", "[✓] [PLUGIN]", MAYA_PLUGIN_FOLDER)
     
 # install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
@@ -59,26 +62,27 @@ def install_extension():
     return True  # No extension yet for future scaling
 
 # chk_dir: Checks if the given directory exists, if not, create one.
-def chk_dir(target):
+def chk_dir(folder, target):
     if not os.path.isdir(target): 
         os.makedirs(target)
-        print("[⍻] [CHKDIR] Folder does not exist. Created script folder under: ", target)
+        print("[⍻] [CHKDIR] " + folder + " folder does not exist. Created script folder under: ", target)
     if os.path.isdir(target):
-        print("[✓] [CHKDIR] Folder already exists under: ", target)
+        print("[✓] [CHKDIR] "+ folder + " folder already exists under: ", target)
 
 # install_shelf:
 # Installs all required elements.
 def install_shelf():
     # Check if the Maya script folder exists, if not, create one.
-    chk_dir(MAYA_SCRIPT_FOLDER)
-    chk_dir(MAYA_ICON_FOLDER)
+    chk_dir("Script", MAYA_SCRIPT_FOLDER)
+    chk_dir("Icon", MAYA_ICON_FOLDER)
+    chk_dir("Plug-In", MAYA_PLUGIN_FOLDER)
 
     # Copy setup file into the Maya preferences folder
     try:
         # Install all required elements
         for script in SCRIPT_LIST: install_script(script)
         for icon in ICON_LIST: install_icon(icon)
-        # install_extension()
+        for plugin in PLUGIN_LIST: install_plugin(plugin)
         return "[✓] [FINISH] All required files installed successfully!"
     
     # Print out errors
@@ -106,6 +110,9 @@ MAYA_VERSION = get_latest_version(MAYA_FOLDER)
 # MAYA_SCRIPT_FOLDER: Where maya stores all its scripts
 MAYA_SCRIPT_FOLDER = "{0}{1}/scripts/".format(MAYA_FOLDER,MAYA_VERSION)
 
+# MAYA_PLUGIN_FOLDER: Where maya stores all its scripts
+MAYA_PLUGIN_FOLDER = "{0}{1}/plug-ins/".format(MAYA_FOLDER,MAYA_VERSION)
+
 # MAYA_ICON_FOLDER: Create a /animkit/ folder in the Maya icon folder
 MAYA_ICON_FOLDER = "{0}{1}/prefs/icons/animkit/".format(MAYA_FOLDER,MAYA_VERSION)
 
@@ -118,11 +125,16 @@ SETUP_FILE = ANIMKIT_FOLDER + "\scripts\\animkit_shelf.py"
 # SCRIPT_LIST: A list of str of scripts in /scripts folder.
 PYTHON_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".py")
 MEL_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".mel")
-MLL_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".mll")
-SCRIPT_LIST = PYTHON_LIST + MEL_LIST + MLL_LIST
+SCRIPT_LIST = PYTHON_LIST + MEL_LIST
+
+# PLUGIN_LIST: List of plugins of ".mll" files
+MLL_LIST = filter_ext(ANIMKIT_FOLDER + "\plug-ins", ".mll")
+PLUGIN_LIST = MLL_LIST
 
 # ICON_LIST: A list of str of icons in /icons folder.
-ICON_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
+PNG_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
+JPG_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".jpg")
+ICON_LIST = PNG_LIST + JPG_LIST
 
 # dd/mm/YY H:M:S
 date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

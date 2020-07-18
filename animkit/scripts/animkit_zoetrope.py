@@ -34,6 +34,12 @@ def prompt_exit():
         message='Task finished. Successfully batch rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
 
+def fix_filename(file_name):
+    if render.endswith(".tif"):
+            os.rename(file_dir + "\\" + render, file_dir + "\\" + render.replace("_1.tif", ".tif"))
+    elif render.endswith(".png"):
+            os.rename(file_dir + "\\" + render, file_dir + "\\" + render.replace("_1.png", ".png"))
+
 def batch_render(start, end, width, height, target_format = "tif", usePadding = False, useDefaultRenderLayer = False):
     if usePadding:
         renderStart = start - 25
@@ -41,6 +47,7 @@ def batch_render(start, end, width, height, target_format = "tif", usePadding = 
     else:
         renderStart = start
         renderEnd = end
+    print("Will render from frame " + renderStart + "to frame " + renderEnd + ".")
 
     render_layers = {cmds.getAttr( i + ".displayOrder") : i for i in cmds.ls(type='renderLayer')}
     render_layers.pop(0)  # Gets rid of "defaultRenderLayer"
@@ -51,17 +58,12 @@ def batch_render(start, end, width, height, target_format = "tif", usePadding = 
         # Batch Render
         layer = render_layers[index]
         print("Current Layer: ", layer)
-        frame_counter = 0  # Can't have png sequence with negative index.
         for frame in range(renderStart, renderEnd + 1):
             cmds.currentTime(frame)
-            render_frame(width, height, frame_counter, target_format, layer)
-            frame_counter += 1
+            render_frame(width, height, frame, target_format, layer)
 
-        # Get rid of the weird _1 file name issue.
-        file_dir = os.path.join(sceneName().parent, layer).replace('\\', '/')
-        for render in os.listdir(file_dir):
-            if render.endswith(".tif"):
-                os.rename(file_dir + "\\" + render, file_dir + "\\" + render.replace("_1.tif", ".tif"))
+            # Get rid of the weird _1 file name issue.
+            for render in os.listdir(os.path.join(sceneName().parent, layer).replace('\\', '/')): fix_filename(render)
 
     prompt_exit()
 

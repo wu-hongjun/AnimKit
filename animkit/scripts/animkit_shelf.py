@@ -2,7 +2,7 @@
 
 import maya.cmds as mc
 
-import animkit_basic
+import animkit_wrapper
 import animkit_playblast_plus_vp2
 import animkit_iter_pp
 import animkit_render_cam_plus
@@ -96,7 +96,7 @@ class animkitshelf(_shelf):
         # The man, the legend. Cody.
         self.addButton(label="Cody", 
                         icon="animkit\\animkit_cody.png", 
-                        command=animkit_basic.praise_cody, 
+                        command=animkit_wrapper.praise_cody, 
                         btn_annotation = "Praise and receive animation blessing from the all-mighty Cody.")
         
         # Playblast+
@@ -147,15 +147,21 @@ class animkitshelf(_shelf):
         render_all_layers = self.addSubMenu(p, "Render All Separate Render Layers")
         self.addMenuItem(render_all_layers, label="Render With Padding", command=animkit_zoetrope.render_w_padding)
         self.addMenuItem(render_all_layers, label="Render Without Padding", command=animkit_zoetrope.render_nopadding)
-        render_default_layers = self.addSubMenu(p, "Render Only Default Render Layer")
-        self.addMenuItem(render_default_layers, label="Render Default Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
-        self.addMenuItem(render_default_layers, label="Render Default Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
+        render_default_layers = self.addSubMenu(p, "Render Only Current Render Layer")
+        self.addMenuItem(render_default_layers, label="Render Current Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
+        self.addMenuItem(render_default_layers, label="Render Current Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
 
         # Animschool Picker
-        self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
+        self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
 
-        # Animschool Picker
+        # TweenMachine
         self.addButton(label="TweenMachine", icon="animkit\\tweenMachine.png", noLabel=True, command=tweenMachine.start, btn_annotation = "Launch TweenMachine.")
+
+        # reParent
+        self.addButton(label="reParent", icon="animkit\\reParentIcon.jpg", noLabel=True, command=animkit_wrapper.load_reParent, btn_annotation = "Launch reParent.")
+
+
+
 
             
         
