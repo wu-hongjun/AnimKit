@@ -1,6 +1,7 @@
 # AnimKit
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
-[![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
+[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Naereen/)
+[![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
 
 
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="175">
@@ -23,3 +24,6 @@
 * render_cam+: One click create a camera from current view called "render_cam"
 * Graduator: Removes student version info from file.
 * Zoetrope: Background one click script no watermark batch renderer for Arnold.
+
+## License
+[![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
