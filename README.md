@@ -1,5 +1,8 @@
 # AnimKit
-[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Naereen/)
+[![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
+
 
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/maya_icon.png" alt="Maya" width="175">
 
@@ -8,17 +11,37 @@
 ### Current Release: [1.0](https://github.com/Errrneist/AnimKit/releases)
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it! 
-#### READ THE ENTIRE README.MD BEFORE YOU TAKE ANY ACTION.
 
+## AnimKit Utilities
+#### AnimKit Installation Script
+* Automatically one click solution install all scripts and icons to correct folder. 
+* Only supports Windows.
+#### Animkit Shelf
+* Scalable and highly flexible shelf with button hierarchy shelf container written in Python 3.
 
-## Disclaimer
-* Note that by using any file or code in this repository you agree to this disclaimer.
-* This project is issued under the [MIT License](https://opensource.org/licenses/MIT) provided as-is, can potentially brick your machine, and may break your warranty. I am not responsible for any damage that is caused by you using anything in this Repo.
+## AnimKit Tools
+#### Playblast+ 
+* Provide functionality in playblasting AVI and MP4, with padding or without padding.
+#### iter++
+* Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
+#### render_cam+
+* One click create a camera from current view called "render_cam"
+#### Graduator
+* Removes student version info from file.
+#### Zoetrope
+* Background one click script no watermark batch renderer for Arnold.
 
-## Tools
-* Playblast+: Provide functionality in playblasting AVI and MP4, with padding or without padding.
-* iter++: Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-* render_cam+: One click create a camera from current view called "render_cam"
-* Graduator: Removes student version info from file.
-* Zoetrope: Background one click script no watermark batch renderer for Arnold.
+## Integrated Tools
+> Tools and scripts that are free and avaliable to public.
+#### [TweenMachine](https://github.com/boredstiff/tweenMachine)
+* The easiest way to create breakdown poses in Maya.
 
+## External Tools 
+> You will have to acquire them separately and add them to `/scripts` and `/icons` folder.
+#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `AnimSchoolPicker.mll`
+* Character picker for AnimSchool rigs.
+#### [reParentPRO](https://gumroad.com/l/reParentPro) → `reparent_pro_v158.mel`
+* Tool for transfering animation from control to locator for polishing animation.
+
+## License
+[![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
