@@ -12,11 +12,13 @@
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it! 
 
-## AnimKit Tools
-### Automatic Installation Script
+## AnimKit Utilities
+### AnimKit Installation Script
 * Automatically install all script and icon to correct folder. Windows only.
 ### Animkit Shelf
 * Scalable and highly efficient shelf with multiple layers written in Python 3.
+
+## AnimKit Tools
 ### Playblast+ 
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
 ### iter++
