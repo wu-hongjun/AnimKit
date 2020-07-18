@@ -32,7 +32,7 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     cmds.setAttr("render_camShape.mask", 1)
     arnoldRender(width, height, True, True,'render_cam', ' -layer ' + render_layer)
 
-def batch_render(renderStart, renderEnd, width, height, target_format = "tif", usePadding = False, useDefaultRenderLayer = False):
+def batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END), width = get_resolution_settings("width"), height = get_resolution_settings("height"), target_format = "tif", useDefaultRenderLayer = False):
     # Prompt user to check render range.
     msg = "Will render from frame " + str(renderStart) + " to frame " + str(renderEnd) + ". Are you sure?"
     prompt_start = cmds.confirmDialog( title='Confirm Render', message=msg, button=['Yes','No'], defaultButton='Yes', cancelButton='No', dismissString='No' )
@@ -63,38 +63,16 @@ def get_resolution_settings(attr):
     
 def render_w_padding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.START), 
-                    end = int(TIMELINE.END), 
-                    width = get_resolution_settings("width"), 
-                    height = get_resolution_settings("height"), 
-                    target_format = "tif", 
-                    usePadding = True)
+    batch_render()
 
 def render_nopadding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.INNER_START), 
-                    end = int(TIMELINE.INNER_END), 
-                    width = get_resolution_settings("width"), 
-                    height = get_resolution_settings("height"), 
-                    target_format = "tif", 
-                    usePadding = False)
+    batch_render(start = int(TIMELINE.INNER_START), end = int(TIMELINE.INNER_END))
 
 def render_default_w_padding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.START), 
-                    end = int(TIMELINE.END), 
-                    width = get_resolution_settings("width"), 
-                    height = get_resolution_settings("height"), 
-                    target_format = "tif", 
-                    usePadding = True,
-                    useDefaultRenderLayer = True)
+    batch_render(useDefaultRenderLayer = True)
 
 def render_default_nopadding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.INNER_START), 
-                    end = int(TIMELINE.INNER_END), 
-                    width = get_resolution_settings("width"), 
-                    height = get_resolution_settings("height"), 
-                    target_format = "tif", 
-                    usePadding = False, 
-                    useDefaultRenderLayer = True)
+    batch_render(start = int(TIMELINE.INNER_START), end = int(TIMELINE.INNER_END), useDefaultRenderLayer = True)
