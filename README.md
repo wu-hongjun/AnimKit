@@ -14,9 +14,10 @@
 
 ## AnimKit Utilities
 #### AnimKit Installation Script
-* Automatically install all script and icon to correct folder. Windows only.
+* Automatically one click solution install all scripts and icons to correct folder. 
+* Only supports Windows.
 #### Animkit Shelf
-* Scalable and highly efficient shelf with multiple layers written in Python 3.
+* Scalable and highly flexible shelf with button hierarchy written in Python 3.
 
 ## AnimKit Tools
 #### Playblast+ 
@@ -36,7 +37,7 @@
 * The easiest way to create breakdown poses in Maya.
 
 ## External Tools 
-> You will have to acquire them separately and add them to /scripts and /icons folder.
+> You will have to acquire them separately and add them to `/scripts` and `/icons` folder.
 #### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
 #### [reParentPRO](https://gumroad.com/l/reParentPro) → `reparent_pro_v158.mel`
