@@ -12,16 +12,35 @@
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it! 
 
-## Tools
-* Playblast+: Provide functionality in playblasting AVI and MP4, with padding or without padding.
-* iter++: Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-* render_cam+: One click create a camera from current view called "render_cam"
-* Graduator: Removes student version info from file.
-* Zoetrope: Background one click script no watermark batch renderer for Arnold.
+## AnimKit Tools
+### Automatic Installation Script
+* Automatically install all script and icon to correct folder. Windows only.
+### Animkit Shelf
+* Scalable and highly efficient shelf with multiple layers written in Python 3.
+### Playblast+ 
+* Provide functionality in playblasting AVI and MP4, with padding or without padding.
+### iter++
+* Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
+### render_cam+
+* One click create a camera from current view called "render_cam"
+### Graduator
+* Removes student version info from file.
+### Zoetrope
+* Background one click script no watermark batch renderer for Arnold.
 
-## External Tools
-* [Animschool Picker](https://www.animschool.com/pickerInfo.aspx)
-* [TweenMachine](https://github.com/boredstiff/tweenMachine)
+## Integrated Tools
+> Tools and scripts that are free and avaliable to public.
+### [TweenMachine](https://github.com/boredstiff/tweenMachine)
+* The easiest way to create breakdown poses in Maya.
+
+## External Tools 
+> You will have to acquire them separately and add them to /scripts and /icons folder.
+### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) 
+* Character picker for AnimSchool rigs.
+* Script Name: AnimSchoolPicker.mll
+### [reParentPRO](https://gumroad.com/l/reParentPro)
+* Tool for transfering animation from control to locator for polishing animation.
+* Script Name: reparent_pro_v158.mel
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
