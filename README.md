@@ -13,34 +13,34 @@
 #### Don't forget to star this project if you like it! 
 
 ## AnimKit Utilities
-### AnimKit Installation Script
+#### AnimKit Installation Script
 * Automatically install all script and icon to correct folder. Windows only.
-### Animkit Shelf
+#### Animkit Shelf
 * Scalable and highly efficient shelf with multiple layers written in Python 3.
 
 ## AnimKit Tools
-### Playblast+ 
+#### Playblast+ 
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
-### iter++
+#### iter++
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-### render_cam+
+#### render_cam+
 * One click create a camera from current view called "render_cam"
-### Graduator
+#### Graduator
 * Removes student version info from file.
-### Zoetrope
+#### Zoetrope
 * Background one click script no watermark batch renderer for Arnold.
 
 ## Integrated Tools
 > Tools and scripts that are free and avaliable to public.
-### [TweenMachine](https://github.com/boredstiff/tweenMachine)
+#### [TweenMachine](https://github.com/boredstiff/tweenMachine)
 * The easiest way to create breakdown poses in Maya.
 
 ## External Tools 
 > You will have to acquire them separately and add them to /scripts and /icons folder.
-### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) 
+#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) 
 * Character picker for AnimSchool rigs.
 * Script Name: AnimSchoolPicker.mll
-### [reParentPRO](https://gumroad.com/l/reParentPro)
+#### [reParentPRO](https://gumroad.com/l/reParentPro)
 * Tool for transfering animation from control to locator for polishing animation.
 * Script Name: reparent_pro_v158.mel
 
