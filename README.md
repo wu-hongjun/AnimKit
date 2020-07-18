@@ -17,7 +17,7 @@
 * Automatically one click solution install all scripts and icons to correct folder. 
 * Only supports Windows.
 #### Animkit Shelf
-* Scalable and highly flexible shelf with button hierarchy written in Python 3.
+* Scalable and highly flexible shelf with button hierarchy shelf container written in Python 3.
 
 ## AnimKit Tools
 #### Playblast+ 
