@@ -37,12 +37,10 @@
 
 ## External Tools 
 > You will have to acquire them separately and add them to /scripts and /icons folder.
-#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) 
+#### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
-* Script Name: AnimSchoolPicker.mll
-#### [reParentPRO](https://gumroad.com/l/reParentPro)
+#### [reParentPRO](https://gumroad.com/l/reParentPro) → `reparent_pro_v158.mel`
 * Tool for transfering animation from control to locator for polishing animation.
-* Script Name: reparent_pro_v158.mel
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
