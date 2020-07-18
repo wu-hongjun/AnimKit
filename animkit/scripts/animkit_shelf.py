@@ -8,6 +8,7 @@ import animkit_iter_pp
 import animkit_render_cam_plus
 import animkit_graduator
 import animkit_zoetrope
+import tweenMachine
 
 def _null(*args):
     pass
@@ -152,6 +153,9 @@ class animkitshelf(_shelf):
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_basic.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
+
+        # Animschool Picker
+        self.addButton(label="TweenMachine", icon="animkit\\tweenMachine.png", noLabel=True, command=tweenMachine.start, btn_annotation = "Launch TweenMachine.")
 
             
         
