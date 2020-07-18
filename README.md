@@ -11,12 +11,6 @@
 ### Current Release: [1.0](https://github.com/Errrneist/AnimKit/releases)
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it! 
-#### READ THE ENTIRE README.MD BEFORE YOU TAKE ANY ACTION.
-
-
-## Disclaimer
-* Note that by using any file or code in this repository you agree to this disclaimer.
-* This project is issued under the [MIT License](https://opensource.org/licenses/MIT) provided as-is, can potentially brick your machine, and may break your warranty. I am not responsible for any damage that is caused by you using anything in this Repo.
 
 ## Tools
 * Playblast+: Provide functionality in playblasting AVI and MP4, with padding or without padding.
@@ -24,6 +18,10 @@
 * render_cam+: One click create a camera from current view called "render_cam"
 * Graduator: Removes student version info from file.
 * Zoetrope: Background one click script no watermark batch renderer for Arnold.
+
+## External Tools
+* [Animschool Picker](https://www.animschool.com/pickerInfo.aspx)
+* [TweenMachine](https://github.com/boredstiff/tweenMachine)
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
