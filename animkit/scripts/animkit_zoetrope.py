@@ -24,6 +24,9 @@ class TimelineProperties:
     def INNER_END(self):
         return playbackOptions(q=1, maxTime=1)
 
+def get_resolution_settings(attr):
+    return cmds.getAttr("%s.%s"%("defaultResolution", attr))
+    
 def render_frame(width, height, frame, file_format="tif", render_layer = "defaultRenderLayer"):
     file_dir = (sceneName().parent + "\\renders\\" + render_layer).replace('\\', '/')
     prepend = os.path.basename(sceneName()).split('.')[0]
@@ -32,7 +35,7 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     cmds.setAttr("render_camShape.mask", 1)
     arnoldRender(width, height, True, True,'render_cam', ' -layer ' + render_layer)
 
-def batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END), width = get_resolution_settings("width"), height = get_resolution_settings("height"), target_format = "tif", useDefaultRenderLayer = False):
+def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"), height = get_resolution_settings("height"), target_format = "tif", useDefaultRenderLayer = False):
     # Prompt user to check render range.
     msg = "Will render from frame " + str(renderStart) + " to frame " + str(renderEnd) + ". Are you sure?"
     prompt_start = cmds.confirmDialog( title='Confirm Render', message=msg, button=['Yes','No'], defaultButton='Yes', cancelButton='No', dismissString='No' )
@@ -57,22 +60,19 @@ def batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END
         cmds.confirmDialog(title='Animkit Zoetrope: Task Finished.', 
         message='Task finished. Successfully batch rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
-
-def get_resolution_settings(attr):
-    return cmds.getAttr("%s.%s"%("defaultResolution", attr))
     
 def render_w_padding(self):
     TIMELINE = TimelineProperties()
-    batch_render()
+    batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END))
 
 def render_nopadding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.INNER_START), end = int(TIMELINE.INNER_END))
+    batch_render(renderStart = int(TIMELINE.INNER_START), renderEnd = int(TIMELINE.INNER_END))
 
 def render_default_w_padding(self):
     TIMELINE = TimelineProperties()
-    batch_render(useDefaultRenderLayer = True)
+    batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END), useDefaultRenderLayer = True)
 
 def render_default_nopadding(self):
     TIMELINE = TimelineProperties()
-    batch_render(start = int(TIMELINE.INNER_START), end = int(TIMELINE.INNER_END), useDefaultRenderLayer = True)
+    batch_render(renderStart = int(TIMELINE.INNER_START), renderEnd = int(TIMELINE.INNER_END), useDefaultRenderLayer = True)
