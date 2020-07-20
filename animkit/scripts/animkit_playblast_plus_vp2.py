@@ -413,7 +413,7 @@ def general_playblast(startTime = TIMELINE.INNER_START, # Start frame of the pla
         showWindow(errW)
 
 #########################################################################################
-# Different Options of Playblasting
+# Built in functions of Playblasting
 
 # Viewport 2.0
 # Viewport 2.0 Playblasting into AVI
@@ -429,6 +429,9 @@ def vp2_mp4_playblast_nopadding(self):
 
 def vp2_mp4_playblast_padding(self):
     general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding")
+
+#########################################################################################
+# API
 
 # Viewport 2.0 Playblasting into MP4 for i++
 def vp2_mp4_playblast_ipp_nopadding(new_name):
