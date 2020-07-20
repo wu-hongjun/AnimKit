@@ -43,5 +43,8 @@
 #### [reParentPRO](https://gumroad.com/l/reParentPro) → `\scripts\reparent_pro_v158.mel`
 * Tool for transfering animation from control to locator for polishing animation.
 
+## Credits
+* Part of the code are modified from University of Washington Animation Research Labs shelf.
+
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
