@@ -6,6 +6,10 @@ import random as r
 from subprocess import check_output, STDOUT, CalledProcessError
 import os, time, getpass, shutil, subprocess, sys
 
+# Version Info
+version = "2.0.0"
+update = "July 20, 2020"
+new = "Stability improvements."
 
 # Default sequence of enabling/disabling viewport elements
 DEFAULT_VIEWPORT_ARGS_SEQUENCE = [  ("displayAppearance" , "smoothShaded"),
@@ -64,18 +68,22 @@ class HeadsUpDisplayState:
                 
 class TimelineProperties:
 
+    # Animation Start
     @property
     def START(self):
         return playbackOptions(q=1, animationStartTime=1)
         
+    # Animation End
     @property
     def END(self):
         return playbackOptions(q=1, animationEndTime=1)
         
+    # Playback Start
     @property
     def INNER_START(self):
         return playbackOptions(q=1, minTime=1)
         
+    # Playback End
     @property
     def INNER_END(self):
         return playbackOptions(q=1, maxTime=1)
@@ -88,6 +96,10 @@ def getShotInfoStr():
 
     comps = []
     
+    # Shot Name
+    shotName, extension = os.path.splitext(os.path.basename(cmds.file(q=True, sn=True)))
+    comps.append('Shot: ' + str(shotName))
+
     # Last modified time
     lastModified = time.ctime(os.path.getmtime(sceneName()))
     lastModified = lastModified.split(' ')[1:-1]
@@ -131,13 +143,23 @@ def removeHeadsUpShotInfo():
         
     
 TIMELINE = TimelineProperties()
+
+# Initial SSAO and MSAA state.
+MSAA_STATE = cmds.getAttr('hardwareRenderingGlobals.multiSampleEnable')  # It's actually a Boolean
+SSAO_STATE = cmds.getAttr('hardwareRenderingGlobals.ssaoEnable')
           
-          
-def quick_playblast(    renderCamName = "render_cam",
-                        format = "avi",
-                        compression = "iyuv",
-                        quality = 100,
-                        width = None, # Use render width
+def set_ssao(reset = False):
+    '''
+    Screen Space Ambient Occlusion (SSAO) and Multi Sampling Anti Aliasing (MSAA).
+    '''
+    if not reset:
+        mel.eval("setAttr hardwareRenderingGlobals.multiSampleEnable 1;")  # Anti-Aliasing in Viewport 2.0 
+        mel.eval("setAttr hardwareRenderingGlobals.ssaoEnable 1;")  # Ambient Occlusion
+    else:
+        mel.eval("setAttr hardwareRenderingGlobals.multiSampleEnable " + str(int(MSAA_STATE)) + ";")  # Anti-Aliasing in Viewport 2.0 
+        mel.eval("setAttr hardwareRenderingGlobals.ssaoEnable " + str(int(SSAO_STATE)) + ";")  # Ambient Occlusion
+
+def quick_playblast(    width = None, # Use render width
                         height = None, # Use render height
                         startTime = TIMELINE.INNER_START, # Start frame of the playblast
                         endTime = TIMELINE.INNER_END, # End frame of the playblast
@@ -146,7 +168,6 @@ def quick_playblast(    renderCamName = "render_cam",
                         showOrnaments = False, # Hide display elements from the playblast
                         usingTempFile = False, # Playblast temporarily to the default project path
                         convertH264 = False, # Encode the playblast into MP4, not AVI.
-                        renderName = "vp2Renderer", # Not gonna implement Arnold in this :P Arnold is quite different!
                         newName = "" # For iter++ to rename file name 
                     ):
     '''
@@ -156,10 +177,10 @@ def quick_playblast(    renderCamName = "render_cam",
     # Error Message placeholder.
     errText = None
 
-    
+    print("Will playblast from frame " + str(startTime) + " to frame " + str(endTime) + " .")
 
     # Render cam name.
-    possibleRenderCams = ls(renderCamName)
+    possibleRenderCams = ls("render_cam")
     
     if not len(possibleRenderCams) > 0: 
         return '\nNo camera in the scene\nnamed "render_cam".\n'
@@ -186,6 +207,10 @@ def quick_playblast(    renderCamName = "render_cam",
     if (len(anim_shapes) > 0): hide(anim_shapes)
     ############################
 
+    # Turn on SSAO and Anti-Aliasing
+    set_ssao()
+
+    # Playblast
     try:
         try: res = PyNode("defaultResolution")
         except: res = None
@@ -205,8 +230,9 @@ def quick_playblast(    renderCamName = "render_cam",
         if window("PlayblastWindow", q=1, exists=1):
             deleteUI("PlayblastWindow")
             print("Deleted PlayblastWindow")
-        windowTitle = "Window of Playblasting"
-        pbWin = window("PlayblastWindow", t=windowTitle)
+        
+        windowTitle = "Playblast Window"
+        pbWin = window("PlayblastWindow", t = windowTitle)
         
         form = formLayout()
         description = text("Your scene is now being playblasted using this window. It will close automatically when finished.\nNote that for now it's actually rendering offscreen.", align="left")
@@ -214,9 +240,7 @@ def quick_playblast(    renderCamName = "render_cam",
         mp = modelPanel()
         
         # Choose Viewport
-        cmds.modelEditor(mp, e=1, rnm=renderName)  # Default Viewport 2.0, future might add in Arnold support
-        
-        print("ModelEditor", cmds.modelEditor(mp, query=True, rendererListUI=True))
+        cmds.modelEditor(mp, e=1, rnm="vp2Renderer") 
         
         # Attach controls to the layout
         form.attachForm(description, 'top', 5)
@@ -231,7 +255,7 @@ def quick_playblast(    renderCamName = "render_cam",
         mp.setMenuBarVisible(False)
         ui.PyUI(layout(mp.getBarLayout(), q=1, ca=1)[0]).delete() # Remove icon bar
         setFocus(mp)
-        mel.eval('lookThroughModelPanel '+rc+" "+mp);
+        mel.eval('lookThroughModelPanel ' + rc + " " + mp + ";")
         showWindow(pbWin)
         refresh()
         
@@ -286,7 +310,7 @@ def quick_playblast(    renderCamName = "render_cam",
 
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_final_path,
-                                            format = format,
+                                            format = "avi",
                                             forceOverwrite = True,
                                             offScreen = False,
                                             sequenceTime = 0,
@@ -294,8 +318,8 @@ def quick_playblast(    renderCamName = "render_cam",
                                             viewer = False,
                                             showOrnaments = showOrnaments,
                                             framePadding = 0,
-                                            compression = compression,
-                                            quality = quality,
+                                            compression = "iyuv",
+                                            quality = 100,
                                             percent = 100,
                                             width = pbWidth,
                                             height = pbHeight,
@@ -303,7 +327,7 @@ def quick_playblast(    renderCamName = "render_cam",
                                             startTime = startTime,
                                             endTime = endTime  )
             
-            # Actual code for playblasting into MP4.
+            # Code for playblasting into MP4.
             if convertH264:
                 # Playblast AVI into a /temp/ folder.
                 avi_input = pb_actual_path + ".avi"
@@ -313,7 +337,7 @@ def quick_playblast(    renderCamName = "render_cam",
 
                 # Convert into MP4
                 print("Will Start to Convert to MP4. ")
-                subprocess.call("ffmpeg -y -i {input} {output}".format(input = avi_input, output = mp4_output))
+                subprocess.call(["ffmpeg", "-y", "-i", avi_input, mp4_output], shell=True)
                 print("Finished subprocess.call ffmpeg.")
                 
                 # move it to playblast directory
@@ -332,20 +356,20 @@ def quick_playblast(    renderCamName = "render_cam",
 
             print("AnimKit - Playblast+: Playblast successful!")
         except:
-            errText = "\nThis could mean one of a few things:\n\n"+ \
-            "1) Your previous playblast file is open.  You will need to close\nQuicktime/VLC/Windows Media Player.\n\n"+ \
+            errText = "\nAnimKit - Playblast Failed!! \n\n This could mean one of a few things:\n\n"+ \
+            "1) Your previous playblast file is open.\n\n"+ \
             "2) Another copy of Maya is open.\n\n"+ \
-            "3) Somebody else in the lab has your playblast open...\n\n"+ \
-            "4) There are network issues or other things this script doesn't\naccount for. If the error persists just do the playblast manually.\n"
+            "3) There are  other things this script doesn't\naccount for.\n"
         pbWin.delete()
     except:
-        errText = "\nThere was an issue creating a new window to do the playblast in, just playblast manually and let the staff know."
+        errText = "\nThere was an issue creating a new window to do the playblast in, just playblast manually."
     
     # RESTORE STATE AND SHOW ANIMS
     ###############################
     mel.eval( 'camera -e -displayFilmGate off -displayResolution on -overscan 1.3 ' + rc + ';' )
     if (len(anim_shapes) > 0): showHidden( anim_shapes )
     if (len(selected) > 0): select( selected )
+    set_ssao(reset=True)
     ###############################
     
     return errText
@@ -353,19 +377,23 @@ def quick_playblast(    renderCamName = "render_cam",
 
 # save_file: Takes in a string of "filepath" and save the current file into the "filepath".
 def save_file(filepath):
-    cmds.file(rename=filepath)
-    cmds.file(save=True, type="mayaAscii") 
+    cmds.file(rename = filepath)
+    cmds.file(save = True, type = "mayaAscii") 
 
 # general_playblast: A more general method that children methods can inherit most of its settings.
-def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False, append_text="", newNameGeneral=""):
+def general_playblast(startTime = TIMELINE.INNER_START, # Start frame of the playblast
+                        endTime = TIMELINE.INNER_END, # End frame of the playblast
+                        convert_h264=False, 
+                        append_text="", 
+                        newNameGeneral=""):
     hudState = HeadsUpDisplayState.CURRENT()
     HeadsUpDisplayState.NONE().set()
     addHeadsUpShotInfo()
 
     # Some settings to be passed into playblast code
     result = quick_playblast(
-        startTime = start_time, 
-        endTime = end_time,
+        startTime = startTime, 
+        endTime = endTime,
         viewportArgsSequence = DEFAULT_VIEWPORT_ARGS_SEQUENCE,
         outputNameAppend = append_text,
         showOrnaments = True,
@@ -390,21 +418,21 @@ def general_playblast(start_time, end_time, convert_h264=False, use_arnold=False
 # Viewport 2.0
 # Viewport 2.0 Playblasting into AVI
 def vp2_avi_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, append_text="_nopadding")
+    general_playblast(append_text="_nopadding")
 
 def vp2_avi_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, append_text="_w_padding")
+    general_playblast(startTime = TIMELINE.START, endTime = TIMELINE.END, append_text="_w_padding")
 
 # Viewport 2.0 Playblasting into MP4
 def vp2_mp4_playblast_nopadding(self):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding")
+    general_playblast(convert_h264=True, append_text="_nopadding")
 
 def vp2_mp4_playblast_padding(self):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding")
+    general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding")
 
 # Viewport 2.0 Playblasting into MP4 for i++
 def vp2_mp4_playblast_ipp_nopadding(new_name):
-    general_playblast(start_time=TIMELINE.START+24, end_time = TIMELINE.END-24, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
+    general_playblast(convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
 
 def vp2_mp4_playblast_ipp_padding(new_name):
-    general_playblast(start_time=TIMELINE.START, end_time = TIMELINE.END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
+    general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
