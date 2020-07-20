@@ -10,6 +10,7 @@
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
+#### If you are from Disney Sony Pixar or Dreamworks and interested in hiring me just send me a message :)
 
 ## AnimKit Utilities
 #### AnimKit Installation Script
