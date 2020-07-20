@@ -57,9 +57,6 @@ def install_plugin(plugin_name):
 # install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
     install_element(icon_name, "\icons\\", "[✓] [ ICON ]", MAYA_ICON_FOLDER)
-    
-def install_extension():
-    return True  # No extension yet for future scaling
 
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(folder, target):
