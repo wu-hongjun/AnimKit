@@ -20,15 +20,15 @@
 * Scalable and highly flexible shelf with button hierarchy shelf container written in Python 3.
 
 ## AnimKit Tools
-#### Playblast+ 
+#### [Playblast+](https://github.com/Errrneist/AnimKit/blob/master/DOC/playblast_plus.md) 
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
-#### iter++
+#### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md)
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-#### render_cam+
+#### [render_cam+](https://github.com/Errrneist/AnimKit/blob/master/DOC/render_cam_plus.md)
 * One click create a camera from current view called "render_cam"
-#### Graduator
+#### [Graduator](https://github.com/Errrneist/AnimKit/blob/master/DOC/graduator.md)
 * Removes student version info from file.
-#### Zoetrope
+#### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md)
 * Background one click script no watermark batch renderer for Arnold.
 
 ## Integrated Tools
