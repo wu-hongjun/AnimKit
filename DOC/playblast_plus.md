@@ -27,7 +27,7 @@
 * Playblast MP4 with padding (the entire timeline).
 
 ## Open Source Software
-* [ffmpeg](https://ffmpeg.org/): A complete, cross-platform solution to record, convert and stream audio and video.
+* [FFmpeg](https://ffmpeg.org/): A complete, cross-platform solution to record, convert and stream audio and video.
 
 
 ## License
