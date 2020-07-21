@@ -52,7 +52,7 @@ if not cmds.about(batch=True):
 
 ## Integrated Tools
 > Tools and scripts that are free and avaliable to public.
-#### [TweenMachine](https://github.com/boredstiff/tweenMachine)
+#### [TweenMachine](https://github.com/boredstiff/tweenMachine) → `tweenMachine.py`
 * The easiest way to create breakdown poses in Maya.
 
 ## External Tools 
