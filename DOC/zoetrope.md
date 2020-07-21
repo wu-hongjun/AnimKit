@@ -4,7 +4,7 @@
 [![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
 
 
-<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/animkit/icons/animkit_zoetrope.png" alt="Zoetrope" width="200">
+<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/animkit/icons/animkit_zoetrope.png" alt="Zoetrope" width="100">
 
 
 > Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
