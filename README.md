@@ -31,24 +31,24 @@ if not cmds.about(batch=True):
 
 
 ## AnimKit Utilities
-#### AnimKit Installation Script
+#### AnimKit Installation Script → `install_animkit.py`
 * Automatically one click solution install all scripts and icons to correct folder. (Windows only)
-#### AnimKit Shelf
+#### AnimKit Shelf → `animkit_shelf.py`
 * Scalable and highly flexible shelf with button hierarchy shelf container written in Python 3.
-#### AnimKit Wrapper
+#### AnimKit Wrapper → `animkit_wrapper.py`
 * A wrapper for calling external fucntions like loading plug-ins to keep the shelf clean and tidy.
 
 ## AnimKit Tools
-#### [Playblast+](https://github.com/Errrneist/AnimKit/blob/master/DOC/playblast_plus.md) 
+#### [Playblast+](https://github.com/Errrneist/AnimKit/blob/master/DOC/playblast_plus.md) → `animkit_playblast_plus_vp2.py`
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
-#### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md)
+#### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md) → `animkit_iter_pp.py`
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
-#### [render_cam+](https://github.com/Errrneist/AnimKit/blob/master/DOC/render_cam_plus.md)
+#### [render_cam+](https://github.com/Errrneist/AnimKit/blob/master/DOC/render_cam_plus.md) → `animkit_render_cam_plus.py`
 * One click create a camera from current view called "render_cam"
-#### [Graduator](https://github.com/Errrneist/AnimKit/blob/master/DOC/graduator.md)
+#### [Graduator](https://github.com/Errrneist/AnimKit/blob/master/DOC/graduator.md) → `animkit_graduator.py`
 * Removes student version info from file.
-#### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md)
-* Background one click script no watermark batch renderer for Arnold.
+#### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md) → `animkit_zoetrope.py`
+* Background one click script watermark free batch renderer for Arnold.
 
 ## Integrated Tools
 > Tools and scripts that are free and avaliable to public.
