@@ -13,7 +13,7 @@
 #### Let me know if your studio or project needs a hand :)
 
 ## Installation
-#### In the `userSetup.py` in YOUR MAYA PREFERENCE (NOT THE ONE INCLUDED):
+#### In the `userSetup.py` in YOUR MAYA PREFERENCE (NOT THE EXAMPLE FILE INCLUDED):
 Add the following line:
 ```
 # Start AnimKit
