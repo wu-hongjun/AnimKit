@@ -7,7 +7,7 @@
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="200">
 
 
-> Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
+> Don't assume it is raining if you hear wind blowing. ——— The Elder.    
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio or project needs a hand :)
