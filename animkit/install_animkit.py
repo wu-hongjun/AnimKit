@@ -61,8 +61,9 @@ def install_icon(icon_name):
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(folder, target):
     if not os.path.isdir(target): 
+        print("[⍻] [CHKDIR] " + folder + " folder does not exist. ")
         os.makedirs(target)
-        print("[⍻] [CHKDIR] " + folder + " folder does not exist. Created script folder under: ", target)
+        print("[✓] [CHKDIR] Created script folder under: ", target)
     if os.path.isdir(target):
         print("[✓] [CHKDIR] "+ folder + " folder already exists under: ", target)
 

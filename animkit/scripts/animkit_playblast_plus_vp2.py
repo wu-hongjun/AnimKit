@@ -177,7 +177,7 @@ def quick_playblast(    width = None, # Use render width
     # Error Message placeholder.
     errText = None
 
-    print("Will playblast from frame " + str(startTime) + " to frame " + str(endTime) + " .")
+    print("[Playblast+] Will playblast from frame " + str(startTime) + " to frame " + str(endTime) + " .")
 
     # Render cam name.
     possibleRenderCams = ls("render_cam")
@@ -186,7 +186,7 @@ def quick_playblast(    width = None, # Use render width
         return '\nNo camera in the scene\nnamed "render_cam".\n'
 
     if len(possibleRenderCams) > 1: 
-        print('WARNING: Multiple objects named render cam. Using the first one.')
+        print('[Playblast+] WARNING: Multiple objects named render cam. Using the first one.')
     
     rc = possibleRenderCams[0].fullPath()
     
@@ -229,13 +229,13 @@ def quick_playblast(    width = None, # Use render width
         # Is this really necessary...
         if window("PlayblastWindow", q=1, exists=1):
             deleteUI("PlayblastWindow")
-            print("Deleted PlayblastWindow")
+            print("[Playblast+] Deleted PlayblastWindow")
         
         windowTitle = "Playblast Window"
         pbWin = window("PlayblastWindow", t = windowTitle)
         
         form = formLayout()
-        description = text("Your scene is now being playblasted using this window. It will close automatically when finished.\nNote that for now it's actually rendering offscreen.", align="left")
+        description = text("This scene is now being playblasted and will close automatically when finished.", align="left")
         playblastpane = paneLayout(width=pbWidth, height=pbHeight)
         mp = modelPanel()
         
@@ -292,21 +292,21 @@ def quick_playblast(    width = None, # Use render width
             # For iter++ to override name
             if(newName != ""):
                 pb_basename = newName
-                print("iter++ override name: ", newName)
+                print("[Playblast+] iter++ override name: ", newName)
             
-            print("new pb_base_name", pb_basename)
+            print("[Playblast+] new pb_base_name", pb_basename)
 
             pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace( '\\', '/' )
             
 
             # Create /temp/ folder if do mp4 converting.
             if convertH264: 
-                print("Will convert final playblast into MP4.")
+                print("[Playblast+] Will convert final playblast into MP4.")
                 pb_final_path = (current_dir +  "/temp/" + pb_basename + outputNameAppend).replace( '\\', '/' )
             else: 
                 pb_final_path = pb_path
                 
-            print("Playblast Location: ", pb_final_path)
+            print("[Playblast+] Playblast Location: ", pb_final_path)
 
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_final_path,
@@ -332,29 +332,29 @@ def quick_playblast(    width = None, # Use render width
                 # Playblast AVI into a /temp/ folder.
                 avi_input = pb_actual_path + ".avi"
                 mp4_output = pb_actual_path + ".mp4"
-                print("avi_input: ", avi_input)
-                print("mp4_output: ", mp4_output)
+                print("[Playblast+] avi_input: ", avi_input)
+                print("[Playblast+] mp4_output: ", mp4_output)
 
                 # Convert into MP4
-                print("Will Start to Convert to MP4. ")
+                print("[Playblast+] Will Start to Convert to MP4. ")
                 subprocess.call(["ffmpeg", "-y", "-i", avi_input, mp4_output], shell=True)
-                print("Finished subprocess.call ffmpeg.")
+                print("[Playblast+] Finished subprocess.call ffmpeg.")
                 
                 # move it to playblast directory
                 mp4_target_location = mp4_output.replace("\\temp", "")
-                print("mp4_target_location: ", mp4_target_location)
+                print("[Playblast+] mp4_target_location: ", mp4_target_location)
                 shutil.copyfile(mp4_output, mp4_target_location)
-                print("Successfully copied the MP4 output to: ", mp4_target_location)
+                print("[Playblast+] Successfully copied the MP4 output to: ", mp4_target_location)
 
                 # Get rid of that /temp/ folder. 
                 temp_folder_location = current_dir +  "/temp/"
-                print("TEMP folder location: ", temp_folder_location)
+                print("[Playblast+] TEMP folder location: ", temp_folder_location)
 
                 shutil.rmtree(temp_folder_location)
-                print("Successfully recursively removed TEMP folder and its contents.")
+                print("[Playblast+] Successfully recursively removed TEMP folder and its contents.")
 
 
-            print("AnimKit - Playblast+: Playblast successful!")
+            print("[Playblast+] Playblast successful!")
         except:
             errText = "\nAnimKit - Playblast Failed!! \n\n This could mean one of a few things:\n\n"+ \
             "1) Your previous playblast file is open.\n\n"+ \
