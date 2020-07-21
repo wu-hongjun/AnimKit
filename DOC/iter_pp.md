@@ -14,6 +14,7 @@
 
 ## General Information
 * iter++ is the ultimate way to save iterations.
+* It was modified from the save-it tool from UWARL shelf.
 * You can save an iteration with convinent playblast in mp4 for faster iteration.
 
 ## iter++ API
