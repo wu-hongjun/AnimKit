@@ -12,6 +12,24 @@
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio or project needs a hand :)
 
+## Installation
+#### In the `userSetup.py` in YOUR MAYA PREFERENCE (NOT THE ONE INCLUDED):
+Add the following line:
+```
+# Start AnimKit
+
+from maya import cmds
+if not cmds.about(batch=True):
+    cmds.evalDeferred("import animkit_shelf; animkit_shelf.animkitshelf()", lowestPriority=True)
+```
+#### Windows: 
+* Just run the animkit installation script `install_animkit.py`.
+#### macOS & Linux (Untested, lmk if it works):
+* Copy all `icon` to your a sub folder of your maya pref directory: `\maya\2020\prefs\icons\animkit\`.
+* Copy all `scripts` to your maya pref directory: `\maya\2020\scripts\`.
+* Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
+
+
 ## AnimKit Utilities
 #### AnimKit Installation Script
 * Automatically one click solution install all scripts and icons to correct folder. (Windows only)
