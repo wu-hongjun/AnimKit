@@ -7,7 +7,7 @@
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/animkit/icons/animkit_zoetrope.png" alt="Zoetrope" width="100">
 
 
-> Don't assume it is raining if you hear wind blowing. ——— [The Elder](https://hongjunwu.com/elder/).    
+> Don't assume it is raining if you hear wind blowing. ——— The Elder.    
 #### Developer: [@Errrneist](https://github.com/Errrneist/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio needs a hand :)
