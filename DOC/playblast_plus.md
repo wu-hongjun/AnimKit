@@ -1,10 +1,10 @@
-# iter++
+# Playblast+
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Naereen/)
 [![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
 
 
-<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/animkit/icons/animkit_iter_pp.png" alt="iter++" width="100">
+<img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/animkit/icons/animkit_playblast_plus.png" alt="iter++" width="100">
 
 
 > Don't assume it is raining if you hear wind blowing. ——— The Elder.    
@@ -13,14 +13,21 @@
 #### Let me know if your studio needs a hand :)
 
 ## General Information
-* iter++ is the ultimate way to save iterations.
-* You can save an iteration with convinent playblast in mp4 for faster iteration.
+* Playblast+ is the next generation Maya playblast engine.
+* It was heavily modified from playblast tool from UWARL shelf.
 
-## iter++ API
-#### `animkit_iter_pp.save_iteration`
-* Save an iteration of the current maya file with iteration notes.
-#### `animkit_iter_pp.save_iteration_with_playblast`
-* Save an iteration of the current maya file with iteration notes, as well as two playblasts in mp4 for easier upload and space saving.
+## Playblast+ API
+#### `animkit_playblast_plus_vp2.vp2_avi_playblast_nopadding`
+* Playblast AVI without padding (only playback area of timeline).
+#### `animkit_playblast_plus_vp2.vp2_avi_playblast_padding`
+* Playblast AVI with padding (the entire timeline).
+#### `animkit_playblast_plus_vp2.vp2_mp4_playblast_nopadding`
+* Playblast MP4 without padding (only playback area of timeline).
+#### `animkit_playblast_plus_vp2.vp2_mp4_playblast_padding`
+* Playblast MP4 with padding (the entire timeline).
+
+## Open Source Software
+* [ffmpeg](https://ffmpeg.org/): A complete, cross-platform solution to record, convert and stream audio and video.
 
 
 ## License
