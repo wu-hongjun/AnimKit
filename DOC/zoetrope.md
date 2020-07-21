@@ -16,6 +16,9 @@
 * Zoetrope script will create a `/renders` folder in the same directory as the maya scene file.
 * Each render layer will be rendered in separate folders inside the `/renders` folder.
 
+## Known Issues
+* Not able to render with alpha channel (aka transparent).
+
 ## Zoetrope API
 #### `animkit_zoetrope.render_w_padding`
 * Render all render layers into respective folders in `/render` with padding (the entire timeline).
