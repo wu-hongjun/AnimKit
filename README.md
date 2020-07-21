@@ -15,7 +15,7 @@
 ## Installation
 #### In the `userSetup.py` in YOUR MAYA PREFERENCE (NOT THE EXAMPLE FILE INCLUDED):
 Add the following line:
-```
+```python
 # Start AnimKit
 
 from maya import cmds
