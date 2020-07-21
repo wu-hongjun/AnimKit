@@ -14,10 +14,11 @@
 
 ## AnimKit Utilities
 #### AnimKit Installation Script
-* Automatically one click solution install all scripts and icons to correct folder. 
-* Only supports Windows.
-#### Animkit Shelf
+* Automatically one click solution install all scripts and icons to correct folder. (Windows only)
+#### AnimKit Shelf
 * Scalable and highly flexible shelf with button hierarchy shelf container written in Python 3.
+#### AnimKit Wrapper
+* A wrapper for calling external fucntions like loading plug-ins to keep the shelf clean and tidy.
 
 ## AnimKit Tools
 #### [Playblast+](https://github.com/Errrneist/AnimKit/blob/master/DOC/playblast_plus.md) 
