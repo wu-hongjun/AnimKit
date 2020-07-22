@@ -150,6 +150,7 @@ class animkitshelf(_shelf):
         render_default_layers = self.addSubMenu(p, "Render Only Current Render Layer")
         self.addMenuItem(render_default_layers, label="Render Current Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
         self.addMenuItem(render_default_layers, label="Render Current Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
+        self.addMenuItem(render_default_layers, label="Render Current Frame of Current Layer", command=animkit_zoetrope.render_one_frame)
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")

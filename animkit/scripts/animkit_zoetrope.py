@@ -76,3 +76,7 @@ def render_default_w_padding(self):
 def render_default_nopadding(self):
     TIMELINE = TimelineProperties()
     batch_render(renderStart = int(TIMELINE.INNER_START), renderEnd = int(TIMELINE.INNER_END), useDefaultRenderLayer = True)
+
+def render_one_frame(self):
+    TIMELINE = TimelineProperties()
+    render_frame(width = get_resolution_settings("width"), height = get_resolution_settings("height"), frame=TIMELINE.INNER_START)
