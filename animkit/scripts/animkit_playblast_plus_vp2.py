@@ -292,9 +292,9 @@ def quick_playblast(    width = None, # Use render width
             # For iter++ to override name
             if(newName != ""):
                 pb_basename = newName
-                print("[Playblast+] iter++ override name: ", newName)
+                print("[Playblast+] iter++ override name: " + newName)
             
-            print("[Playblast+] new pb_base_name", pb_basename)
+            print("[Playblast+] new pb_base_name: " + pb_basename)
 
             pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace( '\\', '/' )
             
@@ -306,7 +306,9 @@ def quick_playblast(    width = None, # Use render width
             else: 
                 pb_final_path = pb_path
                 
-            print("[Playblast+] Playblast Location: ", pb_final_path)
+            print("[Playblast+] Playblast Location: " + pb_final_path)
+            print("DEBUG startTime: ", startTime)
+            print("DEBUG endTime: ", endTime)
 
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_final_path,
@@ -421,16 +423,14 @@ def vp2_avi_playblast_nopadding(self):
     general_playblast(append_text="_nopadding")
 
 def vp2_avi_playblast_padding(self):
-    TIMELINE = TimelineProperties()
-    general_playblast(startTime = TIMELINE.START, endTime = TIMELINE.END, append_text="_w_padding")
+    general_playblast(startTime = TimelineProperties().START, endTime = TimelineProperties().END, append_text="_w_padding")
 
 # Viewport 2.0 Playblasting into MP4
 def vp2_mp4_playblast_nopadding(self):
     general_playblast(convert_h264=True, append_text="_nopadding")
 
 def vp2_mp4_playblast_padding(self):
-    TIMELINE = TimelineProperties()
-    general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding")
+    general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding")
 
 #########################################################################################
 # API
@@ -440,5 +440,4 @@ def vp2_mp4_playblast_ipp_nopadding(new_name):
     general_playblast(convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
 
 def vp2_mp4_playblast_ipp_padding(new_name):
-    TIMELINE = TimelineProperties()
-    general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
+    general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
