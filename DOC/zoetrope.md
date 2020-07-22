@@ -28,6 +28,8 @@
 * Render only default (current) render layer into `/render/defaultRenderLayers` with padding (the entire timeline).
 #### `animkit_zoetrope.render_default_nopadding`
 * Render only default (current) render layer into `/render/defaultRenderLayers` without padding (only playback area of timeline).
+#### `animkit_zoetrope.render_one_frame`
+* Render the current frame of the default (current) render layer into `/render/defaultRenderLayers`.
 
 
 ## License
