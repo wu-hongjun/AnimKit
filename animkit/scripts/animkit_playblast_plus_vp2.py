@@ -421,6 +421,7 @@ def vp2_avi_playblast_nopadding(self):
     general_playblast(append_text="_nopadding")
 
 def vp2_avi_playblast_padding(self):
+    TIMELINE = TimelineProperties()
     general_playblast(startTime = TIMELINE.START, endTime = TIMELINE.END, append_text="_w_padding")
 
 # Viewport 2.0 Playblasting into MP4
@@ -428,6 +429,7 @@ def vp2_mp4_playblast_nopadding(self):
     general_playblast(convert_h264=True, append_text="_nopadding")
 
 def vp2_mp4_playblast_padding(self):
+    TIMELINE = TimelineProperties()
     general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding")
 
 #########################################################################################
@@ -438,4 +440,5 @@ def vp2_mp4_playblast_ipp_nopadding(new_name):
     general_playblast(convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
 
 def vp2_mp4_playblast_ipp_padding(new_name):
+    TIMELINE = TimelineProperties()
     general_playblast(startTime=TIMELINE.START, endTime = TIMELINE.END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
