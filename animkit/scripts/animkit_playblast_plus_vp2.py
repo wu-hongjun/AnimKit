@@ -420,14 +420,16 @@ def general_playblast(startTime = TIMELINE.INNER_START, # Start frame of the pla
 # Viewport 2.0
 # Viewport 2.0 Playblasting into AVI
 def vp2_avi_playblast_nopadding(self):
-    general_playblast(append_text="_nopadding")
+    general_playblast(startTime = TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, append_text="_nopadding")
+    # general_playblast(append_text="_nopadding")
 
 def vp2_avi_playblast_padding(self):
     general_playblast(startTime = TimelineProperties().START, endTime = TimelineProperties().END, append_text="_w_padding")
 
 # Viewport 2.0 Playblasting into MP4
 def vp2_mp4_playblast_nopadding(self):
-    general_playblast(convert_h264=True, append_text="_nopadding")
+    general_playblast(startTime=TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, convert_h264=True, append_text="_nopadding")
+    # general_playblast(convert_h264=True, append_text="_nopadding")
 
 def vp2_mp4_playblast_padding(self):
     general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding")
@@ -437,7 +439,8 @@ def vp2_mp4_playblast_padding(self):
 
 # Viewport 2.0 Playblasting into MP4 for i++
 def vp2_mp4_playblast_ipp_nopadding(new_name):
-    general_playblast(convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
+    general_playblast(startTime=TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
+    #general_playblast(convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
 
 def vp2_mp4_playblast_ipp_padding(new_name):
     general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
