@@ -7,9 +7,9 @@ from subprocess import check_output, STDOUT, CalledProcessError
 import os, time, getpass, shutil, subprocess, sys
 
 # Version Info
-version = "2.0.0"
-update = "July 20, 2020"
-new = "Stability improvements."
+version = "2.1.0"
+update = "July 23, 2020"
+new = "Fixed a bug in playblasting with padding."
 
 # Default sequence of enabling/disabling viewport elements
 DEFAULT_VIEWPORT_ARGS_SEQUENCE = [  ("displayAppearance" , "smoothShaded"),
