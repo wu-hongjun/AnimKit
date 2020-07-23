@@ -139,8 +139,8 @@ date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 
 # Main Setup.
-print("[✓] [WELCOM] Welcome to AnimKit Installer! This script will install AnimKit to the newest version of Maya.")
-print("[✓] [WELCOM] AnimKit Installer Version: " + VERSION + " | Build: " + BUILD + " | Current Time: " + date_time)
+print("[✓] [ BOOT ] Welcome to AnimKit Installer! This script will install AnimKit to the newest version of Maya.")
+print("[✓] [ BOOT ] AnimKit Installer Version: " + VERSION + " | Build: " + BUILD + " | Current Time: " + date_time)
 if os.path.isfile(SETUP_FILE): 
     print("[✓] [ BOOT ] AnimKit shelf main script is found. Begin installation.")
     print(install_shelf())
