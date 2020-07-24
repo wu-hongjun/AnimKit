@@ -62,7 +62,7 @@ if not cmds.about(batch=True):
 * Tool for transfering animation from control to locator for polishing animation.
 
 ## Credits
-* Part of the code are deeply modified from [University of Washington Animation Research Labs](http://arl.cs.washington.edu/about.html) shelf.
+* Some of the code are deeply modified and refactored from [University of Washington Animation Research Labs](http://arl.cs.washington.edu/about.html) shelf.
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
