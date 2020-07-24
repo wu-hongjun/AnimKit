@@ -8,7 +8,7 @@
 
 
 > Don't assume it is raining if you hear wind blowing. ——— The Elder.    
-#### Developer: [Hongjun Wu](https://github.com/Errrneist/)
+#### Developer: [Hongjun Wu](https://hongjunwu.com/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio or project needs a hand :)
 
