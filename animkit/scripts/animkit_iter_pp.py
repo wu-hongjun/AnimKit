@@ -37,7 +37,7 @@ class SaveIterationWindow():
         updateNotes = textField(iterField, q=1, text=1)
         sn = sceneName()
         dir = sn.parent
-        print("[iter++] dir: ", dir)
+        print("[iter++] Current Directory (dir): ", dir)
         name = os.path.basename(sn).split('.')[0]
         iterDir = os.path.join(dir, name+'_iterations')
         
@@ -51,30 +51,28 @@ class SaveIterationWindow():
         # Playblast code
         if(playblast):
             nextVerName = os.path.join(name+"_v"+nextVerNumStr)
-            print("[iter++] nextVarName", nextVerName)
+            print("[iter++] Next Version File Name (nextVarName): ", nextVerName)
             nextVerDir = os.path.join(iterDir, name+"_v"+nextVerNumStr+"playblast")
             if not os.path.exists(nextVerDir): os.makedirs(nextVerDir)
             animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_nopadding(new_name=nextVerName)
             animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_padding(new_name=nextVerName)
 
             pb_npd_dir = os.path.join(dir, nextVerName+"_nopadding.mp4").replace('\\', '/')
-            print("[iter++] pb_npd_dir: ", pb_npd_dir)
+            print("[iter++] Playblast No Padding Directory (pb_npd_dir): " + pb_npd_dir)
             pb_pd_dir = os.path.join(dir, nextVerName+"_w_padding.mp4").replace('\\', '/')
-            print("pb_pd_dir: ", pb_pd_dir)
+            print("[iter++] Playblast With Padding Directory (pb_pd_dir): " + pb_pd_dir)
 
             shutil.move(pb_npd_dir, nextVerDir)
             shutil.move(pb_pd_dir, nextVerDir)
 
         
         notes = file(iterDir + "/iteration_notes.txt", mode = 'a')
-        curTime = time.strftime("%a, %B %d %Y @ %H:%M:%S")
-        notes.write('\r\n%s = %s :: %s'%(nextVerNumStr, curTime, updateNotes))
+        notes.write('\r\n%s = %s :: %s'%(nextVerNumStr, time.strftime("%a, %B %d %Y @ %H:%M:%S"), updateNotes))
         notes.close()
                
         saveAs(sn, f=1, type = 'mayaAscii')
         shutil.copy(sn, nextVerFile)
-        print("[iter++] nextVerFile", nextVerFile)
-        
+        print("[iter++] Next Version File Directory (nextVerFile)", nextVerFile)
         print ('[iter++] Iteration saved to "'+nextVerFile+'"').replace('\\', '/')
         
         evalDeferred('from pymel.core import *;deleteUI("'+str(win)+'")') # Must defer UI deletion, otherwise it crashes Maya
@@ -108,14 +106,10 @@ class SaveIterationWindow():
         okayButton = button( label='Okay', command=Callback(errW.delete) )
         showWindow(errW)
         setFocus(okayButton)
-    
-    def playblast_iteration():
-        return True
+
 
 def save_iteration(self):
     SaveIterationWindow()
     
 def save_iteration_with_playblast(self):
     SaveIterationWindow(playblast=True)
-
-# save_iteration_cmd()
