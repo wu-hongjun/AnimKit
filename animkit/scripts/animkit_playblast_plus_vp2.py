@@ -296,19 +296,17 @@ def quick_playblast(    width = None, # Use render width
             
             print("[Playblast+] new pb_base_name: " + pb_basename)
 
-            pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace( '\\', '/' )
+            pb_path = os.path.join(current_dir, pb_basename + outputNameAppend).replace('\\', '/')
             
 
             # Create /temp/ folder if do mp4 converting.
             if convertH264: 
                 print("[Playblast+] Will convert final playblast into MP4.")
-                pb_final_path = (current_dir +  "/temp/" + pb_basename + outputNameAppend).replace( '\\', '/' )
+                pb_final_path = (current_dir +  "/temp/" + pb_basename + outputNameAppend).replace('\\', '/')
             else: 
-                pb_final_path = pb_path
+                pb_final_path = pb_path.replace('\\', '/')
                 
             print("[Playblast+] Playblast Location: " + pb_final_path)
-            print("DEBUG startTime: ", startTime)
-            print("DEBUG endTime: ", endTime)
 
             # Line of code that does the actual playblasting
             pb_actual_path = playblast(     filename = pb_final_path,
@@ -332,26 +330,26 @@ def quick_playblast(    width = None, # Use render width
             # Code for playblasting into MP4.
             if convertH264:
                 # Playblast AVI into a /temp/ folder.
-                avi_input = pb_actual_path + ".avi"
-                mp4_output = pb_actual_path + ".mp4"
-                print("[Playblast+] avi_input: ", avi_input)
-                print("[Playblast+] mp4_output: ", mp4_output)
+                avi_input = (pb_actual_path + ".avi")
+                mp4_output = (pb_actual_path + ".mp4")
+                print("[Playblast+] avi_input: " + avi_input)
+                print("[Playblast+] mp4_output: " + mp4_output)
 
                 # Convert into MP4
                 print("[Playblast+] Will Start to Convert to MP4. ")
-                subprocess.call(["ffmpeg", "-y", "-i", avi_input, mp4_output], shell=True)
+                subprocess.call(["ffmpeg", "-y", "-i", avi_input, "-max_muxing_queue_size", "4096", mp4_output], shell=True)
                 print("[Playblast+] Finished subprocess.call ffmpeg.")
                 
                 # move it to playblast directory
-                mp4_target_location = mp4_output.replace("\\temp", "")
-                print("[Playblast+] mp4_target_location: ", mp4_target_location)
+                mp4_target_location = (mp4_output.replace("\\temp", ""))
+                print("[Playblast+] mp4_target_location: " + mp4_target_location)
+                print("[Playblast+] Debug: mp4_output exists: " + str(os.path.exists(mp4_output)))
                 shutil.copyfile(mp4_output, mp4_target_location)
-                print("[Playblast+] Successfully copied the MP4 output to: ", mp4_target_location)
+                print("[Playblast+] Successfully copied the MP4 output to: " + mp4_target_location)
 
                 # Get rid of that /temp/ folder. 
-                temp_folder_location = current_dir +  "/temp/"
-                print("[Playblast+] TEMP folder location: ", temp_folder_location)
-
+                temp_folder_location = (current_dir +  "/temp/").replace('\\', '/')
+                print("[Playblast+] TEMP folder location: " + temp_folder_location)
                 shutil.rmtree(temp_folder_location)
                 print("[Playblast+] Successfully recursively removed TEMP folder and its contents.")
 
@@ -383,9 +381,9 @@ def save_file(filepath):
     cmds.file(save = True, type = "mayaAscii") 
 
 # general_playblast: A more general method that children methods can inherit most of its settings.
-def general_playblast(startTime = TIMELINE.INNER_START, # Start frame of the playblast
-                        endTime = TIMELINE.INNER_END, # End frame of the playblast
-                        convert_h264=False, 
+def general_playblast(startTime, # Start frame of the playblast
+                        endTime, # End frame of the playblast
+                        convert_h264 = False, 
                         append_text="", 
                         newNameGeneral=""):
     hudState = HeadsUpDisplayState.CURRENT()

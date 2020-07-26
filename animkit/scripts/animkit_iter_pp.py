@@ -37,7 +37,7 @@ class SaveIterationWindow():
         updateNotes = textField(iterField, q=1, text=1)
         sn = sceneName()
         dir = sn.parent
-        print("dir: ", dir)
+        print("[iter++] dir: ", dir)
         name = os.path.basename(sn).split('.')[0]
         iterDir = os.path.join(dir, name+'_iterations')
         
@@ -51,14 +51,14 @@ class SaveIterationWindow():
         # Playblast code
         if(playblast):
             nextVerName = os.path.join(name+"_v"+nextVerNumStr)
-            print("nextVarName", nextVerName)
+            print("[iter++] nextVarName", nextVerName)
             nextVerDir = os.path.join(iterDir, name+"_v"+nextVerNumStr+"playblast")
             if not os.path.exists(nextVerDir): os.makedirs(nextVerDir)
             animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_nopadding(new_name=nextVerName)
             animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_padding(new_name=nextVerName)
 
             pb_npd_dir = os.path.join(dir, nextVerName+"_nopadding.mp4").replace('\\', '/')
-            print("pb_npd_dir: ", pb_npd_dir)
+            print("[iter++] pb_npd_dir: ", pb_npd_dir)
             pb_pd_dir = os.path.join(dir, nextVerName+"_w_padding.mp4").replace('\\', '/')
             print("pb_pd_dir: ", pb_pd_dir)
 
@@ -73,9 +73,9 @@ class SaveIterationWindow():
                
         saveAs(sn, f=1, type = 'mayaAscii')
         shutil.copy(sn, nextVerFile)
-        print("nextVerFile", nextVerFile)
+        print("[iter++] nextVerFile", nextVerFile)
         
-        print ('Iteration saved to "'+nextVerFile+'"').replace('\\', '/')
+        print ('[iter++] Iteration saved to "'+nextVerFile+'"').replace('\\', '/')
         
         evalDeferred('from pymel.core import *;deleteUI("'+str(win)+'")') # Must defer UI deletion, otherwise it crashes Maya
         
