@@ -169,7 +169,7 @@ class animkitshelf(_shelf):
         
 # Load AnimKit
 animkitshelf()
-print("[AnimKit Shelf]: Successfully loaded AnimKit!")
+print("[AnimKit Shelf]: Successfully loaded all components of AnimKit!")
 
 
 ###################################################################################

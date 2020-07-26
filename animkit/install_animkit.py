@@ -144,6 +144,6 @@ print("[✓] [ BOOT ] AnimKit Installer Version: " + VERSION + " | Build: " + BU
 if os.path.isfile(SETUP_FILE): 
     print("[✓] [ BOOT ] AnimKit shelf main script is found. Begin installation.")
     print(install_shelf())
-else: print("[X] [ BOOT ] Cannot find the animkit shelf file.")
+else: print("[X] [ BOOT ] Cannot find the AnimKit shelf file.")
 
 time.sleep(3.5)
