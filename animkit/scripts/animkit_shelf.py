@@ -70,24 +70,6 @@ class _shelf():
 
 
 ###################################################################################
-'''This is an example shelf.
-class animkitshelf(_shelf):
-    def build(self):
-        self.addButton(label="button1")
-        self.addButton("button2")
-        self.addButton("popup")
-        p = mc.popupMenu(b=1)
-        self.addMenuItem(p, "popupMenuItem1")
-        self.addMenuItem(p, "popupMenuItem2")
-        sub = self.addSubMenu(p, "subMenuLevel1")
-        self.addMenuItem(sub, "subMenuLevel1Item1")
-        sub2 = self.addSubMenu(sub, "subMenuLevel2")
-        self.addMenuItem(sub2, "subMenuLevel2Item1")
-        self.addMenuItem(sub2, "subMenuLevel2Item2")
-        self.addMenuItem(sub, "subMenuLevel1Item2")
-        self.addMenuItem(p, "popupMenuItem3")
-        self.addButton("button3")
-'''
 
 # The AnimKit Shelf 
 # Note: When pass a command we are not using the brackets after the name (), because that would call the command instead of passing it.
@@ -144,6 +126,7 @@ class animkitshelf(_shelf):
                         noLabel=True, 
                         btn_annotation = "Zoetrope is a one click background batch renderer.")
         p = mc.popupMenu(b=1)
+
         render_all_layers = self.addSubMenu(p, "Render All Separate Render Layers")
         self.addMenuItem(render_all_layers, label="Render With Padding", command=animkit_zoetrope.render_w_padding)
         self.addMenuItem(render_all_layers, label="Render Without Padding", command=animkit_zoetrope.render_nopadding)
@@ -153,7 +136,9 @@ class animkitshelf(_shelf):
         self.addMenuItem(render_default_layers, label="Render Current Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
         self.addMenuItem(render_default_layers, label="Render Current Frame of Current Layer", command=animkit_zoetrope.render_one_frame)
 
-        self.addMenuItem(p, label="Smart Convert All Renders to mp4", command=animkit_zoetrope.smart_convert_all_renders)
+        zoetrope_encoder = self.addSubMenu(p, "Zoetrope Video Encoder")
+        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.smart_convert_all_renders_compressed)
+        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.render_nopadding)
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
