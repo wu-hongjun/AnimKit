@@ -338,7 +338,7 @@ def quick_playblast(    width = None, # Use render width
                 # Convert into MP4
                 print("[Playblast+] Will Start to Convert to MP4. ")
                 subprocess.call(["ffmpeg", "-y", "-i", avi_input, "-max_muxing_queue_size", "4096", mp4_output], shell=True)
-                print("[Playblast+] Finished subprocess.call ffmpeg.")
+                print("[Playblast+] Finished ffmpeg mp4 encoding.")
                 
                 # move it to playblast directory
                 mp4_target_location = (mp4_output.replace("\\temp", ""))

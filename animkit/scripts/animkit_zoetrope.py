@@ -60,7 +60,10 @@ def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"
         cmds.confirmDialog(title='Animkit Zoetrope: Task Finished.', 
         message='Task finished. Successfully batch rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
-    
+
+def mp4_converter(sequence_start, render_dir, img_prefix, ext, frame_padding = 4, ):
+    subprocess.call(["ffmpeg", "-y", "-start_number", str(sequence_start), "-i", "fps=24", avi_input, "-max_muxing_queue_size", "4096", mp4_output], shell=True)
+
 def render_w_padding(self):
     TIMELINE = TimelineProperties()
     batch_render(renderStart = int(TIMELINE.START), renderEnd = int(TIMELINE.END))
