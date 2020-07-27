@@ -67,3 +67,4 @@ if not cmds.about(batch=True):
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
+[![Anti 996](https://github.com/Errrneist/AnimKit/blob/master/IMG/anti_996.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
