@@ -34,7 +34,9 @@
 #### `animkit_zoetrope.render_one_frame`
 * Render the current frame of the default (current) render layer into `/render/defaultRenderLayers`.
 #### `animkit_zoetrope.smart_convert_all_renders_compressed`
-* Convert all render image sequences in `/render`.
+* Convert all render image sequences in `/render` to a `mp4` compressed video.
+#### `animkit_zoetrope.smart_convert_all_renders_lossless`
+* Convert all render image sequences in `/render` to a `avi` lossless video.
 
 
 ## License
