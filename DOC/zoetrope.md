@@ -23,6 +23,7 @@
 * Not able to render with alpha channel (aka transparent).
 
 ## Zoetrope API
+### Rendering Functions
 #### `animkit_zoetrope.render_w_padding`
 * Render all render layers into respective folders in `/render` with padding (the entire timeline).
 #### `animkit_zoetrope.render_nopadding`
@@ -33,6 +34,8 @@
 * Render only default (current) render layer into `/render/defaultRenderLayers` without padding (only playback area of timeline).
 #### `animkit_zoetrope.render_one_frame`
 * Render the current frame of the default (current) render layer into `/render/defaultRenderLayers`.
+
+### Encoding Functions
 #### `animkit_zoetrope.smart_convert_all_renders_compressed`
 * Convert all render image sequences in `/render` to a `mp4` compressed video.
 #### `animkit_zoetrope.smart_convert_all_renders_lossless`
