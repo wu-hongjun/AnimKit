@@ -21,11 +21,13 @@
 * Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
 #### In `userSetup.py` in YOUR MAYA PREF (NOT THE INCLUDED EXAMPLE FILE) add the following line:
 ```python
-# Start AnimKit
+# Load AnimKit
 
 from maya import cmds
 if not cmds.about(batch=True):
     cmds.evalDeferred("import animkit_shelf; animkit_shelf.animkitshelf()", lowestPriority=True)
+    
+# Finished loading AnimKit.
 ```
 
 ## AnimKit Utilities
