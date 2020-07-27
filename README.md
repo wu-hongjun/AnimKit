@@ -19,8 +19,7 @@
 * Copy all `icon` to your a sub folder of your maya pref directory: `\maya\2020\prefs\icons\animkit\`.
 * Copy all `scripts` to your maya pref directory: `\maya\2020\scripts\`.
 * Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
-#### In `userSetup.py` in YOUR MAYA PREF (NOT THE EXAMPLE FILE INCLUDED):
-Add the following line:
+#### In `userSetup.py` in YOUR MAYA PREF (NOT THE INCLUDED EXAMPLE FILE) add the following line:
 ```python
 # Start AnimKit
 
