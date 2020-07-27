@@ -38,9 +38,11 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     arnoldRender(width, height, True, True,'render_cam', ' -layer ' + render_layer)
 
     # Fix the weird _1_ bug
-    bug = "_1_"  # Σ(°△°|||)︴idk whyyyy does this happen 
-    prefix_image_dir = file_dir + "\\" + prepend + bug + "{:0>4d}".format(image_padding) + "." + file_format
-    postfix_image_dir = file_dir + "\\" + prepend + "{:0>4d}".format(image_padding) + "." + file_format
+    bug = "_1_"  # idk whyyyy does this happen 
+    prefix_image_dir = file_dir + "\\" + prepend + bug + "{:0>4d}".format(frame) + "." + file_format
+    postfix_image_dir = file_dir + "\\" + prepend + "_" + "{:0>4d}".format(frame) + "." + file_format
+    print("[Zoetrope] Prefix Image Directory: " + prefix_image_dir)
+    print("[Zoetrope] Postfix Image Directory: " + postfix_image_dir)
     os.rename(prefix_image_dir,postfix_image_dir)
     
 
@@ -73,19 +75,19 @@ def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"
 
 # MP4 Encoder Section
 
-def mp4_encoder(renders_dir, renders_prefix, frame_rate = 24 , frame_padding = 4, 
+def mp4_encoder(renders_dir, renders_prefix, render_layer, frame_rate = 24 , frame_padding = 4, 
                   image_format = "tif", target_format = "mp4"):
     
-    image_sequence_path = renders_dir + renders_prefix + "%0" + str(frame_padding) + "d." + image_format
-    video_path = renders_dir + renders_prefix + "." + target_format
+    image_sequence_path = renders_dir + "/renders/" + render_layer + "/" + renders_prefix + "_%0" + str(frame_padding) + "d." + image_format
+    video_path = renders_dir + "/renders/" + render_layer + "/" + renders_prefix + "." + target_format
     
     print("[Zoetrope] Image sequence path: " + image_sequence_path)
     print("[Zoetrope] Video target path: " + video_path)
     
     subprocess.call(["ffmpeg", "-framerate", str(frame_rate), "-i", 
-                     image_sequence_path, video_path])
+                     image_sequence_path, video_path], shell=True)
     
-    print("[Zoetrope] Successfully encoded the image sequence to video of " + target_format + "format.")
+    print("[Zoetrope] Successfully encoded the image sequence to video of " + target_format + " format.")
 
 def path_leaf(path):
     head, tail = ntpath.split(path)
@@ -116,7 +118,43 @@ def render_one_frame(self):
 def smart_convert_all_renders_compressed(self):
     scene_path = cmds.file(location=True, query=True) 
     current_dir = os.path.dirname(scene_path)
-    list_render_subfolders_with_paths = [f.name for f in os.scandir(current_dir) if f.is_dir()]
+    list_render_subfolders_with_paths = list({cmds.getAttr( i + ".displayOrder") : i for i in cmds.ls(type='renderLayer')}.values())
     for render_layer_folder in list_render_subfolders_with_paths:
-        # The weird _1_ is a way to get rid of a bug lol
-        mp4_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName()).split('.')[0])
+        print("[Zoetrope] Current compositing render layer: " + render_layer_folder)
+        seq_folder = current_dir + "/renders/" + render_layer_folder
+        print("[Zoetrope] Current Sequence Folder: " + seq_folder)
+        # Sample a file and get extension of the files in the render folder
+        ext = os.path.splitext([f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))][0])[1].replace('.', '')
+
+        mp4_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = "mp4")
+
+def smart_convert_all_renders_lossless(self):
+    scene_path = cmds.file(location=True, query=True) 
+    current_dir = os.path.dirname(scene_path)
+    list_render_subfolders_with_paths = list({cmds.getAttr( i + ".displayOrder") : i for i in cmds.ls(type='renderLayer')}.values())
+    for render_layer_folder in list_render_subfolders_with_paths:
+        print("[Zoetrope] Current compositing render layer: " + render_layer_folder)
+        seq_folder = current_dir + "/renders/" + render_layer_folder
+        print("[Zoetrope] Current Sequence Folder: " + seq_folder)
+        # Sample a file and get extension of the files in the render folder
+        ext = os.path.splitext([f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))][0])[1].replace('.', '')
+
+        mp4_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = "avi")
+
+def manual_convert_renders_compressed(self):
+    result = cmds.promptDialog(
+		title='Manual Conversion',
+		message='Enter Path:',
+		button=['OK', 'Cancel'],
+		defaultButton='OK',
+		cancelButton='Cancel',
+		dismissString='Cancel')
+
+    if result == 'OK':
+        seq_folder = cmds.promptDialog(query=True, text=True)
+
+        ext = os.path.splitext([f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))][0])[1].replace('.', '')
+        
+        mp4_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = "mp4")
+
+    

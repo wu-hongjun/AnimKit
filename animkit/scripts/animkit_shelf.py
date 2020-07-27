@@ -138,7 +138,7 @@ class animkitshelf(_shelf):
 
         zoetrope_encoder = self.addSubMenu(p, "Zoetrope Video Encoder")
         self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.smart_convert_all_renders_compressed)
-        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.render_nopadding)
+        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
