@@ -57,13 +57,12 @@ if not cmds.about(batch=True):
 
 ## External Tools 
 > You will have to acquire them separately and add them to folders as I am not allowed to redistribute them.
-### List of Tools
 #### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `\plug-ins\AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
 #### [reParentPRO](https://gumroad.com/l/reParentPro) → `\scripts\reparent_pro_v158.mel`
 * Tool for transfering animation from control to locator for polishing animation.
 
-### What if I don't have these tools and AnimKit failed to load?
+#### What if I don't have these tools and AnimKit failed to load?
 * Go to `YOUR MAYA PREF\maya\2020\scripts\animkit_shelf.py` and at the end of the code delete respective sections. 
 
 ## Credits
