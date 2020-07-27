@@ -61,8 +61,19 @@ def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"
         message='Task finished. Successfully batch rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
 
-def mp4_converter(sequence_start, render_dir, img_prefix, ext, frame_padding = 4, ):
-    subprocess.call(["ffmpeg", "-y", "-start_number", str(sequence_start), "-i", "fps=24", avi_input, "-max_muxing_queue_size", "4096", mp4_output], shell=True)
+def mp4_encoder(renders_dir, renders_prefix, frame_rate = 24 , frame_padding = 4, 
+                  image_format = "tif", target_format = "mp4"):
+    
+    image_sequence_path = renders_dir + renders_prefix + "%0" + str(frame_padding) + "d." + image_format
+    video_path = renders_dir + renders_prefix + "." + target_format
+    
+    print("[Zoetrope] Image sequence path: " + image_sequence_path)
+    print("[Zoetrope] Video target path: " + video_path)
+    
+    subprocess.call(["ffmpeg", "-framerate", str(frame_rate), "-i", 
+                     image_sequence_path, video_path])
+    
+    print("[Zoetrope] Successfully encoded the image sequence to video of " + target_format + "format.")
 
 def render_w_padding(self):
     TIMELINE = TimelineProperties()
@@ -83,3 +94,11 @@ def render_default_nopadding(self):
 def render_one_frame(self):
     TIMELINE = TimelineProperties()
     render_frame(width = get_resolution_settings("width"), height = get_resolution_settings("height"), frame=TIMELINE.INNER_START)
+
+def smart_convert_all_renders(self):
+    scene_path = cmds.file(location=True, query=True) 
+    current_dir = os.path.dirname(scene_path)
+    list_render_subfolders_with_paths = [f.name for f in os.scandir(current_dir) if f.is_dir()]
+    for render_layer_folder in list_render_subfolders_with_paths:
+        # The weird _1_ is a way to get rid of a bug lol
+        mp4_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName()).split('.')[0] + "_1_")
