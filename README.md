@@ -29,6 +29,8 @@ if not cmds.about(batch=True):
     
 # Finished loading AnimKit.
 ```
+#### Post Installation
+* You should see `[AnimKit Shelf]: Successfully loaded all components of AnimKit!` in your script editor when you start Maya next time.
 
 ## AnimKit Utilities
 #### AnimKit Installation Script → `install_animkit.py`
