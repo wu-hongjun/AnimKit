@@ -13,7 +13,7 @@
 #### [Let me know](https://hongjunwu.com/works/contact.html) if your studio or project needs a hand :)
 
 ## Installation
-#### Windows Automatic Install: 
+#### Windows Automatic Installer: 
 * Just run the animkit installation script `install_animkit.py`.
 #### Windows & macOS & Linux Manually Install(Untested, let me know if it works):
 * Copy all `icon` to your a sub folder of your maya pref directory: `\maya\2020\prefs\icons\animkit\`.
