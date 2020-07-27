@@ -73,6 +73,6 @@ if not cmds.about(batch=True):
 [![Anti 996](https://github.com/Errrneist/AnimKit/blob/master/IMG/anti_996.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 
 ## Donate
-* If you think this is helpful and would like to buy me a coffee, you can do that using QR codes (WechatPay or Venmo)!
+* If you think this is helpful and would like to buy me a coffee, you can do that using WechatPay or Venmo!
 <img align="middle" src="https://github.com/Errrneist/Hackintosh-Razer-Blade-Advanced/blob/master/IMG/donate.png" alt="donate" width="500">
 
