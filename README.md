@@ -7,15 +7,15 @@
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="200">
 
 
-> This code runs faster than the journists from Hong Kong. ——— The Elder.    
+> This code runs faster than the Hong Kong journists. ——— The Elder.    
 #### Developer: [Hongjun Wu](https://hongjunwu.com/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
-#### Let me know if your studio or project needs a hand :)
+#### [Let me know](https://hongjunwu.com/works/contact.html) if your studio or project needs a hand :)
 
 ## Installation
-#### Windows: 
+#### Windows Automatic Installer: 
 * Just run the animkit installation script `install_animkit.py`.
-#### macOS & Linux (Untested, lmk if it works):
+#### Windows & macOS & Linux Manually Install(Untested, let me know if it works):
 * Copy all `icon` to your a sub folder of your maya pref directory: `\maya\2020\prefs\icons\animkit\`.
 * Copy all `scripts` to your maya pref directory: `\maya\2020\scripts\`.
 * Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
@@ -56,15 +56,23 @@ if not cmds.about(batch=True):
 * The easiest way to create breakdown poses in Maya.
 
 ## External Tools 
-> You will have to acquire them separately and add them to folders.
+> You will have to acquire them separately and add them to folders as I am not allowed to redistribute them.
 #### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `\plug-ins\AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
 #### [reParentPRO](https://gumroad.com/l/reParentPro) → `\scripts\reparent_pro_v158.mel`
 * Tool for transfering animation from control to locator for polishing animation.
 
+#### What if I don't have these tools and AnimKit failed to load?
+* Go to `YOUR MAYA PREF\maya\2020\scripts\animkit_shelf.py` and at the end of the code delete respective sections. 
+
 ## Credits
-* Some of the code are deeply modified and refactored from [University of Washington Animation Research Labs](http://arl.cs.washington.edu/about.html) shelf.
+* Some of the code are refactored from [University of Washington Animation Research Labs](http://arl.cs.washington.edu/about.html) shelf.
 
 ## License
 [![forthebadge cc-sa](http://ForTheBadge.com/images/badges/cc-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0)
 [![Anti 996](https://github.com/Errrneist/AnimKit/blob/master/IMG/anti_996.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+
+## Donate
+* If you think this is helpful and would like to buy me a coffee, you can do that using QR codes (WechatPay or Venmo)!
+<img align="middle" src="https://github.com/Errrneist/Hackintosh-Razer-Blade-Advanced/blob/master/IMG/donate.png" alt="donate" width="500">
+

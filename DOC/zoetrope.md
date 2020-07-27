@@ -16,10 +16,14 @@
 * Zoetrope script will create a `/renders` folder in the same directory as the maya scene file.
 * Each render layer will be rendered in separate folders inside the `/renders` folder.
 
+## Mandatory Information
+* You must set `Render Settings → Frame/Animation ext` to `name_#.ext` and `Render Settings → Frame Padding` to `4` in order for most functions of zoetrope to work.
+
 ## Known Issues
 * Not able to render with alpha channel (aka transparent).
 
 ## Zoetrope API
+### Rendering API
 #### `animkit_zoetrope.render_w_padding`
 * Render all render layers into respective folders in `/render` with padding (the entire timeline).
 #### `animkit_zoetrope.render_nopadding`
@@ -30,6 +34,12 @@
 * Render only default (current) render layer into `/render/defaultRenderLayers` without padding (only playback area of timeline).
 #### `animkit_zoetrope.render_one_frame`
 * Render the current frame of the default (current) render layer into `/render/defaultRenderLayers`.
+
+### Encoding API
+#### `animkit_zoetrope.smart_convert_all_renders_compressed`
+* Convert all render image sequences in `/render` to a `mp4` compressed video.
+#### `animkit_zoetrope.smart_convert_all_renders_lossless`
+* Convert all render image sequences in `/render` to a `avi` lossless video.
 
 
 ## License
