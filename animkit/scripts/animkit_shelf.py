@@ -120,7 +120,7 @@ class animkitshelf(_shelf):
                         command=animkit_render_cam_plus.create_render_cam_from_view, 
                         btn_annotation = "render_cam+ creates a render_cam from one click.")
 
-        # zoetrope
+        # Zoetrope
         self.addButton(label="zoetrope", 
                         icon="animkit\\animkit_zoetrope.png", 
                         noLabel=True, 
@@ -134,11 +134,18 @@ class animkitshelf(_shelf):
         render_default_layers = self.addSubMenu(p, "Render Only Current Render Layer")
         self.addMenuItem(render_default_layers, label="Render Current Layer With Padding", command=animkit_zoetrope.render_default_w_padding)
         self.addMenuItem(render_default_layers, label="Render Current Layer Without Padding", command=animkit_zoetrope.render_default_nopadding)
-        self.addMenuItem(render_default_layers, label="Render Current Frame of Current Layer", command=animkit_zoetrope.render_one_frame)
 
-        zoetrope_encoder = self.addSubMenu(p, "Zoetrope Video Encoder")
-        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.smart_convert_all_renders_compressed)
-        self.addMenuItem(zoetrope_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.smart_convert_all_renders_lossless)
+        render_frame = self.addSubMenu(p, "Render Current Frame")
+        self.addMenuItem(render_frame, label="Render Current Frame in PNG", command=animkit_zoetrope.render_one_frame_png)
+        self.addMenuItem(render_frame, label="Render Current Frame in TIF", command=animkit_zoetrope.render_one_frame_tif)
+
+        zoetrope_smart_encoder = self.addSubMenu(p, "Zoetrope Smart Video Encoder")
+        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.smart_convert_all_renders_compressed)
+        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.smart_convert_all_renders_lossless)
+        
+        zoetrope_custom_encoder = self.addSubMenu(p, "Zoetrope Custom Path Encoder")
+        self.addMenuItem(zoetrope_custom_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.manual_convert_renders_compressed)
+        self.addMenuItem(zoetrope_custom_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.manual_convert_renders_lossless)
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
