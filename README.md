@@ -10,7 +10,7 @@
 > This code runs faster than the Hong Kong journists. ——— The Elder.    
 #### Developer: [Hongjun Wu](https://hongjunwu.com/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
-#### [Let me know](https://hongjunwu.com/works/contact.html) if your studio or project needs a hand :)
+#### Let me know if your studio or project needs a hand :)
 
 ## Installation
 #### Windows Automatic Installer: 
