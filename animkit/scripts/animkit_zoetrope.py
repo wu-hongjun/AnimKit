@@ -97,8 +97,8 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     bug = "_1_"  # idk whyyyy does this happen 
     prefix_image_dir = file_dir + "\\" + prepend + bug + "{:0>4d}".format(frame) + "." + file_format
     postfix_image_dir = file_dir + "\\" + prepend + "_" + "{:0>4d}".format(frame) + "." + file_format
-    print("[Zoetrope] Frame Renderer - Prefix Image Directory: " + prefix_image_dir)  # Debug
-    print("[Zoetrope] Frame Renderer - Postfix Image Directory: " + postfix_image_dir)  # Debug
+    # print("[Zoetrope] Frame Renderer - Prefix Image Directory: " + prefix_image_dir)  # Debug
+    # print("[Zoetrope] Frame Renderer - Postfix Image Directory: " + postfix_image_dir)  # Debug
     os.rename(prefix_image_dir,postfix_image_dir)
     
 
@@ -193,6 +193,17 @@ def padding_format(number, padding):
     
 
 # =================================================== Zoetrope Video Encoder ===================================================
+def take_off_zero(input_str):
+    """
+    Takes off zero from the start of a string.
+    Example: "0-10" -> "-10"
+    """
+    temp_str = input_str
+    while temp_str[0] == "0":
+        temp_str = temp_str[1:]
+
+    return temp_str
+
 def get_start_end_frames(file_path, padding):
     """
     A function that takes in a folder and padding, figures out the start frame and end frame.
@@ -209,7 +220,7 @@ def get_start_end_frames(file_path, padding):
         padding_str = file_name[-padding:]  
 
         # Convert padding to int, add it to the padding list
-        padding_list.append(int(padding_str))
+        padding_list.append(int(take_off_zero(padding_str)))
     
     return [min(padding_list), max(padding_list)]
 
@@ -297,15 +308,16 @@ def video_converter(targetFormat):
     Calls video_encoder and convert all render layers into respective file format. 
     '''
     scene_path = cmds.file(location=True, query=True) 
+    current_dir = sceneName().parent
+    
     list_render_subfolders_with_paths = [x for x in os.listdir(current_dir + "/renders/") if os.path.isdir(current_dir + "/renders/" + x)]
     print("[Zoetrope] Video Converter - All avaliable render layers: " + str(list_render_subfolders_with_paths))
 
     for render_layer_folder in list_render_subfolders_with_paths:
         print("[Zoetrope] Video Converter - Current compositing render layer: " + render_layer_folder)
-        current_dir = os.path.dirname(scene_path)
-        # seq_folder = current_dir + "/renders/" + render_layer_folder
-        seq_folder = current_dir + "/renders/" + render_layer_folder + "/"
-        print("[Zoetrope] Video Converter - Current Sequence Folder: " + mainImagePath)
+        current_layer_dir = os.path.dirname(scene_path)
+        seq_folder = current_layer_dir + "/renders/" + render_layer_folder + "/"
+        print("[Zoetrope] Video Converter - Current Sequence Folder: " + seq_folder)
         assemble_sequence_folder(seq_folder = seq_folder, targetFormat = targetFormat)
 
 def manual_convert_renders(targetFormat):
@@ -336,6 +348,8 @@ def manual_convert_renders(targetFormat):
                 if ext in format_list: isPicture = True
 
             if(isPicture):
+                # TODO: Need to fix this
+                current_dir = sceneName().parent
                 video_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = targetFormat)
 
 # =================================================== Zoetrope API ===================================================
