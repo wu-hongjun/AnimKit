@@ -241,6 +241,7 @@ def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame
     if os.path.exists(temp_folder):
         shutil.rmtree(temp_folder)
     os.makedirs(temp_folder)
+    print("[Zoetrope] Video Encoder - Successfully copied and renamed all images into a temporary folder at " + temp_folder + " .")
 
     # Make sequence list
     sequence_list = make_num_list(frameStart, frameEnd)
@@ -266,22 +267,9 @@ def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame
     
     print("[Zoetrope] Video Encoder - Successfully encoded the image sequence to video of " + target_format + " format.")
 
+    shutil.rmtree(temp_folder)
+    print("[Zoetrope] Video Encoder - Successfully deleted the temporary folder at " + temp_folder + " .")
 
-    
-def video_encoder_old(seq_folder, renders_prefix, image_format, target_format, frame_rate = get_frame_rate(), frame_padding = get_padding()):
-    '''
-    Encodes image sequence into respective file format.
-    '''
-    
-    image_sequence_path = seq_folder + renders_prefix + "_%0" + str(frame_padding) + "d." + image_format
-    video_path = seq_folder + renders_prefix + "." + target_format
-    
-    print("[Zoetrope] Video Encoder - Image sequence path: " + image_sequence_path)
-    print("[Zoetrope] Video Encoder - Video target path: " + video_path)
-    
-    subprocess.call(["ffmpeg", "-framerate", str(frame_rate), "-i", image_sequence_path, video_path], shell=True)
-    
-    print("[Zoetrope] Video Encoder - Successfully encoded the image sequence to video of " + target_format + " format.")
 
 def assemble_sequence_folder(seq_folder, rendersPrefix = os.path.basename(sceneName().split('.')[0]), targetFormat = "mp4"):
     print("[Zoetrope] Sequence Folder Assembler - Current: " + seq_folder) 
