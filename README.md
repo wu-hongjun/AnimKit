@@ -13,7 +13,7 @@
 #### Let me know if your studio or project needs a hand :)
 
 ## Demo
-[![Animkit Demo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)](https://youtu.be/qPK8xrhlN6Q)
+<a href="https://youtu.be/qPK8xrhlN6Q" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)</a>
 
 ## Installation
 #### Windows Automatic Installer: 
