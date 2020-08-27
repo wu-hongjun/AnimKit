@@ -329,36 +329,6 @@ def video_converter(targetFormat):
         print("[Zoetrope] Video Converter - Current Sequence Folder: " + seq_folder)
         assemble_sequence_folder(seq_folder = seq_folder, targetFormat = targetFormat)
 
-def manual_convert_renders(targetFormat):
-    '''
-    Manually convert image sequence in a given path into a video.
-    '''
-    result = cmds.promptDialog(
-		title='Manual Conversion',
-		message='Enter Path:',
-		button=['OK', 'Cancel'],
-		defaultButton='OK',
-		cancelButton='Cancel',
-		dismissString='Cancel')
-
-    if result == 'OK':
-        seq_folder = cmds.promptDialog(query=True, text=True).replace("\\","/")
-        dir_list = os.listdir(seq_folder) # Getting the list of directories 
-        # Checking if the list is empty or not 
-        if len(os.listdir(seq_folder)) == 0: 
-            print("[Zoetrope] Video Converter - Empty directory at: " + seq_folder) 
-        else: 
-            # Sample a file and get extension of the files in the render folder
-            isPicture = False
-
-            while(isPicture == False):
-                ext = os.path.splitext([f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))][0])[1].replace('.', '') 
-                if is_image(ext): isPicture = True
-
-            if(isPicture):
-                # TODO: Need to fix this
-                current_dir = sceneName().parent
-                video_encoder(seq_folder = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), image_format = ext, target_format = targetFormat)
 
 # =================================================== Zoetrope API ===================================================
 
@@ -392,10 +362,5 @@ def smart_convert_all_renders_compressed(self):
 def smart_convert_all_renders_lossless(self):
     video_converter(targetFormat = "avi")
 
-def manual_convert_renders_compressed(self):
-    manual_convert_renders(targetFormat = "mp4")
-
-def manual_convert_renders_lossless(self):
-    manual_convert_renders(targetFormat = "avi")
 
     
