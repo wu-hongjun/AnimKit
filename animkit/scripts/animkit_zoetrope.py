@@ -206,6 +206,12 @@ def take_off_zero(input_str):
 
     return temp_str
 
+def is_image(image_ext):
+    if image_ext in ["jpg", "jpeg", "png", "tiff", "tif", "exr"]:
+        return True
+    else:
+        return False
+
 def get_start_end_frames(file_path, padding):
     """
     A function that takes in a folder and padding, figures out the start frame and end frame.
@@ -218,11 +224,13 @@ def get_start_end_frames(file_path, padding):
         # Get file name.
         (file_name, ext) = os.path.splitext(file_name_ext)
         
-        # Get last padding amount of character from the back of the file name.
-        padding_str = file_name[-padding:]  
+        # Only include image files.
+        if is_image(ext.replace('.', '') ):
+            # Get last padding amount of character from the back of the file name.
+            padding_str = file_name[-padding:]  
 
-        # Convert padding to int, add it to the padding list
-        padding_list.append(int(take_off_zero(padding_str)))
+            # Convert padding to int, add it to the padding list
+            padding_list.append(int(take_off_zero(padding_str)))
     
     return [min(padding_list), max(padding_list)]
 
@@ -286,8 +294,7 @@ def assemble_sequence_folder(seq_folder, rendersPrefix = os.path.basename(sceneN
             file_list = [f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))]
             for counter in range(len(file_list)):
                 ext = os.path.splitext(file_list[counter])[1].replace('.', '') 
-                format_list = ["png", "jpeg", "jpg", "tif"]
-                if ext in format_list: isPicture = True
+                if isPicture(ext): isPicture = True
 
         if(isPicture):
             video_encoder(seq_folder = seq_folder, renders_prefix = rendersPrefix, image_format = ext, target_format = targetFormat)
@@ -324,7 +331,7 @@ def manual_convert_renders(targetFormat):
 		dismissString='Cancel')
 
     if result == 'OK':
-        seq_folder = cmds.promptDialog(query=True, text=True)
+        seq_folder = cmds.promptDialog(query=True, text=True).replace("\\","/")
         dir_list = os.listdir(seq_folder) # Getting the list of directories 
         # Checking if the list is empty or not 
         if len(os.listdir(seq_folder)) == 0: 
@@ -335,13 +342,12 @@ def manual_convert_renders(targetFormat):
 
             while(isPicture == False):
                 ext = os.path.splitext([f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))][0])[1].replace('.', '') 
-                format_list = ["png", "jpeg", "jpg", "tif"]
-                if ext in format_list: isPicture = True
+                if is_image(ext): isPicture = True
 
             if(isPicture):
                 # TODO: Need to fix this
                 current_dir = sceneName().parent
-                video_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = targetFormat)
+                video_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), image_format = ext, target_format = targetFormat)
 
 # =================================================== Zoetrope API ===================================================
 
