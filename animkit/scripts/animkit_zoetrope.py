@@ -270,8 +270,13 @@ def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame
 
     print("[Zoetrope] Video Encoder - Image sequence path: " + image_sequence_path)
     print("[Zoetrope] Video Encoder - Video target path: " + video_path)
+
+    if os.path.exists(video_path): 
+        os.remove(video_path)
+        if not os.path.exists(video_path):
+            print("[Zoetrope] Video Encoder - Video exists at: " + video_path + " and got deleted successfully.")
     
-    subprocess.call(["ffmpeg", "-framerate", str(frame_rate), "-i", image_sequence_path, video_path], shell=True)
+    subprocess.call(["ffmpeg", "-framerate", "24",  "-i", image_sequence_path, "-c:v", "libx264", "-pix_fmt", "yuv420p", video_path], shell=True) 
     
     print("[Zoetrope] Video Encoder - Successfully encoded the image sequence to video of " + target_format + " format.")
 
@@ -294,7 +299,7 @@ def assemble_sequence_folder(seq_folder, rendersPrefix = os.path.basename(sceneN
             file_list = [f for f in os.listdir(seq_folder) if os.path.isfile(os.path.join(seq_folder, f))]
             for counter in range(len(file_list)):
                 ext = os.path.splitext(file_list[counter])[1].replace('.', '') 
-                if isPicture(ext): isPicture = True
+                if is_image(ext): isPicture = True
 
         if(isPicture):
             video_encoder(seq_folder = seq_folder, renders_prefix = rendersPrefix, image_format = ext, target_format = targetFormat)
@@ -347,7 +352,7 @@ def manual_convert_renders(targetFormat):
             if(isPicture):
                 # TODO: Need to fix this
                 current_dir = sceneName().parent
-                video_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), image_format = ext, target_format = targetFormat)
+                video_encoder(seq_folder = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), image_format = ext, target_format = targetFormat)
 
 # =================================================== Zoetrope API ===================================================
 
