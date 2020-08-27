@@ -22,6 +22,7 @@ DEFAULT_VIEWPORT_ARGS_SEQUENCE = [  ("displayAppearance" , "smoothShaded"),
                                     ("fluids" , True),
                                     ("dynamics" , True) ]
 
+global ITERATION_NUMBER
 ITERATION_NUMBER = "NONE"
 
 class HeadsUpDisplayState:
@@ -478,9 +479,11 @@ def vp2_mp4_playblast_padding(self):
 
 # Viewport 2.0 Playblasting into MP4 for i++
 def vp2_mp4_playblast_ipp_nopadding(new_name, iteration):
+    global ITERATION_NUMBER
     ITERATION_NUMBER = iteration
     general_playblast(startTime=TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name, withIteration = True)
 
 def vp2_mp4_playblast_ipp_padding(new_name, iteration):
+    global ITERATION_NUMBER
     ITERATION_NUMBER = iteration
     general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name, withIteration = True)
