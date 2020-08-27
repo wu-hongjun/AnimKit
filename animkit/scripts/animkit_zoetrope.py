@@ -4,14 +4,17 @@ import maya.cmds as cmds
 import random as r
 import shutil, subprocess, sys, getpass, time, os, platform
 from mtoa.cmds.arnoldRender import arnoldRender
+from os import listdir
+from os.path import isfile, join
 
 # Version Info
-VERSION = "2.1.0"
-UPDATE = "July 27, 2020"
-NEW = "Zoetrope 2.1 brings bug fixes as well as new features like automatic padding detection, frame range prompt, etc."
+VERSION = "2.2.0"
+UPDATE = "Aug 26, 2020"
+NEW = "Zoetrope 2.2 brings bug fixes as well as new features like automatic padding detection, frame range prompt, etc."
 
 
-# Current Timeline Class
+# =================================================== Maya Elements ===================================================
+# Current Timeline
 class TimelineProperties:
     @property
     def START(self):
@@ -49,9 +52,11 @@ def get_frame_rate():
     current_time = cmds.currentUnit(query=True, time=True)
     return FRAMERATE_INFO.get(current_time)
     
+# =================================================== Zoetrope Renderer ===================================================
 # Render Functions
 def render_frame(width, height, frame, file_format="tif", render_layer = "defaultRenderLayer", image_padding = get_padding()):
     '''
+    HELPER for batch_render().
     Render the selected frame into scene_folder/renders/render_layer/ folder.
     '''
     # Render the frame
@@ -69,8 +74,8 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     bug = "_1_"  # idk whyyyy does this happen 
     prefix_image_dir = file_dir + "\\" + prepend + bug + "{:0>4d}".format(frame) + "." + file_format
     postfix_image_dir = file_dir + "\\" + prepend + "_" + "{:0>4d}".format(frame) + "." + file_format
-    print("[Zoetrope] Frame Renderer - Prefix Image Directory: " + prefix_image_dir)
-    print("[Zoetrope] Frame Renderer - Postfix Image Directory: " + postfix_image_dir)
+    # print("[Zoetrope] Frame Renderer - Prefix Image Directory: " + prefix_image_dir)  # Debug
+    # print("[Zoetrope] Frame Renderer - Postfix Image Directory: " + postfix_image_dir)  # Debug
     os.rename(prefix_image_dir,postfix_image_dir)
     
 
@@ -105,9 +110,125 @@ def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"
         message='Task finished. Successfully rendered all requested layers into target directory.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
 
-# Video Encoder
+
+# =================================================== Zoetrope Formatter ===================================================
+# Purpose: Use padding_format() to generate maya-like padding strings.
+def get_numList(num):
+    '''
+    HELPER for padding_format().
+
+    Returns a broken down list of numbers with appropriate "-"
+    Example: get_numList(-24) -> ["-", "2", "4"] (Note the negative sign is its own char.)
+    Example: get_numList(0) -> ["0"]
+    Example: get_numList(24) -> ["2", "4"]
+    '''
+    # res function only accepts non-negative inputs.
+    isNeg = False
+    if (num < 0):
+        num = num * -1
+        isNeg = True
+        
+    # Create a list of individual number strings from a given number.
+    res = list(map(str, [int(x) for x in str(num)]))
+
+    # Add a negative sign string to the front of the list if the input number is negative.
+    if(isNeg):
+        res.insert(0, "-")
+        
+    return(res)
+
+def make_num_list (listStart, listEnd):
+    """
+    HELPER for padding_format().
+
+    Returns a list of numbers containing the last digit.
+    Example: make_num_list(-24, 24) -> [-24, -23, ..., 0, 1, ..., 23, 24]
+    """
+    return [item for item in range(listStart, listEnd + 1)] 
+
+def padding_format(number, padding):
+    """
+    Returns the correct padding of a number.
+    Example: padding_format(-24, 4) -> "0-24"
+    """
+    if number >= 0:
+        return ("%0" + str(padding) + "d") % number  # Positive + Zero Case
+    else:
+        number_list = get_numList(number)
+        if len(number_list) > padding:
+            # Should never occur but just in case.
+            raise Exception("[ZOETROPE] ERROR: padding_format() - number_list is larger than padding!!!")
+        elif len(number_list) < padding:
+            need_zeroes = padding - len(number_list)
+            for x in range(0, need_zeroes):
+                number_list.insert(0, "0")
+        
+        return "".join(number_list)
+    
+
+# =================================================== Zoetrope Video Encoder ===================================================
+def get_start_end_frames(file_path, padding):
+    """
+    A function that takes in a folder and padding, figures out the start frame and end frame.
+    """
+
+    file_name_with_ext = [f for f in listdir(file_path) if isfile(join(file_path, f))]
+    padding_list = []
+
+    for file_name_ext in file_name_with_ext:
+        # Get file name.
+        (file_name, ext) = os.path.splitext(file_name_ext)
+        
+        # Get last padding amount of character from the back of the file name.
+        padding_str = file_name[-padding:]  
+
+        # Convert padding to int, add it to the padding list
+        padding_list.append(int(padding_str))
+    
+    return [min(padding_list), max(padding_list)]
 
 def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame_rate = get_frame_rate(), frame_padding = get_padding()):
+    '''
+    Encodes image sequence into respective file format.
+    '''
+
+    # Define constants
+    frameStart = get_start_end_frames(seq_folder, frame_padding)[0]
+    frameEnd = get_start_end_frames(seq_folder, frame_padding)[1]
+
+    # Create temp folder
+    temp_folder = seq_folder + "\\temp\\"
+    if os.path.exists(temp_folder):
+        shutil.rmtree(temp_folder)
+    os.makedirs(temp_folder)
+
+    # Make sequence list
+    sequence_list = make_num_list(frameStart, frameEnd)
+    for index, value in enumerate(sequence_list):
+        sequence_list[index] = renders_prefix + "_" + padding_format(value, frame_padding) + image_format
+        
+    # Copying everything into a new temp folder
+    counter = 0
+    for index, value in enumerate(sequence_list):
+        source = seq_folder + value
+        destination = temp_folder + str(counter) + image_format
+        shutil.copyfile(source, destination) 
+        # print("Processing the " + str(counter) + " image.") # Just to see progress
+        counter += 1
+
+    image_sequence_path = temp_folder + "*." + image_format
+    video_path = os.path.dirname(os.path.dirname(temp_folder)) + renders_prefix + "." + target_format  # Go up one directory, need to test this code
+
+    print("[Zoetrope] Video Encoder - Image sequence path: " + image_sequence_path)
+    print("[Zoetrope] Video Encoder - Video target path: " + video_path)
+    
+    subprocess.call(["ffmpeg", "-framerate", str(frame_rate), "-i", image_sequence_path, video_path], shell=True)
+    
+    print("[Zoetrope] Video Encoder - Successfully encoded the image sequence to video of " + target_format + " format.")
+
+
+    
+def video_encoder_old(seq_folder, renders_prefix, image_format, target_format, frame_rate = get_frame_rate(), frame_padding = get_padding()):
     '''
     Encodes image sequence into respective file format.
     '''
@@ -191,7 +312,7 @@ def manual_convert_renders(targetFormat):
             if(isPicture):
                 video_encoder(renders_dir = current_dir, renders_prefix = os.path.basename(sceneName().split('.')[0]), render_layer = render_layer_folder, image_format = ext, target_format = targetFormat)
 
-# Zoetrope API
+# =================================================== Zoetrope API ===================================================
 
 def render_w_padding(self):
     TIMELINE = TimelineProperties()

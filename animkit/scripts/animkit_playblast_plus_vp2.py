@@ -22,6 +22,8 @@ DEFAULT_VIEWPORT_ARGS_SEQUENCE = [  ("displayAppearance" , "smoothShaded"),
                                     ("fluids" , True),
                                     ("dynamics" , True) ]
 
+ITERATION_NUMBER = "NONE"
+
 class HeadsUpDisplayState:
     
     @staticmethod
@@ -112,24 +114,64 @@ def getShotInfoStr():
 
     return '   |   '.join(comps)
 
+def getShotInfoStrIter():
+    '''
+    OVERRIDE FUNCTION for iter++ to add iteration to playblast info.
+    Get information about the currently open shot.
+    '''
 
-def addHeadsUpShotInfo():
+    comps = []
+    
+    # Shot Name
+    shotName, extension = os.path.splitext(os.path.basename(cmds.file(q=True, sn=True)))
+    comps.append('Shot: ' + str(shotName))
+
+    # Iteration
+    comps.append('Iteration: ' + str(ITERATION_NUMBER))
+
+    # Last modified time
+    lastModified = time.ctime(os.path.getmtime(sceneName()))
+    lastModified = lastModified.split(' ')[1:-1]
+    lastModified = ' '.join(lastModified)
+    comps.append('Updated Date: ' + str(lastModified))
+    
+    # Frame number
+    frameNumber = str(int(currentTime()))
+    comps.append('Frame: ' + frameNumber)
+
+    return '   |   '.join(comps)
+
+def addHeadsUpShotInfo(withIteration):
     '''
     Add shot information heads up display element.
     '''
     
     if headsUpDisplay("HUDShotInfo", exists=1):
         headsUpDisplay("HUDShotInfo", rem=1)
+    
     headsUpDisplay(     rp=[5,0]     )
-    headsUpDisplay(     "HUDShotInfo",
-                        section=5,
-                        block=0,
-                        blockSize="large",
-                        blockAlignment="left",
-                        dfs="large",
-                        ao=1,
-                        command=getShotInfoStr,
-                        atr=True    )
+    
+    if(withIteration):
+        headsUpDisplay(     "HUDShotInfo",
+                            section=5,
+                            block=0,
+                            blockSize="large",
+                            blockAlignment="left",
+                            dfs="large",
+                            ao=1,
+                            command=getShotInfoStrIter,
+                            atr=True    )
+    else:
+        headsUpDisplay(     "HUDShotInfo",
+                            section=5,
+                            block=0,
+                            blockSize="large",
+                            blockAlignment="left",
+                            dfs="large",
+                            ao=1,
+                            command=getShotInfoStr,
+                            atr=True    )
+    
     headsUpDisplay("HUDShotInfo", vis=True, e=1)
     
     
@@ -218,12 +260,12 @@ def quick_playblast(    width = None, # Use render width
         # Set playblast width
         if (width != None):     pbWidth = int(width)
         elif (res != None):     pbWidth = int(res.width.get())
-        else:                   pbWidth = 1280
+        else:                   pbWidth = 1280  # Fallsafe
                 
         # Set playblast height
         if (height != None):    pbHeight = int(height)
         elif (res != None):     pbHeight = int(res.height.get())
-        else:                   pbHeight = 720
+        else:                   pbHeight = 720  # Fallsafe
 
         # Create new window with model panel for playblasting
         # Is this really necessary...
@@ -385,10 +427,11 @@ def general_playblast(startTime, # Start frame of the playblast
                         endTime, # End frame of the playblast
                         convert_h264 = False, 
                         append_text="", 
-                        newNameGeneral=""):
+                        newNameGeneral="",
+                        withIteration = False):
     hudState = HeadsUpDisplayState.CURRENT()
     HeadsUpDisplayState.NONE().set()
-    addHeadsUpShotInfo()
+    addHeadsUpShotInfo(withIteration)
 
     # Some settings to be passed into playblast code
     result = quick_playblast(
@@ -434,8 +477,10 @@ def vp2_mp4_playblast_padding(self):
 # API
 
 # Viewport 2.0 Playblasting into MP4 for i++
-def vp2_mp4_playblast_ipp_nopadding(new_name):
-    general_playblast(startTime=TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name)
+def vp2_mp4_playblast_ipp_nopadding(new_name, iteration):
+    ITERATION_NUMBER = iteration
+    general_playblast(startTime=TimelineProperties().INNER_START, endTime = TimelineProperties().INNER_END, convert_h264=True, append_text="_nopadding", newNameGeneral=new_name, withIteration = True)
 
-def vp2_mp4_playblast_ipp_padding(new_name):
-    general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name)
+def vp2_mp4_playblast_ipp_padding(new_name, iteration):
+    ITERATION_NUMBER = iteration
+    general_playblast(startTime=TimelineProperties().START, endTime = TimelineProperties().END, convert_h264=True, append_text="_w_padding", newNameGeneral=new_name, withIteration = True)

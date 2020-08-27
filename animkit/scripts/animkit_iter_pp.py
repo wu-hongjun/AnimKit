@@ -54,8 +54,8 @@ class SaveIterationWindow():
             print("[iter++] Next Version File Name (nextVarName): ", nextVerName)
             nextVerDir = os.path.join(iterDir, name+"_v"+nextVerNumStr+"playblast")
             if not os.path.exists(nextVerDir): os.makedirs(nextVerDir)
-            animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_nopadding(new_name=nextVerName)
-            animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_padding(new_name=nextVerName)
+            animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_nopadding(new_name=nextVerName, iteration=nextVerNumStr)
+            animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_padding(new_name=nextVerName, iteration=nextVerNumStr)
 
             pb_npd_dir = os.path.join(dir, nextVerName+"_nopadding.mp4").replace('\\', '/')
             print("[iter++] Playblast No Padding Directory (pb_npd_dir): " + pb_npd_dir)
