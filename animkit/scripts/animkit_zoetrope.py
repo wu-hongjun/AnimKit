@@ -198,9 +198,11 @@ def take_off_zero(input_str):
     Takes off zero from the start of a string.
     Example: "0-10" -> "-10"
     """
+
     temp_str = input_str
     while temp_str[0] == "0":
         temp_str = temp_str[1:]
+        if temp_str == "": return "0"  # Handle case when padding is 0000.
 
     return temp_str
 
@@ -224,6 +226,7 @@ def get_start_end_frames(file_path, padding):
     
     return [min(padding_list), max(padding_list)]
 
+
 def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame_rate = get_frame_rate(), frame_padding = get_padding()):
     '''
     Encodes image sequence into respective file format.
@@ -234,7 +237,7 @@ def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame
     frameEnd = get_start_end_frames(seq_folder, frame_padding)[1]
 
     # Create temp folder
-    temp_folder = seq_folder + "\\temp\\"
+    temp_folder = seq_folder + "temp\\"
     if os.path.exists(temp_folder):
         shutil.rmtree(temp_folder)
     os.makedirs(temp_folder)
@@ -242,19 +245,19 @@ def video_encoder(seq_folder, renders_prefix, image_format, target_format, frame
     # Make sequence list
     sequence_list = make_num_list(frameStart, frameEnd)
     for index, value in enumerate(sequence_list):
-        sequence_list[index] = renders_prefix + "_" + padding_format(value, frame_padding) + image_format
+        sequence_list[index] = renders_prefix + "_" + padding_format(value, frame_padding) + "." + image_format
         
     # Copying everything into a new temp folder
     counter = 0
     for index, value in enumerate(sequence_list):
         source = seq_folder + value
-        destination = temp_folder + str(counter) + image_format
+        destination = temp_folder + padding_format(counter, frame_padding) + "." + image_format
         shutil.copyfile(source, destination) 
         # print("Processing the " + str(counter) + " image.") # Just to see progress
         counter += 1
 
-    image_sequence_path = temp_folder + "*." + image_format
-    video_path = os.path.dirname(os.path.dirname(temp_folder)) + renders_prefix + "." + target_format  # Go up one directory, need to test this code
+    image_sequence_path = temp_folder + "%0"+ str (frame_padding) + "d." + image_format
+    video_path = os.path.dirname(os.path.dirname(temp_folder)) + "\\" + renders_prefix + "." + target_format  # Go up one directory, need to test this code
 
     print("[Zoetrope] Video Encoder - Image sequence path: " + image_sequence_path)
     print("[Zoetrope] Video Encoder - Video target path: " + video_path)
