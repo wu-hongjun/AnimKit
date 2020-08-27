@@ -12,6 +12,9 @@
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio or project needs a hand :)
 
+## Demo
+[![Animkit Demo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)](https://youtu.be/qPK8xrhlN6Q)
+
 ## Installation
 #### Windows Automatic Installer: 
 * Just run the animkit installation script `install_animkit.py`.
