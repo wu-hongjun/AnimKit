@@ -140,8 +140,8 @@ class animkitshelf(_shelf):
         self.addMenuItem(render_frame, label="Render Current Frame in TIF", command=animkit_zoetrope.render_one_frame_tif)
 
         zoetrope_smart_encoder = self.addSubMenu(p, "Zoetrope Smart Video Encoder")
-        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compression", command=animkit_zoetrope.smart_convert_all_renders_compressed)
-        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless", command=animkit_zoetrope.smart_convert_all_renders_lossless)
+        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compressed MP4", command=animkit_zoetrope.smart_convert_all_renders_compressed)
+        self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
 
         # Animschool Picker
