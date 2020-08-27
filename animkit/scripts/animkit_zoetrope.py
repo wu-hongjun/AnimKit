@@ -99,6 +99,12 @@ def render_frame(width, height, frame, file_format="tif", render_layer = "defaul
     postfix_image_dir = file_dir + "\\" + prepend + "_" + "{:0>4d}".format(frame) + "." + file_format
     # print("[Zoetrope] Frame Renderer - Prefix Image Directory: " + prefix_image_dir)  # Debug
     # print("[Zoetrope] Frame Renderer - Postfix Image Directory: " + postfix_image_dir)  # Debug
+    
+    if os.path.exists(postfix_image_dir): 
+        os.remove(postfix_image_dir)
+        if not os.path.exists(postfix_image_dir):
+            print("[Zoetrope] Frame Renderer - Image exists at: " + postfix_image_dir + " and got deleted successfully.")
+
     os.rename(prefix_image_dir,postfix_image_dir)
     
 
