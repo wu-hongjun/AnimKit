@@ -79,6 +79,6 @@ if not cmds.about(batch=True):
 * You are welcome to use this script for non-commercial use. However, if you want to use for commercial please contact me.
 
 ## Donate
-* If you think this is helpful and would like to buy me a coffee, you can do that using WechatPay or Venmo!
-<img align="middle" src="https://github.com/Errrneist/Hackintosh-Razer-Blade-Advanced/blob/master/IMG/donate.png" alt="donate" width="500">
+* If you think this is helpful and would like to buy me a coffee, you can do that using WechatPay/AliPay or Venmo!
+<img align="middle" src="https://github.com/Errrneist/Hackintosh-Razer-Blade-Advanced/blob/master/IMG/donate.png" alt="donate" width="800">
 
