@@ -79,5 +79,5 @@ if not cmds.about(batch=True):
 
 ## Donate
 * If you think this is helpful and would like to buy me a coffee, you can do that using WechatPay/AliPay or Venmo!
-<img align="middle" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/donate.png" alt="donate" width="800">
+<img align="middle" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/donate.png" alt="donate">
 
