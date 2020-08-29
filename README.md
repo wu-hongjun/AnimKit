@@ -75,7 +75,7 @@ if not cmds.about(batch=True):
 
 ## License
 [![forthebadge](https://forthebadge.com/images/badges/cc-nc-sa.svg)](https://forthebadge.com)
-[![Anti 996](https://github.com/Errrneist/AnimKit/blob/master/IMG/anti_996.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+
 * You are welcome to use this script for non-commercial use. However, if you want to use for commercial please contact me.
 
 ## Donate
