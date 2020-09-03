@@ -25,6 +25,8 @@
 * Copy all `scripts` to your maya pref directory: `\maya\2020\scripts\`.
 * Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
 #### In `userSetup.py` in YOUR MAYA PREF (NOT THE INCLUDED EXAMPLE FILE) add the following line:
+* Note: This file I am referring to is usually located in `C:\Users\YOUR USER NAME\Documents\maya\scripts\userSetup.py`
+
 ```python
 # Load AnimKit
 
