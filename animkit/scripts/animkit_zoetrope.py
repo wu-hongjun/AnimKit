@@ -91,6 +91,12 @@ def set_defaultArnoldDriver_pre():
     cmds.setAttr("defaultArnoldDriver.pre", DEFAULTARNOLDDRIVER_PRE, type="string")
     print("[Zoetrope] Arnold Driver Global Setting - Successfully reset defaultArnoldDriver.pre settings to original: " + DEFAULTARNOLDDRIVER_PRE)
 
+def fix_defaultArnoldDriver_pre():
+    '''
+    Sets the defaultArnoldDriver.pre to its original state of "".
+    '''
+    cmds.setAttr("defaultArnoldDriver.pre", "", type="string")
+    print("[Zoetrope] Arnold Driver Global Setting - Successfully fixed defaultArnoldDriver.pre settings to original.")
 # =================================================== Zoetrope Renderer ===================================================
 # Render Functions
 def render_frame(width, height, frame, file_format="tif", render_layer = "defaultRenderLayer", image_padding = get_padding()):

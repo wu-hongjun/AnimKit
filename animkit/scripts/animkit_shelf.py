@@ -143,6 +143,9 @@ class animkitshelf(_shelf):
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compressed MP4", command=animkit_zoetrope.smart_convert_all_renders_compressed)
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
+        zoetrope_smart_encoder = self.addSubMenu(p, "Zoetrope Fix-It-Felix")
+        self.addMenuItem(zoetrope_smart_encoder, label="Fix defaultArnoldDriver.pre", command=animkit_zoetrope.fix_defaultArnoldDriver_pre)
+
 
         # Animschool Picker
         self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
