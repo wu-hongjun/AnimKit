@@ -13,6 +13,8 @@
 #### Let me know if your studio or project needs a hand :)
 
 ## Demo
+* Watch the demo video to get started.
+
 <a href="https://youtu.be/qPK8xrhlN6Q" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)</a>
 
 ## Installation
@@ -75,10 +77,9 @@ if not cmds.about(batch=True):
 
 ## License
 [![forthebadge](https://forthebadge.com/images/badges/cc-nc-sa.svg)](https://forthebadge.com)
-[![Anti 996](https://github.com/Errrneist/AnimKit/blob/master/IMG/anti_996.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 * You are welcome to use this script for non-commercial use. However, if you want to use for commercial please contact me.
 
 ## Donate
 * If you think this is helpful and would like to buy me a coffee, you can do that using WechatPay/AliPay or Venmo!
-<img align="middle" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/donate.png" alt="donate" width="800">
+<img align="middle" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/donate.png" alt="donate">
 
