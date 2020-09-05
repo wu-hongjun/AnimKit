@@ -146,7 +146,7 @@ class animkitshelf(_shelf):
         self.addMenuItem(fix_arnold, label="Fix Locked Global Render Path", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
 
         fix_scene = self.addSubMenu(p, "Scene")
-        self.addMenuItem(fix_scene, label="Fix Student Version", command=animkit_graduator.graduator)
+        self.addMenuItem(fix_scene, label="Remove Student Version From Scene", command=animkit_graduator.graduator)
 
         fix_render_cam = self.addSubMenu(p, "Camera")
         self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_render_cam_plus.create_render_cam_from_view)
@@ -171,7 +171,7 @@ class animkitshelf(_shelf):
         self.addButton(label="Animkit plug-ins", 
                         icon="animkit\\animkit_plugins.png", 
                         noLabel=True, 
-                        btn_annotation = "iter++ is a better and faster way to save iterations.")
+                        btn_annotation = "External tools and plug-ins loader.")
         p = mc.popupMenu(b=1)
         self.addMenuItem(p, label="TweenMachine", command=animkit_tweenMachine.start)
         self.addMenuItem(p, label="reParent", command=animkit_wrapper.load_reParent)

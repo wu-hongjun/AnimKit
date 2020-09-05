@@ -2,6 +2,8 @@ from pymel.core import *
 import pymel.core.datatypes as dt
 from pymel.all import *
 import maya.cmds as cmds
+import maya.OpenMaya as OpenMaya
+import maya.OpenMayaUI as OpenMayaUI
 
 # ============================================================================== Block Model ==============================================================================
 def getWorldPositionVector(trans, localPosition=dt.Vector(0,0,0)):
@@ -130,11 +132,14 @@ def create_block_model(jnt, parent_option=True, girth_size=3, ratio_option=True,
 
 # ====================================================== Reference Setup ==================================================
 
-
 ''' METHODS '''
 
-def reference_planes():
+def reference_planes(sideImagePath=None, frontImagePath=None):
 
+    # Use a temporary namespace to prevent weird name clash errors
+    ns = namespace(addNamespace="tempReferencePlaneConstructionNS")
+    namespace(set=ns)
+    
     # Make anim used to move reference planes
     refAnim = curve(p=[(-.5,0,0),(.5,0,0)], degree=1, name="reference_handle")
     for a in ['tx', 'rx', 'ry', 'rz', 'sz']:
@@ -150,6 +155,7 @@ def reference_planes():
 
     # Create and constrain planes
     frontPlane = polyPlane(w=1, h=1, sw=1, sh=1, n="front_ref_geo")[0]
+    polyNormal(frontPlane, normalMode=0, ch=0) # Reverse normal on plane
     frontPlane.tz.set(-.5)
     xform(frontPlane, rp=[0,0,0], ws=1)
     xform(frontPlane, sp=[0,0,0], ws=1)
@@ -164,7 +170,7 @@ def reference_planes():
     otherRefAnim = refAnimSideGrp.getChildren()[0]
     parentConstraint(otherRefAnim, sidePlane, mo=0)
     scaleConstraint(otherRefAnim, sidePlane, mo=0)
-
+    
     for p in [frontPlane, sidePlane]:
         for a in ['tx', 'ty', 'tz', 'rx', 'ry', 'rz', 'sx', 'sy', 'sz']:
             setAttr(p.attr(a), l=1, k=0, cb=0)
@@ -172,41 +178,42 @@ def reference_planes():
     # Set default plane position
     refAnim.tz.set(1)
 
-    '''
-    # Set up nodeless scaling system to double the current translateZ value
-    systemGrp = group(em=1, n="scalar_grp")
-    origLoc = spaceLocator(n="orig_value")
-    scaleLoc = spaceLocator(n="scaled_value")
-    scalingGrp = group(em=1, n="scaling")
-    parent(origLoc, scalingGrp)
-    parent(scaleLoc, systemGrp)
-    scalingGrp.scale.set(2,2,2)
-    parent(scalingGrp, systemGrp, r=1)
-    parentConstraint(origLoc, scaleLoc)
-    hide(systemGrp)
-
-    refAnim.tz >> origLoc.tz
-
-    # Limit scale to extent of the plane moved out
-    refAnim.maxScaleLimitEnable.set(1,1,0)
-    scaleLoc.tz >> refAnim.maxScaleXLimit
-    scaleLoc.tz >> refAnim.maxScaleYLimit
-    '''
-
     # Organize under root group
     rootGrp = group([refAnimFrontGrp, refAnimSideGrp, frontPlane, sidePlane], n="reference_planes_grp")
-
+    
+    
     # Create display layer for planes
+    namespace(set=":")
     if objExists('reference_lyr'):
         editDisplayLayerMembers('reference_lyr', [frontPlane, sidePlane])
     else:
         createDisplayLayer([frontPlane, sidePlane], n='reference_lyr')
-        
+    PyNode('reference_lyr').displayType.set(2)
+    namespace(set=ns)
+    
     # Add slider system
-    faderRoot = transparency_fader( [frontPlane, sidePlane] )
+    namespace(set=":")
+    faderRetArgs = transparency_fader( [frontPlane, sidePlane] )
+    faderRoot = faderRetArgs[0]
+    shaders = faderRetArgs[1]
     faderAnim = selected()[0]
     select(d=1)
     parent(faderRoot, rootGrp)
+    
+    # Assign texture files to planes if specified
+    if (frontImagePath != None):
+        s = shaders[0]
+        sFile = shadingNode("file", asTexture=1)
+        sFile.fileTextureName.set(frontImagePath)
+        sFile.outColor.connect(s.color)
+        
+    if (sideImagePath != None):
+        s = shaders[1]
+        sFile = shadingNode("file", asTexture=1)
+        sFile.fileTextureName.set(sideImagePath)
+        sFile.outColor.connect(s.color)
+   
+    namespace(set=ns)
     
     # Adjust slider default location and constrain it to the image plane handles
     faderRoot.inheritsTransform.set(0)
@@ -232,6 +239,11 @@ def reference_planes():
     refAnim.sx >> faderRoot.sx
     refAnim.sy >> faderRoot.sy
     refAnim.sx >> faderRoot.sz
+    
+    # We're done with the temporary namespace
+    namespace(f=1, set=":")
+    namespace(f=1, mv=(ns, ":"))
+    namespace(f=1, rm=ns)
     
     
     
@@ -341,6 +353,8 @@ def transparency_fader( polyObjs, useConstraint=False ):
     
     ## CONNECT SLIDER TO SHADERS ##
     
+    shaders = []
+    
     for polyObj in polyObjs:
         
         # Get polygon's shader
@@ -350,11 +364,13 @@ def transparency_fader( polyObjs, useConstraint=False ):
         # Creates a new shader if there is none or is using lambert1
         if not shader or 'lambert1' == shader[0]:
             shader = shadingNode('lambert', asShader=1, n = polyObj.name() + '_transparency_slider_shader');
+            shader.diffuse.set(1)
             select(cl=1)
             select(polyObj)
             hyperShade(assign = shader)
         else:
         	shader = shader[0]
+        shaders.append(shader)
         
         shader.transparency.disconnect()
         
@@ -365,7 +381,7 @@ def transparency_fader( polyObjs, useConstraint=False ):
             
     # Select the fader
     select(ctrlFader)
-    return transpGroup
+    return [transpGroup, shaders]
 
 ''' COMMANDS '''
     
@@ -378,6 +394,134 @@ def transparency_fader_cmd():
     else:
         raise Exception('Select at least one polygon object.')
         
+def reference_planes_cmd():
+
+    reference_planes()
+    
+def reference_planes_gui_cmd():
+
+    ICON_SIZE = 175
+
+    # Close an already open window
+    if window('crprOptions', q=1, exists=1):
+        deleteUI('crprOptions')
+        
+    # Destroy window prefs
+    if windowPref('crprOptions', ex=1):
+        windowPref('crprOptions', r=1)
+        
+        
+    w = window('crprOptions', t='Create Reference Plane Rig', rtf=0, s=0, width=350, height=315)
+    mainLayout = columnLayout(adj=1)
+
+    text('Create a resizable reference plane "rig" that has a fader control. You may specify the front '+\
+         'and back images now or assign them later.', al='left', ww=1)
+
+
+    # Front/side buttons
+    imgs = formLayout(p=mainLayout, h=ICON_SIZE+25)
+
+    sideImg = iconTextButton(p=imgs, i="img_ref_set_side.png",w=ICON_SIZE,h=ICON_SIZE)
+    frontImg = iconTextButton(p=imgs, i="img_ref_set_front.png",w=ICON_SIZE,h=ICON_SIZE)
+    sideLbl = text(l="SIDE", fn='boldLabelFont', w=ICON_SIZE)
+    frontLbl = text(l="FRONT", fn='boldLabelFont', w=ICON_SIZE)
+
+    imgs.attachForm(sideImg, 'top', 0)
+    imgs.attachForm(sideImg, 'left', 0)
+    imgs.attachControl(sideImg, 'bottom', 0, sideLbl)
+    imgs.attachForm(sideLbl, 'bottom', 0)
+
+    imgs.attachForm(frontImg, 'top', 0)
+    imgs.attachForm(frontImg, 'right', 0)
+    imgs.attachControl(frontImg, 'bottom', 0, frontLbl)
+    imgs.attachForm(frontLbl, 'bottom', 0)
+
+    imgs.attachControl(sideImg, 'right', 0, frontImg)
+
+    imgs.attachForm(sideLbl, 'left', 0)
+    imgs.attachControl(sideLbl, 'right', 0, frontLbl)
+    imgs.attachForm(frontLbl, 'right', 0)
+
+    # Set side image click callback
+    def setSideImg():
+        path = fileDialog2( 
+                            fm = 1, # Return one existing file
+                            ff = "*.jpg; *.jpeg; *.png; *.bmp; *.gif", # File filter
+                            dir = ".", # Starting directory
+                            ds = 1 # Use OS native file dialog
+                            )
+        path = path[0]
+        sideImg.setImage(path)
+    sideImg.setCommand(Callback(setSideImg))
+
+    # Dummy callbacks to get the drop functionality to "wake up"
+    frontImg.dropCallback('')
+    sideImg.dropCallback('')
+    
+    # Maya external drop callback
+    class ImgDropCallback(OpenMayaUI.MExternalDropCallback):
+        
+        def __init__(self):
+            self.frontImg = frontImg
+            self.sideImg = sideImg
+            self.frontImgCtrlName = str(frontImg)
+            self.sideImgCtrlName = str(sideImg)
+            OpenMayaUI.MExternalDropCallback.__init__(self)
+        
+        def externalDropCallback( self, doDrop, controlName, data ):
+        
+            if (self.frontImgCtrlName == controlName):
+                if doDrop and data.hasUrls():
+                    path = ''.join(data.urls()[0].split('file:///'))
+                    self.frontImg.setImage(path)
+                return OpenMayaUI.MExternalDropCallback.kNoMayaDefaultAndAccept
+                
+            elif (self.sideImgCtrlName == controlName):
+                if doDrop and data.hasUrls():
+                    path = ''.join(data.urls()[0].split('file:///'))
+                    self.sideImg.setImage(path)
+                return OpenMayaUI.MExternalDropCallback.kNoMayaDefaultAndAccept
+    
+    externalCB = ImgDropCallback()
+    OpenMayaUI.MExternalDropCallback.addCallback(externalCB)
+                
+    # Set front image callback
+    def setFrontImg():
+        path = fileDialog2( 
+                            fm = 1, # Return one existing file
+                            ff = "*.jpg; *.jpeg; *.png; *.bmp; *.gif", # File filter
+                            dir = ".", # Starting directory
+                            ds = 1 # Use OS native file dialog
+                            )
+        path = path[0]
+        frontImg.setImage(path)
+    frontImg.setCommand(Callback(setFrontImg))
+
+    # Creation callback
+    def createRefPlanes(si, fi, win):
+        
+        sideImagePath = si.getImage()
+        if (sideImagePath == "img_ref_set_side.png"): sideImagePath = None
+        
+        frontImagePath = fi.getImage()
+        if (frontImagePath == "img_ref_set_front.png"): frontImagePath = None
+        
+        reference_planes(sideImagePath, frontImagePath)
+        
+        win.delete()
+
+    # Close callback
+    def closeRefPlaneDialog(cb, win):
+        OpenMayaUI.MExternalDropCallback.removeCallback(cb)
+        win.delete()
+        
+    # Command buttons
+    setParent(mainLayout)
+    text( l='' )
+    button( label='Create', command=Callback(createRefPlanes, sideImg, frontImg, w) )
+    button( label='Close', command=Callback(closeRefPlaneDialog, externalCB, w) )
+
+    showWindow(w)
 
 
 # ============================================================================== Character Design Animkit API ==============================================================================
@@ -420,4 +564,4 @@ def config_reference_planes(self):
     '''
     Configure reference planes.
     '''
-    reference_planes()
+    reference_planes_gui_cmd()
