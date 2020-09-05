@@ -148,13 +148,13 @@ class animkitshelf(_shelf):
 
 
         # Animschool Picker
-        self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
+        # self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
 
         # TweenMachine
         self.addButton(label="TweenMachine", icon="animkit\\tweenMachine.png", noLabel=True, command=tweenMachine.start, btn_annotation = "Launch TweenMachine.")
 
         # reParent
-        self.addButton(label="reParent", icon="animkit\\reParentIcon.jpg", noLabel=True, command=animkit_wrapper.load_reParent, btn_annotation = "Launch reParent.")
+        # self.addButton(label="reParent", icon="animkit\\reParentIcon.jpg", noLabel=True, command=animkit_wrapper.load_reParent, btn_annotation = "Launch reParent.")
 
 
 
