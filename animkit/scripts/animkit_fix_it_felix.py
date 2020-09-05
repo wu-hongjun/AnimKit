@@ -25,7 +25,7 @@ def rebuild_surface_cmd(surface, caching = "1",
     keep_cmds = " -kr " + keepRange + " -kcp " + keepControlPoints + " -kc " + keepCorners
     surface_cmd = " \"" + surface + "\""
     
-    cmd = "rebuildSurface" + general_cmds + keep_cmds + surface_cmd + ";"
+    cmd = "rebuildSurface" + general_cmds + keep_cmds + surface_cmd
     return cmd
 
 
@@ -35,9 +35,10 @@ def fix_broken_NURBS(self):
         command = rebuild_surface_cmd(surface)
         # print("Evaluating the following script: " + command)
         try:
-            mel.eval(command)
+            mel.eval(command) 
+            # mel.eval("catchQuiet (" + command + ");")   # This does not work :(
         except RuntimeError:
-            print("[Fix-it-Felix] Failed to execute the following command: " + command)
+            print("[Fix-it-Felix] Failed to rebuild the following surface: " + surface)
         except:
             print("[Fix-it-Felix] Unknown error occured while trying to execute the following command: " + command)
     print("[Fix-it-Felix] Fix Broken NURBS - Successfully rebuilt all NURBS Surfaces.")
