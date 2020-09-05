@@ -8,7 +8,9 @@ import animkit_iter_pp
 import animkit_render_cam_plus
 import animkit_graduator
 import animkit_zoetrope
-import tweenMachine
+import animkit_fix_it_felix
+import animkit_tweenMachine
+import animkit_char_design
 
 def _null(*args):
     pass
@@ -104,22 +106,6 @@ class animkitshelf(_shelf):
         self.addMenuItem(p, label="Save Scene Iterations", command=animkit_iter_pp.save_iteration)
         self.addMenuItem(p, label="Save Scene Iterations with Playblast", command=animkit_iter_pp.save_iteration_with_playblast)
 
-
-        # graduator
-        self.addButton(label="graduator", 
-                        icon="animkit\\animkit_graduator.png", 
-                        noLabel=True, 
-                        btn_annotation = "graduator gets rid of the student information")
-        p = mc.popupMenu(b=1)
-        self.addMenuItem(p, label="Graduator", command=animkit_graduator.graduator)
-
-        # Create render_cam from view
-        self.addButton(label="RenderCam+", 
-                        icon="animkit\\animkit_rendercam_plus.png", 
-                        noLabel=True, 
-                        command=animkit_render_cam_plus.create_render_cam_from_view, 
-                        btn_annotation = "render_cam+ creates a render_cam from one click.")
-
         # Zoetrope
         self.addButton(label="zoetrope", 
                         icon="animkit\\animkit_zoetrope.png", 
@@ -146,15 +132,50 @@ class animkitshelf(_shelf):
         zoetrope_smart_encoder = self.addSubMenu(p, "Zoetrope Fix-It-Felix")
         self.addMenuItem(zoetrope_smart_encoder, label="Fix defaultArnoldDriver.pre", command=animkit_zoetrope.fix_defaultArnoldDriver_pre)
 
+        # Fix-it-Felix
+        self.addButton(label="Fix-it-Felix", 
+                        icon="animkit\\animkit_fix-it-felix.png", 
+                        noLabel=True, 
+                        btn_annotation = "Fix-it-Felix is a set of handy fixes to boost workflow.")
+        p = mc.popupMenu(b=1)
 
-        # Animschool Picker
-        # self.addButton(label="Animschool Picker", icon="animkit\\animkit-animschool.png", noLabel=True, command=animkit_wrapper.load_animschool_picker, btn_annotation = "Launch Animschool Picker.")
+        fix_nurbs = self.addSubMenu(p, "NURBS")
+        self.addMenuItem(fix_nurbs, label="Rebuild Broken NURBS Surfaces", command=animkit_fix_it_felix.fix_broken_NURBS)
 
-        # TweenMachine
-        self.addButton(label="TweenMachine", icon="animkit\\tweenMachine.png", noLabel=True, command=tweenMachine.start, btn_annotation = "Launch TweenMachine.")
+        fix_arnold = self.addSubMenu(p, "Arnold")
+        self.addMenuItem(fix_arnold, label="Fix defaultArnoldDriver.pre", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
 
-        # reParent
-        # self.addButton(label="reParent", icon="animkit\\reParentIcon.jpg", noLabel=True, command=animkit_wrapper.load_reParent, btn_annotation = "Launch reParent.")
+        fix_scene = self.addSubMenu(p, "Scene")
+        self.addMenuItem(fix_scene, label="Fix Student Version", command=animkit_graduator.graduator)
+
+        fix_render_cam = self.addSubMenu(p, "Camera")
+        self.addMenuItem(fix_render_cam, label="Make render_cam from view", command=animkit_render_cam_plus.create_render_cam_from_view)
+
+        # Character Design
+        self.addButton(label="Character Design", 
+                        icon="animkit\\animkit_chardesign.png", 
+                        noLabel=True, 
+                        btn_annotation = "Tools for character design.")
+        p = mc.popupMenu(b=1)
+
+        joint_axes = self.addSubMenu(p, "Joint Axes")
+        self.addMenuItem(joint_axes, label="Turn Joint Axes On", command=animkit_char_design.turn_joint_axes_on)
+        self.addMenuItem(joint_axes, label="Turn Joint Axes Off", command=animkit_char_design.turn_joint_axes_off)
+
+        self.addMenuItem(p, label="Select Skeleton", command=animkit_char_design.select_skeleton)
+        self.addMenuItem(p, label="Create Visibility Slider", command=animkit_char_design.create_visibility_slider)
+        self.addMenuItem(p, label="Create Block Model", command=animkit_char_design.create_block_model)
+        self.addMenuItem(p, label="Configure Reference Planes", command=animkit_char_design.config_reference_planes)
+
+        # plug-ins
+        self.addButton(label="Animkit plug-ins", 
+                        icon="animkit\\animkit_plugins.png", 
+                        noLabel=True, 
+                        btn_annotation = "iter++ is a better and faster way to save iterations.")
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, label="TweenMachine", command=animkit_tweenMachine.start)
+        self.addMenuItem(p, label="reParent", command=animkit_wrapper.load_reParent)
+        self.addMenuItem(p, label="Animschool Picker", command=animkit_wrapper.load_animschool_picker)
 
 
 
