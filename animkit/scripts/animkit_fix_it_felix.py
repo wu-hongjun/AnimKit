@@ -23,7 +23,7 @@ def rebuild_surface_cmd(surface, caching = "1",
     
     general_cmds = " -ch " + caching + " -rpo " + replaceOriginal + " -end " + endKnots
     keep_cmds = " -kr " + keepRange + " -kcp " + keepControlPoints + " -kc " + keepCorners
-    surface_cmd = "\"" + surface + "\""
+    surface_cmd = " \"" + surface + "\""
     
     cmd = "rebuildSurface" + general_cmds + keep_cmds + surface_cmd + ";"
     return cmd
@@ -32,7 +32,14 @@ def rebuild_surface_cmd(surface, caching = "1",
 def fix_broken_NURBS(self):
     surface_list = cmds.ls(type='nurbsSurface')
     for surface in surface_list:
-        mel.eval(rebuild_surface_cmd(surface))
+        command = rebuild_surface_cmd(surface)
+        # print("Evaluating the following script: " + command)
+        try:
+            mel.eval(command)
+        except RuntimeError:
+            print("[Fix-it-Felix] Failed to execute the following command: " + command)
+        except:
+            print("[Fix-it-Felix] Unknown error occured while trying to execute the following command: " + command)
     print("[Fix-it-Felix] Fix Broken NURBS - Successfully rebuilt all NURBS Surfaces.")
 
 # =================================================== FixArnold ===================================================
