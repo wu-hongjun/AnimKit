@@ -173,7 +173,7 @@ class animkitshelf(_shelf):
                         noLabel=True, 
                         btn_annotation = "External tools and plug-ins loader.")
         p = mc.popupMenu(b=1)
-        self.addMenuItem(p, label="TweenMachine", command=animkit_tweenMachine.start)
+        self.addMenuItem(p, label="TweenMachine", command=animkit_wrapper.load_tweenMachine)
         self.addMenuItem(p, label="reParent", command=animkit_wrapper.load_reParent)
         self.addMenuItem(p, label="Animschool Picker", command=animkit_wrapper.load_animschool_picker)
 

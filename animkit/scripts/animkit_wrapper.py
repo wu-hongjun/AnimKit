@@ -3,6 +3,7 @@ import maya.mel as mel
 import maya.cmds as mc
 import random as r
 import shutil, subprocess, sys, getpass, time, os, platform
+import animkit_tweenMachine
 
 ##############################################################################################
 
@@ -28,3 +29,5 @@ def load_animschool_picker():
 def load_reParent():
     run_mel('reparent_pro_v158.mel')
 
+def load_tweenMachine(self):
+    animkit_tweenMachine.start()
