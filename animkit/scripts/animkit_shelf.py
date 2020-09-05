@@ -143,13 +143,13 @@ class animkitshelf(_shelf):
         self.addMenuItem(fix_nurbs, label="Rebuild Broken NURBS Surfaces", command=animkit_fix_it_felix.fix_broken_NURBS)
 
         fix_arnold = self.addSubMenu(p, "Arnold")
-        self.addMenuItem(fix_arnold, label="Fix defaultArnoldDriver.pre", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
+        self.addMenuItem(fix_arnold, label="Fix Locked Global Render Path", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
 
         fix_scene = self.addSubMenu(p, "Scene")
         self.addMenuItem(fix_scene, label="Fix Student Version", command=animkit_graduator.graduator)
 
         fix_render_cam = self.addSubMenu(p, "Camera")
-        self.addMenuItem(fix_render_cam, label="Make render_cam from view", command=animkit_render_cam_plus.create_render_cam_from_view)
+        self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_render_cam_plus.create_render_cam_from_view)
 
         # Character Design
         self.addButton(label="Character Design", 
