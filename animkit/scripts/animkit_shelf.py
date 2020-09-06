@@ -129,8 +129,6 @@ class animkitshelf(_shelf):
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compressed MP4", command=animkit_zoetrope.smart_convert_all_renders_compressed)
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
-        zoetrope_smart_encoder = self.addSubMenu(p, "Zoetrope Fix-It-Felix")
-        self.addMenuItem(zoetrope_smart_encoder, label="Fix defaultArnoldDriver.pre", command=animkit_zoetrope.fix_defaultArnoldDriver_pre)
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 
@@ -146,10 +144,10 @@ class animkitshelf(_shelf):
         self.addMenuItem(fix_arnold, label="Fix Locked Global Render Path", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
 
         fix_scene = self.addSubMenu(p, "Scene")
-        self.addMenuItem(fix_scene, label="Remove Student Version From Scene", command=animkit_graduator.graduator)
+        self.addMenuItem(fix_scene, label="Remove Student Version From Scene", command=animkit_fix_it_felix.graduator)
 
         fix_render_cam = self.addSubMenu(p, "Camera")
-        self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_render_cam_plus.create_render_cam_from_view)
+        self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_fix_it_felix.create_render_cam_from_view)
 
         # Character Design
         self.addButton(label="Character Design", 
