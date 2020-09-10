@@ -17,7 +17,9 @@
 
 <a href="https://youtu.be/qPK8xrhlN6Q" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)</a>
 
-* Here is a [Demo Project](https://github.com/Errrneist/Animation-Nutmeg_POTG) I did using AnimKit.
+* Here is a demo project I did using AnimKit.
+
+<a href="https://github.com/Errrneist/Animation-Nutmeg_POTG" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo_project_thumbnail.png)</a>
 
 ## Installation
 #### Windows Automatic Installer: 
