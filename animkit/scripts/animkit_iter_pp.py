@@ -51,7 +51,7 @@ class SaveIterationWindow():
         # Playblast code
         if(playblast):
             nextVerName = os.path.join(name+"_v"+nextVerNumStr)
-            print("[iter++] Next Version File Name (nextVarName): ", nextVerName)
+            print("[iter++] Next Version File Name (nextVarName): " + str(nextVerName))
             nextVerDir = os.path.join(iterDir, name+"_v"+nextVerNumStr+"playblast")
             if not os.path.exists(nextVerDir): os.makedirs(nextVerDir)
             animkit_playblast_plus_vp2.vp2_mp4_playblast_ipp_nopadding(new_name=nextVerName, iteration=nextVerNumStr)
@@ -72,7 +72,7 @@ class SaveIterationWindow():
                
         saveAs(sn, f=1, type = 'mayaAscii')
         shutil.copy(sn, nextVerFile)
-        print("[iter++] Next Version File Directory (nextVerFile)", nextVerFile)
+        print("[iter++] Next Version File Directory (nextVerFile)" + str(nextVerFile))
         print ('[iter++] Iteration saved to "'+nextVerFile+'"').replace('\\', '/')
         
         evalDeferred('from pymel.core import *;deleteUI("'+str(win)+'")') # Must defer UI deletion, otherwise it crashes Maya
