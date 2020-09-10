@@ -58,6 +58,8 @@ if not cmds.about(batch=True):
 #### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md) → `animkit_zoetrope.py`
 * Background one click script watermark free batch renderer for Arnold.
 
+<a href="https://errrneist.github.io/AnimKit/videos/zoetrope_smart_video_encoder_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_zoetrope_smart_video_encoder.png)</a>
+
 <a href="https://errrneist.github.io/AnimKit/videos/zoetrope_render_one_frame_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_zoetrope_render_one_frame.png)</a>
 
 #### Fix-it-Felix → `animkit_fix_it_felix.py`
