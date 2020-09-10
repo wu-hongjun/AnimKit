@@ -59,6 +59,7 @@ if not cmds.about(batch=True):
 #### [Fix-it-Felix]
 * A collection of fixes for common problems.
 * Demo: How to fix all NURBS surfaces in one click.
+
 <a href="https://errrneist.github.io/AnimKit/videos/fix_broken_nurbs.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_fix_broken_nurbs.png)</a>
 
 ## Integrated Tools
