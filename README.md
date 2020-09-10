@@ -56,7 +56,7 @@ if not cmds.about(batch=True):
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
 #### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md) → `animkit_zoetrope.py`
 * Background one click script watermark free batch renderer for Arnold.
-#### [Fix-it-Felix]
+#### Fix-it-Felix → `animkit_fix_it_felix.py`
 * A collection of fixes for common problems.
 * Demo: How to fix all NURBS surfaces in one click.
 
