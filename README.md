@@ -15,7 +15,7 @@
 ## Demo
 * Watch the demo video to get started.
 
-<a href="https://youtu.be/qPK8xrhlN6Q" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo.png)</a>
+<a href="https://youtu.be/qPK8xrhlN6Q" rel="AnimKit" width="100">![Foo](https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit_demo_video_thumbnail.png)</a>
 
 * Here is a demo project I did using AnimKit.
 
