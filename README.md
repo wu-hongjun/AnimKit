@@ -74,6 +74,8 @@ if not cmds.about(batch=True):
 
 <a href="https://errrneist.github.io/AnimKit/videos/fix_broken_nurbs.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_fix_broken_nurbs.png)</a>
 
+<a href="https://errrneist.github.io/AnimKit/videos/make_render_cam_from_view.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_make_render_cam_from_view.png)</a>
+
 ## Integrated Tools
 > Tools and scripts that are free and avaliable to public.
 #### [TweenMachine](https://github.com/boredstiff/tweenMachine) → `tweenMachine.py`
