@@ -58,6 +58,8 @@ if not cmds.about(batch=True):
 #### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md) → `animkit_iter_pp.py`
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
 
+<a href="https://errrneist.github.io/AnimKit/videos/iter_pp_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_iter_pp_demo.png)</a>
+
 #### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md) → `animkit_zoetrope.py`
 * Background one click script watermark free batch renderer for Arnold.
 
