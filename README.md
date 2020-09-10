@@ -54,11 +54,16 @@ if not cmds.about(batch=True):
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
 #### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md) → `animkit_iter_pp.py`
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
+
 #### [Zoetrope](https://github.com/Errrneist/AnimKit/blob/master/DOC/zoetrope.md) → `animkit_zoetrope.py`
 * Background one click script watermark free batch renderer for Arnold.
+
+<a href="https://errrneist.github.io/AnimKit/videos/zoetrope_smart_video_encoder_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_zoetrope_smart_video_encoder.png)</a>
+
+<a href="https://errrneist.github.io/AnimKit/videos/zoetrope_render_one_frame_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_zoetrope_render_one_frame.png)</a>
+
 #### Fix-it-Felix → `animkit_fix_it_felix.py`
 * A collection of fixes for common problems.
-* Demo: How to fix all NURBS surfaces in one click.
 
 <a href="https://errrneist.github.io/AnimKit/videos/fix_broken_nurbs.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_fix_broken_nurbs.png)</a>
 
