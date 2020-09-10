@@ -52,6 +52,9 @@ if not cmds.about(batch=True):
 ## AnimKit Tools
 #### [Playblast+](https://github.com/Errrneist/AnimKit/blob/master/DOC/playblast_plus.md) → `animkit_playblast_plus_vp2.py`
 * Provide functionality in playblasting AVI and MP4, with padding or without padding.
+
+<a href="https://errrneist.github.io/AnimKit/videos/playblast_pp_demo.mp4" rel="AnimKit" width="100">![Foo](https://errrneist.github.io/AnimKit/videos/thumbnails/thumbnail_playblast_pp_demo.png)</a>
+
 #### [iter++](https://github.com/Errrneist/AnimKit/blob/master/DOC/iter_pp.md) → `animkit_iter_pp.py`
 * Provide one click solution to save iterations of maya scene, as well as current playblast of animation.
 
