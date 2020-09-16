@@ -15,10 +15,13 @@ Me: Ok this is so stupid
 I cannot believe Maya/Ae/Pr does not have a way to do this
 
 *Search on Internet for solutions* 
-
 *Thirty minutes later* 
 
 Me: F**k this I'll write my own
+
+*This happens too many times*
+
+Me: Ok might just make all my fixes into a shelf collection
 ```
 
 #### Developer: [Hongjun Wu](https://hongjunwu.com/)
