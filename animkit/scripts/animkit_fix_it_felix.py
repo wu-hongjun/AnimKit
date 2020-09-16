@@ -49,6 +49,9 @@ def fix_defaultArnoldDriver_pre(self):
     cmds.setAttr("defaultArnoldDriver.pre", "", type="string")
     print("[Fix-it-Felix] Fix Arnold Global - Successfully fixed defaultArnoldDriver.pre settings to original.")
 
+def load_arnold_plugin(self):
+    mel.eval("loadPlugin mtoa.mll;")
+    print("[Fix-it-Felix] Load Arnold Plugin - Attempted to load mtoa.mll Arnold plugin.")
 
 # =================================================== FixCamera ===================================================
 def create_render_cam_from_view(self):

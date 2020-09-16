@@ -11,6 +11,7 @@ import animkit_zoetrope
 import animkit_fix_it_felix
 import animkit_tweenMachine
 import animkit_char_design
+import animkit_rename_renders
 
 def _null(*args):
     pass
@@ -142,9 +143,13 @@ class animkitshelf(_shelf):
 
         fix_arnold = self.addSubMenu(p, "Arnold")
         self.addMenuItem(fix_arnold, label="Fix Locked Global Render Path", command=animkit_fix_it_felix.fix_defaultArnoldDriver_pre)
+        self.addMenuItem(fix_arnold, label="Load Arnold mtoa.mll Plug-In", command=animkit_fix_it_felix.load_arnold_plugin)
 
         fix_scene = self.addSubMenu(p, "Scene")
         self.addMenuItem(fix_scene, label="Remove Student Version From Scene", command=animkit_fix_it_felix.graduator)
+
+        fix_renders = self.addSubMenu(p, "Renders")
+        self.addMenuItem(fix_renders, label="Rename Neg Sequence Images with Pos Padding", command=animkit_rename_renders.rename_renders)
 
         fix_render_cam = self.addSubMenu(p, "Camera")
         self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_fix_it_felix.create_render_cam_from_view)
