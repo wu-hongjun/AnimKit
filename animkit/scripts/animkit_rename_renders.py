@@ -36,6 +36,10 @@ class ShowDialog(QtWidgets.QDialog):
         self.filePath = QtWidgets.QFileDialog()
         self.filePath.setFileMode(QtWidgets.QFileDialog.DirectoryOnly)
 
+        # File Path Override
+        self.fileOverridePrompt = QtWidgets.QLabel('Render Folder Path Override')
+        self.fileOverride = QtWidgets.QLineEdit()
+
         # Scene Name 
         self.scenePrompt = QtWidgets.QLabel('Rendered Image Scene Name')
         self.scene = QtWidgets.QLineEdit()
@@ -102,6 +106,10 @@ class ShowDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.paddingPrompt, 2, 4)
         main_layout.addWidget(self.padding, 2, 5)
 
+        # File Override
+        main_layout.addWidget(self.fileOverridePrompt, 3, 1)
+        main_layout.addWidget(self.fileOverride, 3, 2, 1, 3)
+
         # Start Button
         main_layout.addWidget(self.startButton, 4, 2, 1, 3)
 
@@ -131,7 +139,7 @@ class ShowDialog(QtWidgets.QDialog):
         else:
             number_list = self.get_numList(number)
             if len(number_list) > padding:
-                raise Exception("number_list is larger than padding!!!")
+                raise Exception("[AnimKit Rename Renders] ERROR - number_list is larger than padding!!!")
             elif len(number_list) < padding:
                 need_zeroes = padding - len(number_list)
                 for x in range(0, need_zeroes):
@@ -151,6 +159,19 @@ class ShowDialog(QtWidgets.QDialog):
         orig_format = self.format.text()
         folder_name = self.folderPath.text()
 
+        # Check if override
+        if self.fileOverride.text() != "":
+            print("[AnimKit Rename Renders] Override detected: " + self.fileOverride.text())
+            override_text = self.fileOverride.text()
+            if not (override_text.endswith('\\') or override_text.endswith('/')):
+                print("[AnimKit Rename Renders] File path does not end with a \\ or /. Adding a slash to the end of file path.")
+                override_text = override_text + "\\"
+            seq_folder = override_text
+            print("[AnimKit Rename Renders] New file path: " + seq_folder)
+        else:
+            print("[AnimKit Rename Renders] No override detected. Proceed.")
+            
+
         # Create temp folder
         temp_folder = seq_folder + folder_name
         if os.path.exists(temp_folder):
@@ -169,7 +190,8 @@ class ShowDialog(QtWidgets.QDialog):
             source = seq_folder + value
             destination = temp_folder+ "/" + str(counter) + orig_format
             shutil.copyfile(source, destination) 
-            print("[AnimKit Rename Renders] Image Process Progress: ( " + str(counter) + " / " + str(len(sequence_list)) + " ).") # Just to see progress
+            percentage = int(100.0 * counter / len(sequence_list))
+            print("[AnimKit Rename Renders] Image Process Progress: " + str(percentage) + "% [" + str(counter) + "/" + str(len(sequence_list)) + "].") # Just to see progress
             counter += 1
 
 
