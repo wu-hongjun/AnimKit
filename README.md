@@ -6,8 +6,21 @@
 
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="200">
 
+```
+Reason of AnimKit's Existence:  
 
-> This code runs faster than the Hong Kong journists. ——— The Elder.    
+*Encounters a Problem*  
+
+Me: Ok this is so stupid 
+I cannot believe Maya/Ae/Pr does not have a way to do this
+
+*Search on Internet for solutions* 
+
+*Thirty minutes later* 
+
+Me: F**k this I'll write my own
+```
+
 #### Developer: [Hongjun Wu](https://hongjunwu.com/)
 #### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
 #### Let me know if your studio or project needs a hand :)
