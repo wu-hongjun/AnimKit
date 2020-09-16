@@ -6,6 +6,10 @@
 
 <img align="right" src="https://github.com/Errrneist/AnimKit/blob/master/IMG/animkit.png" alt="AnimKit" width="200">
 
+#### Developer: [Hongjun Wu](https://hongjunwu.com/)
+#### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
+#### Let me know if your studio or project needs a hand :)
+
 ```
 Reason of AnimKit's Existence:  
 
@@ -23,10 +27,6 @@ Me: F**k this I'll write my own
 
 Me: Ok might just make all my fixes into a shelf collection
 ```
-
-#### Developer: [Hongjun Wu](https://hongjunwu.com/)
-#### Don't forget to star this project if you like it ヽ(✿ﾟ▽ﾟ)ノ! 
-#### Let me know if your studio or project needs a hand :)
 
 ## Demo
 * Watch the full demo video to learn about all the features of AnimKit!
