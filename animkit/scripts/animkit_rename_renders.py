@@ -114,6 +114,7 @@ class ShowDialog(QtWidgets.QDialog):
         main_layout.addWidget(self.startButton, 4, 2, 1, 3)
 
     ######################################## NUM LIST OPERATIONS ########################################
+
     def get_numList(self, num):
         '''
         Returns a broken down list of numbers with appropriate "-"
