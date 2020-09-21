@@ -46,6 +46,8 @@ Me: Ok might just make all my fixes into a shelf collection
 * Copy all `plug-ins` to your maya pref directory: `\maya\2020\plug-ins\`.
 #### In `C:\Users\YOUR USER NAME\Documents\maya\scripts\userSetup.py` (Your maya pref) add the following line:
 ```python
+# Note if you don't have this file then you can simply copy over the demo userSetup.py file.
+
 # Load AnimKit
 
 from maya import cmds
