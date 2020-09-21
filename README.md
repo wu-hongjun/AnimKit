@@ -108,12 +108,12 @@ if not cmds.about(batch=True):
 # Here are a couple examples:  
 
 # Load a plug-in as a .mll file (AnimSchool Picker)
-def load_animschool_picker():
+def load_animschool_picker(self):
     mel.eval("loadPlugin AnimSchoolPicker.mll;")
     mel.eval("AnimSchoolPicker();")
 
 # Load a plug-in as a .mel file (reParent)
-def load_reParent():
+def load_reParent(self):
     run_mel('reparent_pro_v158.mel')
 
 ```
