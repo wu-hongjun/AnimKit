@@ -101,8 +101,23 @@ if not cmds.about(batch=True):
 #### [TweenMachine](https://github.com/boredstiff/tweenMachine) → `tweenMachine.py`
 * The easiest way to create breakdown poses in Maya.
 
-## External Tools 
-> You will have to acquire them separately and add them to folders as I am not allowed to redistribute them.
+## External Tools
+```python
+# AnimKit Wrapper provides a functionality to load external tools and plug-ins.
+# You will have to acquire them separately and add them to folders as I am not allowed to redistribute them.
+# Here are a couple examples:  
+
+# Load a plug-in as a .mll file (AnimSchool Picker)
+def load_animschool_picker():
+    mel.eval("loadPlugin AnimSchoolPicker.mll;")
+    mel.eval("AnimSchoolPicker();")
+
+# Load a plug-in as a .mel file (reParent)
+def load_reParent():
+    run_mel('reparent_pro_v158.mel')
+
+```
+
 #### [Animschool Picker](https://www.animschool.com/pickerInfo.aspx) → `\plug-ins\AnimSchoolPicker.mll`
 * Character picker for AnimSchool rigs.
 #### [reParentPRO](https://gumroad.com/l/reParentPro) → `\scripts\reparent_pro_v158.mel`
