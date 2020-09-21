@@ -103,8 +103,12 @@ if not cmds.about(batch=True):
 
 ## External Tools
 ```python
-# AnimKit Wrapper provides a functionality to load external tools and plug-ins.
-# You will have to acquire them separately and add them to folders as I am not allowed to redistribute them.
+'''
+AnimKit Wrapper provides a functionality to load external tools and plug-ins.
+You will have to acquire them separately and add them AnimKit. 
+I am not allowed to redistribute them.
+'''
+
 # Here are a couple examples:  
 
 # Load a plug-in as a .mll file (AnimSchool Picker)
