@@ -21,12 +21,12 @@ def praise_cody():
     button=['Anim!'], defaultButton='Anim!', dismissString='Anim!')
 
 # Load AnimSchool Picker
-def load_animschool_picker():
+def load_animschool_picker(self):
     mel.eval("loadPlugin AnimSchoolPicker.mll;")
     mel.eval("AnimSchoolPicker();")
 
 # Load reParent
-def load_reParent():
+def load_reParent(self):
     run_mel('reparent_pro_v158.mel')
 
 def load_tweenMachine(self):
