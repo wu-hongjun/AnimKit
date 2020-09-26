@@ -373,14 +373,17 @@ def quick_playblast(    width = None, # Use render width
             # Code for playblasting into MP4.
             if convertH264:
                 # Playblast AVI into a /temp/ folder.
-                avi_input = (pb_actual_path + ".avi")
-                mp4_output = (pb_actual_path + ".mp4")
+                avi_input = (pb_actual_path + ".avi").replace("\\", "/")
+                mp4_output = (pb_actual_path + ".mp4").replace("\\", "/")
                 print("[Playblast+] avi_input: " + avi_input)
                 print("[Playblast+] mp4_output: " + mp4_output)
 
                 # Convert into MP4
                 print("[Playblast+] Will Start to Convert to MP4. ")
-                subprocess.call(["ffmpeg", "-y", "-i", avi_input, "-max_muxing_queue_size", "4096", mp4_output], shell=True)
+                # command = ["ffmpeg", "-y", "-i", avi_input, "-max_muxing_queue_size", "4096", mp4_output]
+                command = "ffmpeg -y -i " + avi_input + " -max_muxing_queue_size 4096 " + mp4_output
+                print("Command:", command)
+                subprocess.call(command, shell=True)
                 print("[Playblast+] Finished ffmpeg mp4 encoding.")
                 
                 # move it to playblast directory
