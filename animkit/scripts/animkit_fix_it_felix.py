@@ -147,3 +147,20 @@ def prompt_error():
         message='This is not a file in student version. There\'s nothing to do.', 
         button=['I got it!'], defaultButton='I got it!', dismissString='I got it!')
 
+# =================================================== FixScene ===================================================
+
+def fix_uppercase():
+    # Doc: https://download.autodesk.com/us/maya/2011help/CommandsPython/workspace.html
+
+    # Check Dir
+    current_dir = cmds.workspace(q=True, fullName=True)
+    if current_dir.isUpper():
+        print("[Fix Uppercase]: Uppercase found in project path: " + current_dir)
+        new_dir = current_dir.lower()
+        print("[Fix Uppercase]: Converted all upper case in project path to lower case: " + new_dir)
+    else:
+        print("[Fix Uppercase]: No uppercase found in project path: " + current_dir)
+        new_dir = current_dir
+
+    # Set Dir
+    cmds.workspace(new_dir, openWorkspace=True)
