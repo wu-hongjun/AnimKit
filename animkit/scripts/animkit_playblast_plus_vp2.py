@@ -6,6 +6,9 @@ import random as r
 from subprocess import check_output, STDOUT, CalledProcessError
 import os, time, getpass, shutil, subprocess, sys
 
+# Import ffmpeg
+import ffmpeg
+
 # Version Info
 VERSION = "2.1.1"
 UPDATE = "July 27, 2020"
@@ -378,13 +381,23 @@ def quick_playblast(    width = None, # Use render width
                 print("[Playblast+] avi_input: " + avi_input)
                 print("[Playblast+] mp4_output: " + mp4_output)
 
-                # Convert into MP4
+                # [Subprocess Version, Deprecated] Convert into MP4
                 print("[Playblast+] Will Start to Convert to MP4. ")
-                # command = ["ffmpeg", "-y", "-i", avi_input, "-max_muxing_queue_size", "4096", mp4_output]
                 command = "ffmpeg -y -i " + avi_input + " -max_muxing_queue_size 4096 " + mp4_output
                 print("Command:", command)
-                subprocess.call(command, shell=True)
+                os.popen(command)
+                #subprocess.call(command, shell=True)
                 print("[Playblast+] Finished ffmpeg mp4 encoding.")
+
+                print("[Playblast+] Will Start to Convert to MP4. ")
+                # command = "ffmpeg -y -i " + avi_input + " -max_muxing_queue_size 4096 " + mp4_output
+                # print("Command:", command)
+                # subprocess.call(command, shell=True)
+                # video_input = ffmpeg.input(avi_input)
+                # print("input", video_input)
+                # video_output = ffmpeg.output(video_input, mp4_output)
+                # video_output.run()
+                # print("[Playblast+] Finished ffmpeg mp4 encoding.")
                 
                 # move it to playblast directory
                 mp4_target_location = (mp4_output.replace("\\temp", ""))
