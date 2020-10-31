@@ -149,18 +149,22 @@ def prompt_error():
 
 # =================================================== FixScene ===================================================
 
-def fix_uppercase():
+def fix_uppercase(self):
     # Doc: https://download.autodesk.com/us/maya/2011help/CommandsPython/workspace.html
 
     # Check Dir
-    current_dir = cmds.workspace(q=True, fullName=True)
-    if current_dir.isUpper():
-        print("[Fix Uppercase]: Uppercase found in project path: " + current_dir)
-        new_dir = current_dir.lower()
-        print("[Fix Uppercase]: Converted all upper case in project path to lower case: " + new_dir)
-    else:
-        print("[Fix Uppercase]: No uppercase found in project path: " + current_dir)
-        new_dir = current_dir
+    current_dir = cmds.workspace(q=True, fullName=True).encode('ascii','ignore')
+    print("[Fix Uppercase]: Current project path: " + current_dir)
+    new_dir = current_dir.lower()
+    print("[Fix Uppercase]: New project path: " + new_dir)
+
 
     # Set Dir
     cmds.workspace(new_dir, openWorkspace=True)
+    print("[Fix Uppercase]: Successly set new project path at: " + cmds.workspace(q=True, fullName=True).encode('ascii','ignore'))
+
+
+# =================================================== FixPackages ===================================================
+# implement pip as a subprocess:
+def install_ffmpeg(self):
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'ffmpeg-python'])

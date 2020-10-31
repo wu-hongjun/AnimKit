@@ -145,6 +145,7 @@ class animkitshelf(_shelf):
 
         fix_scene = self.addSubMenu(p, "Scene")
         self.addMenuItem(fix_scene, label="Remove Student Version From Scene", command=animkit_fix_it_felix.graduator)
+        self.addMenuItem(fix_scene, label="Convert Project Path to All Lower Case", command=animkit_fix_it_felix.fix_uppercase)
 
         fix_renders = self.addSubMenu(p, "Renders")
         self.addMenuItem(fix_renders, label="Rename Neg Sequence Images with Pos Padding", command=animkit_rename_renders.rename_renders)
