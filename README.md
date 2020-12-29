@@ -15,7 +15,8 @@ Reason of AnimKit's Existence:
 
 *Encounters a Problem*  
 
-Me: Ok this is so stupid I cannot believe Maya/Ae/Pr does not have a way to do this
+Me: Ok this is so stupid 
+I cannot believe Maya/Ae/Pr does not have a way to do this
 
 *Search on Internet for solutions*
 
