@@ -10,40 +10,43 @@ import animkit_playblast_plus_vp2
 #Grab the last active 3d viewport
 view = apiUI.M3dView.active3dView()
 
-def getNextImageNumber(self, imageDir):
-        imageFiles = []
-        items = os.listdir(imageDir)
-        for item in items:
-            if item.endswith('.png') == True:
-                imageFiles.append(item)
-        nextImage = -1
-        for f in imageFiles:
-            name = os.path.basename(f).split('.')[0]
-            itrImageStr = name.split('v')[-1]
-            try:
-                itrImage = int(itrImageStr)
-                if itrImage > nextImage:
-                    nextImage = itrImage
-            except ValueError:
-                continue
-        nextImage += 1
-        return nextImage
+def getNextImageNumber(imageDir):
+    imageFiles = []
+    items = os.listdir(imageDir)
+    for item in items:
+        if item.endswith('.png') == True:
+            imageFiles.append(item)
+    nextImage = -1
+    for f in imageFiles:
+        name = os.path.basename(f).split('.')[0]
+        itrImageStr = name.split(".")[0]
+        try:
+            itrImage = int(itrImageStr)
+            if itrImage > nextImage:
+                nextImage = itrImage
+        except ValueError:
+            continue
+    nextImage += 1
+    return nextImage
     
-def create_timelapse_folder(self):
+def get_next_image_dir():
     sn = sceneName()
     dir = sn.parent
-    print("[Timelapse Creator] Current Directory (dir): ", dir)
+    
     name = os.path.basename(sn).split('.')[0]
     timeLapseDir = os.path.join(dir, name+'_timelapse')
+    print("[Timelapse Creator] Current Timelapse Directory: " + str(timeLapseDir))
     
     if not os.path.exists(timeLapseDir): os.makedirs(timeLapseDir)
 
-    nextImageNum = self.getNextImageNumber(timeLapseDir)
+    nextImageNum = getNextImageNumber(timeLapseDir)
     nextImageNumStr = "%(ver)03d" % {"ver":nextImageNum}
     
-    nextImageFile = os.path.join(timeLapseDir, name+"_v"+nextImageNumStr+".ma")
+    nextImageFile = os.path.join(timeLapseDir,nextImageNumStr + ".png")
 
-def save_one_image(self, img_location):
+    return nextImageFile
+
+def save_one_image(img_location):
     # Credit: https://stackoverflow.com/questions/44953145/capture-image-in-maya-2017-viewport2-0-in-python
     #read the color buffer from the view, and save the MImage to disk
     image = api.MImage()
@@ -51,12 +54,11 @@ def save_one_image(self, img_location):
         image.create(view.portWidth(), view.portHeight(), 4, api.MImage.kFloat)
         view.readColorBuffer(image)
         image.convertPixelFormat(api.MImage.kByte)
-        print "viewPort2"
+        print("WARNING: User using other kind viewport !")
     else:
         view.readColorBuffer(image)
-        print "old viewport !"
+        print("WARNING: User using other kind viewport !")
     image.writeToFile(img_location, 'png')
     
 def create_timelapse(self):
-    create_timelapse_folder()
-    save_one_image()
+    save_one_image(get_next_image_dir())
