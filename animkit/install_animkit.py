@@ -49,14 +49,14 @@ def install_element(element_name, target_folder, category, maya_path):
 
 # install_script: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_script(script_name):
-    install_element(script_name, "\scripts\\", "[✓] [SCRIPT]", MAYA_SCRIPT_FOLDER)
+    install_element(script_name, "\\scripts\\", "[✓] [SCRIPT]", MAYA_SCRIPT_FOLDER)
 
 def install_plugin(plugin_name):
-    install_element(plugin_name, "\plug-ins\\", "[✓] [PLUGIN]", MAYA_PLUGIN_FOLDER)
+    install_element(plugin_name, "\\plug-ins\\", "[✓] [PLUGIN]", MAYA_PLUGIN_FOLDER)
     
 # install_icon: helper function for install_shelf. Installs a script into maya's .\scripts folder.
 def install_icon(icon_name):
-    install_element(icon_name, "\icons\\", "[✓] [ ICON ]", MAYA_ICON_FOLDER)
+    install_element(icon_name, "\\icons\\", "[✓] [ ICON ]", MAYA_ICON_FOLDER)
 
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(folder, target):
@@ -67,9 +67,32 @@ def chk_dir(folder, target):
     if os.path.isdir(target):
         print("[✓] [CHKDIR] "+ folder + " folder already exists under: ", target)
 
+def installUserSetup():
+    AnimKitUserSetupPath = os.path.dirname(os.path.abspath(__file__)) + "\\userSetup.py"
+    
+    # This has a bug
+    if os._exists(AnimKitUserSetupPath):
+        print("[✓] [CHKDIR] AnimKit UserSetup file path at: " + AnimKitUserSetupPath)
+    else:
+        print("[⍻] [CHKDIR] WARNING: Missing AnimKit UserSetup file path at: " + AnimKitUserSetupPath)
+
+    USER = win_support(os.getenv("USERPROFILE"))
+    MAYA_MAIN_SCRIPTS_FOLDER = "{0}/Documents/maya/".format(USER)
+    USER_SETUP = MAYA_MAIN_SCRIPTS_FOLDER + "scripts/userSetup.py"
+
+    if os._exists(USER_SETUP):
+        print("[⍻] [CHKDIR] WARNING: UserSetup file already exist at " + USER_SETUP + " , you may need to configure it manually.")
+    else:
+        shutil.copyfile(AnimKitUserSetupPath, USER_SETUP)
+        print("[✓] [CHKDIR] Copied new UserSetup file to: " + USER_SETUP)
+    
+
 # install_shelf:
 # Installs all required elements.
 def install_shelf():
+    # Check UserSetup
+    installUserSetup()
+
     # Check if the Maya script folder exists, if not, create one.
     chk_dir("Script", MAYA_SCRIPT_FOLDER)
     chk_dir("Icon", MAYA_ICON_FOLDER)

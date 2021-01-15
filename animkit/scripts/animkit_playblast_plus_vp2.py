@@ -7,7 +7,7 @@ from subprocess import check_output, STDOUT, CalledProcessError
 import os, time, getpass, shutil, subprocess, sys
 
 # Import ffmpeg
-import ffmpeg
+# import ffmpeg
 
 # Version Info
 VERSION = "2.1.1"

@@ -7,8 +7,20 @@ import os
 import shutil
 import animkit_playblast_plus_vp2
 
-#Grab the last active 3d viewport
-view = apiUI.M3dView.active3dView()
+
+def showErrorWindow(errorMessage):
+        errW = window(t="!!!", w=150, h=100, sizeable=False)
+        columnLayout( adjustableColumn=True, cal="center" )
+        text( label=errorMessage, align="center")
+        okayButton = button( label='Okay', command=Callback(errW.delete) )
+        showWindow(errW)
+        setFocus(okayButton)
+
+def check_scene():
+    sn = sceneName()
+    if sn == '':
+        showErrorWindow("ERROR!\nThis scene is not saved yet.")
+        return None
 
 def getNextImageNumber(imageDir):
     imageFiles = []
@@ -27,6 +39,7 @@ def getNextImageNumber(imageDir):
         except ValueError:
             continue
     nextImage += 1
+    print("[Timelapse Creator] Capturing image number: " + str(nextImage))
     return nextImage
     
 def get_next_image_dir():
@@ -40,7 +53,7 @@ def get_next_image_dir():
     if not os.path.exists(timeLapseDir): os.makedirs(timeLapseDir)
 
     nextImageNum = getNextImageNumber(timeLapseDir)
-    nextImageNumStr = "%(ver)03d" % {"ver":nextImageNum}
+    nextImageNumStr = "%(ver)07d" % {"ver":nextImageNum}
     
     nextImageFile = os.path.join(timeLapseDir,nextImageNumStr + ".png")
 
@@ -48,17 +61,24 @@ def get_next_image_dir():
 
 def save_one_image(img_location):
     # Credit: https://stackoverflow.com/questions/44953145/capture-image-in-maya-2017-viewport2-0-in-python
+    #Grab the last active 3d viewport
+    view = apiUI.M3dView.active3dView()
+    print("[Timelapse Creator] Wivport Width: " + str(view.portWidth()))
+    print("[Timelapse Creator] Wivport Height: " + str(view.portHeight()))
+
     #read the color buffer from the view, and save the MImage to disk
     image = api.MImage()
-    if view.getRendererName() == view.kViewport2Renderer:      
-        image.create(view.portWidth(), view.portHeight(), 4, api.MImage.kFloat)
+    if view.getRendererName() == view.kViewport2Renderer: 
+        image.create(1920, 1080, 4, api.MImage.kFloat)     
+        #image.create(view.portWidth(), view.portHeight(), 4, api.MImage.kFloat)
         view.readColorBuffer(image)
         image.convertPixelFormat(api.MImage.kByte)
-        print("WARNING: User using other kind viewport !")
+        print("[Timelapse Creator] User using Viewport 2.0!")
     else:
         view.readColorBuffer(image)
-        print("WARNING: User using other kind viewport !")
+        print("[Timelapse Creator] WARNING: User using other kind viewport!")
     image.writeToFile(img_location, 'png')
     
-def create_timelapse(self):
+def create_timelapse():
+    check_scene()
     save_one_image(get_next_image_dir())
