@@ -10,6 +10,7 @@ import animkit_fix_it_felix
 import animkit_tweenMachine
 import animkit_char_design
 import animkit_rename_renders
+import animkit_timelapse_creator
 
 def _null(*args):
     pass
@@ -128,6 +129,11 @@ class animkitshelf(_shelf):
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compressed MP4", command=animkit_zoetrope.smart_convert_all_renders_compressed)
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
+        # Timelapse Creator
+        self.addButton(label="Timelapse Creator", 
+                        icon="animkit\\animkit_cody.png", 
+                        command=animkit_timelapse_creator.create_timelapse, 
+                        btn_annotation = "Start timelapse recording")
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 

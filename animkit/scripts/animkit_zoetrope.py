@@ -160,7 +160,7 @@ def batch_render(renderStart, renderEnd, width = get_resolution_settings("width"
         # Batch Render.
         for index in render_layers:
             layer = render_layers[index]
-            print("[ZOETROPE] Batch Render - Current Render Layer: ", layer)
+            print("[ZOETROPE] Batch Render - Current Render Layer: " + str(layer))
             for frame in range(renderStart, renderEnd + 1):
                 cmds.currentTime(frame)
                 render_frame(width, height, frame, target_format, layer)
