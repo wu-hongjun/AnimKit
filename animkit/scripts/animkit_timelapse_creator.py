@@ -63,16 +63,16 @@ def save_one_image(img_location):
     # Credit: https://stackoverflow.com/questions/44953145/capture-image-in-maya-2017-viewport2-0-in-python
     #Grab the last active 3d viewport
     view = apiUI.M3dView.active3dView()
-    print("[Timelapse Creator] Wivport Width: " + str(view.portWidth()))
-    print("[Timelapse Creator] Wivport Height: " + str(view.portHeight()))
+    print("[Timelapse Creator] Viewport Width: " + str(view.portWidth()))
+    print("[Timelapse Creator] Viewport Height: " + str(view.portHeight()))
 
     #read the color buffer from the view, and save the MImage to disk
     image = api.MImage()
-    if view.getRendererName() == view.kViewport2Renderer: 
-        image.create(1920, 1080, 4, api.MImage.kFloat)     
-        #image.create(view.portWidth(), view.portHeight(), 4, api.MImage.kFloat)
+    if view.getRendererName() == view.kViewport2Renderer:
+        image.create(view.portWidth(), view.portHeight(), 4, api.MImage.kFloat)
         view.readColorBuffer(image)
         image.convertPixelFormat(api.MImage.kByte)
+        # image.resize(1920, 1080, True)
         print("[Timelapse Creator] User using Viewport 2.0!")
     else:
         view.readColorBuffer(image)
