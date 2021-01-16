@@ -128,8 +128,8 @@ def create_timelapse_from_viewport():
 def create_timelapse_from_tlcam(tlcam = "tlcam"):
     check_scene()
 
-    #setCameraCmd = "lookThroughModelPanel " + str(tlcam) + " modelPanel1;"
-    setCameraCmd = "lookThroughModelPanel tlcam modelPanel1;"
-    mel.eval(setCameraCmd)
+    # setCameraCmd = "lookThroughModelPanel " + str(tlcam) + " modelPanel1;"
+    # setCameraCmd = "lookThroughModelPanel tlcam modelPanel1;"
+    mel.eval("lookThroughModelPanel tlcam modelPanel1;")
     
     save_image_from_current_cam(get_next_image_dir())
