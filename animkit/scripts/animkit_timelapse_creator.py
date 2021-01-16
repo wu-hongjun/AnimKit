@@ -7,6 +7,7 @@ import os
 import shutil
 import animkit_playblast_plus_vp2
 import maya.cmds as cmds
+import maya.mel as mel
 
 
 def showErrorWindow(errorMessage):
@@ -60,9 +61,10 @@ def get_next_image_dir():
 
     return nextImageFile
 
-def save_current_viewport_image(img_location):
+def save_current_viewport_image_free_scale(img_location):
+    # Deprecated, this will alow for flexible image size generation based on the window which isn't the best idea
     # Credit: https://stackoverflow.com/questions/44953145/capture-image-in-maya-2017-viewport2-0-in-python
-    #Grab the last active 3d viewport
+    # Grab the last active 3d viewport
     view = apiUI.M3dView.active3dView()
     print("[Timelapse Creator] Viewport Width: " + str(view.portWidth()))
     print("[Timelapse Creator] Viewport Height: " + str(view.portHeight()))
@@ -80,7 +82,7 @@ def save_current_viewport_image(img_location):
         print("[Timelapse Creator] WARNING: User using other kind viewport!")
     image.writeToFile(img_location, 'png')
 
-def save_image_from_timelapse_cam(img_location, captureFrame=1, padding = 4):
+def save_image_from_current_cam(img_location, captureFrame=1, padding = 4):
     # playblast -startTime 1 -endTime 1  -format image -filename "C:/Users/hongj/Desktop/test/test" -sequenceTime 0 -clearCache 1 -viewer 1 -showOrnaments 1 -offScreen  -fp 4 -percent 100 -compression "png" -quality 100 -widthHeight 1920 1080;
     # img_location = "C:\\Users\\hongj\\Desktop\\test_timelapse\\hiiiiiiii.png"
     folder_location = "\\".join(img_location.split('\\')[:-1])
@@ -121,12 +123,12 @@ def save_image_from_timelapse_cam(img_location, captureFrame=1, padding = 4):
     
 def create_timelapse_from_viewport():
     check_scene()
-    save_current_viewport_image(get_next_image_dir())
+    save_image_from_current_cam(get_next_image_dir())
 
 def create_timelapse_from_tlcam(tlcam = "tlcam"):
     check_scene()
 
     setCameraCmd = "lookThroughModelPanel" + str(tlcam) + "modelPanel1;"
-    cmds.eval(setCameraCmd)
+    mel.eval(setCameraCmd)
     
-    save_image_from_timelapse_cam(get_next_image_dir())
+    save_image_from_current_cam(get_next_image_dir())
