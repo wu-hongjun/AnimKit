@@ -129,11 +129,14 @@ class animkitshelf(_shelf):
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Compressed MP4", command=animkit_zoetrope.smart_convert_all_renders_compressed)
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
-        # Timelapse Creator
+        # Timelapse
         self.addButton(label="Timelapse Creator", 
                         icon="animkit\\animkit_cody.png", 
-                        command=animkit_timelapse_creator.create_timelapse, 
+                        noLabel=True, 
                         btn_annotation = "Start timelapse recording")
+        p = mc.popupMenu(b=1)
+        self.addMenuItem(p, label="Record timelapse from viewport", command=animkit_timelapse_creator.create_timelapse_from_viewport)
+        self.addMenuItem(p, label="Record timelapse from timelapse cam", command=animkit_timelapse_creator.create_timelapse_from_tlcam)
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 
