@@ -131,7 +131,7 @@ class animkitshelf(_shelf):
 
         # Timelapse
         self.addButton(label="Timelapse Creator", 
-                        icon="animkit\\animkit_cody.png", 
+                        icon="animkit\\animkit_timelapse.png", 
                         noLabel=True, 
                         btn_annotation = "Start timelapse recording")
         p = mc.popupMenu(b=1)

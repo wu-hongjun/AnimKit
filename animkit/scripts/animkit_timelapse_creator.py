@@ -8,6 +8,12 @@ import shutil
 import animkit_playblast_plus_vp2
 import maya.cmds as cmds
 import maya.mel as mel
+import functools
+import random
+import subprocess  
+import sys
+import time 
+from PySide2 import QtCore
 
 
 def showErrorWindow(errorMessage):
@@ -83,10 +89,7 @@ def save_current_viewport_image_free_scale(img_location):
     image.writeToFile(img_location, 'png')
 
 def save_image_from_current_cam(img_location, captureFrame=1, padding = 4):
-    # playblast -startTime 1 -endTime 1  -format image -filename "C:/Users/hongj/Desktop/test/test" -sequenceTime 0 -clearCache 1 -viewer 1 -showOrnaments 1 -offScreen  -fp 4 -percent 100 -compression "png" -quality 100 -widthHeight 1920 1080;
-    # img_location = "C:\\Users\\hongj\\Desktop\\test_timelapse\\hiiiiiiii.png"
     folder_location = "\\".join(img_location.split('\\')[:-1])
-    print("[Timelapse Creator] Location for saving playblast images: " + folder_location)
 
     try: res = PyNode("defaultResolution")
     except: res = None
@@ -120,7 +123,28 @@ def save_image_from_current_cam(img_location, captureFrame=1, padding = 4):
     os.rename(output_temp_location, img_location)
 
     print("[Timelapse Creator] Successfully created a snapshot at: " + img_location)
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def trigger_background_process():
+    app = QtCore.QCoreApplication(sys.argv)
+    prog = MyProgram()  
+    sys.exit(app.exec_())
+
 def create_timelapse_from_viewport():
     check_scene()
     save_image_from_current_cam(get_next_image_dir())
