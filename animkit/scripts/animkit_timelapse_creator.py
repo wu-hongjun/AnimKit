@@ -61,7 +61,7 @@ def get_next_image_dir():
     if not os.path.exists(timeLapseDir): os.makedirs(timeLapseDir)
 
     nextImageNum = getNextImageNumber(timeLapseDir)
-    nextImageNumStr = "%(ver)07d" % {"ver":nextImageNum}
+    nextImageNumStr = "%(ver)08d" % {"ver":nextImageNum}
     
     nextImageFile = os.path.join(timeLapseDir,nextImageNumStr + ".png")
 
@@ -132,17 +132,92 @@ def save_image_from_current_cam(img_location, captureFrame=1, padding = 4):
 
 
 
+class BackgroundProcess(QtCore.QObject):
+    """Monitor a process running in the background."""
+
+    Finished = QtCore.Signal()
+    Timeout = QtCore.Signal()
+
+    def __init__(self, cmd, timeout=10.0):
+        super(BackgroundProcess, self).__init__()
+
+        self.cmd = cmd 
+        self.timeout = timeout
+
+        self.start_time = 0.0
+
+    def run(self):
+        process = subprocess.Popen(self.cmd, shell=True)
+        print("[{}] {}".format(process.pid, self.cmd))
+
+        self.start_time = time.time()
+
+        while True:
+            elapsed_time = time.time() - self.start_time
+
+            if elapsed_time > self.timeout:
+                self.Timeout.emit()
+                break
+
+            if process.poll() is not None:
+                self.Finished.emit()
+                break
 
 
+class BackStageTracker(QtCore.QObject):
+    """Test program to demonstrate running a process on a background thread."""
 
+    def __init__(self):
+        super(BackStageTracker, self).__init__()
 
+        self.run_timer = QtCore.QTimer()
+        self.run_timer.timeout.connect(functools.partial(self.tick))
+        
+        delay = random.randint(2, 5)
+        cmd = 'ping -n {} 127.0.0.1 > nul'.format(delay)
 
+        self.start_time = time.time()
+        
+        self.background_thread = QtCore.QThread()
 
+        self.background_process = BackgroundProcess(cmd, timeout=5.0)
+        self.background_process.moveToThread(self.background_thread)
+
+        self.background_process.Finished.connect(self.background_thread.quit)
+        self.background_process.Timeout.connect(self.background_thread.quit)
+        self.background_process.Finished.connect(self.on_work_finished)
+        self.background_process.Timeout.connect(self.on_work_timeout)
+
+        self.background_thread.finished.connect(self.background_thread.deleteLater)
+        self.background_thread.started.connect(self.background_process.run)
+
+        self.background_thread.start() 
+        self.run_timer.start(100)
+
+    def tick(self):                   
+        elapsed_time = time.time() - self.start_time
+        print("Elapsed time: {:.1f} seconds.".format(round(elapsed_time, 2)))
+
+    def on_work_finished(self):
+        print("Work complete")
+        self.exit()
+
+    def on_work_timeout(self):
+        print("Timeout error")
+        self.exit()
+
+    def exit(self):   
+        self.run_timer.stop()
+
+        # Wait for the thread to fully stop
+        self.background_thread.wait()
+
+        QtCore.QCoreApplication.instance().exit(0)           
 
 
 def trigger_background_process():
     app = QtCore.QCoreApplication(sys.argv)
-    prog = MyProgram()  
+    prog = BackStageTracker()  
     sys.exit(app.exec_())
 
 def create_timelapse_from_viewport():
