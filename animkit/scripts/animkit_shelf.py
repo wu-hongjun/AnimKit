@@ -137,6 +137,7 @@ class animkitshelf(_shelf):
         p = mc.popupMenu(b=1)
         self.addMenuItem(p, label="Record timelapse from viewport", command=animkit_timelapse_creator.create_timelapse_from_viewport)
         self.addMenuItem(p, label="Record timelapse from timelapse cam", command=animkit_timelapse_creator.create_timelapse_from_tlcam)
+        self.addMenuItem(p, label="Record timelapse from timelapse cam", command=animkit_timelapse_creator.create_timelapse_from_tlcam)
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 
