@@ -76,13 +76,7 @@ class _shelf():
 # The AnimKit Shelf 
 # Note: When pass a command we are not using the brackets after the name (), because that would call the command instead of passing it.
 class animkitshelf(_shelf):
-    def build(self):
-        # The man, the legend. Cody.
-        self.addButton(label="Cody", 
-                        icon="animkit\\animkit_cody.png", 
-                        command=animkit_wrapper.praise_cody, 
-                        btn_annotation = "Praise and receive animation blessing from the all-mighty Cody.")
-        
+    def build(self):     
         # Playblast+
         self.addButton(label="Playblast+", 
                         icon="animkit\\animkit_playblast_plus.png", 
@@ -137,7 +131,6 @@ class animkitshelf(_shelf):
         p = mc.popupMenu(b=1)
         self.addMenuItem(p, label="Record timelapse from viewport", command=animkit_timelapse_creator.create_timelapse_from_viewport)
         self.addMenuItem(p, label="Record timelapse from timelapse cam", command=animkit_timelapse_creator.create_timelapse_from_tlcam)
-        self.addMenuItem(p, label="Record timelapse from timelapse cam", command=animkit_timelapse_creator.create_timelapse_from_tlcam)
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 
@@ -188,6 +181,12 @@ class animkitshelf(_shelf):
         self.addMenuItem(p, label="TweenMachine", command=animkit_wrapper.load_tweenMachine)
         self.addMenuItem(p, label="reParent", command=animkit_wrapper.load_reParent)
         self.addMenuItem(p, label="Animschool Picker", command=animkit_wrapper.load_animschool_picker)
+
+        # The man, the legend. Cody.
+        self.addButton(label="Cody", 
+                        icon="animkit\\animkit_cody.png", 
+                        command=animkit_wrapper.praise_cody, 
+                        btn_annotation = "Praise and receive animation blessing from the all-mighty Cody.")
 
 
 
