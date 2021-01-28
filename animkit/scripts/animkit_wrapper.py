@@ -31,3 +31,26 @@ def load_reParent(self):
 
 def load_tweenMachine(self):
     animkit_tweenMachine.start()
+
+# Get PIP
+# MAYA_VERSION: e.g. 2020
+def get_latest_version(MAYA_FOLDER):
+    version_folders = []
+    for x in os.listdir(MAYA_FOLDER):
+        try:
+            folder = int(x)
+            version_folders += [folder]
+        except: pass
+    return str(max(version_folders))
+
+def get_pip(self):
+    USER = os.getenv("USERPROFILE").replace('\\','/')
+    MAYA_FOLDER = "{0}/Documents/maya/".format(USER)
+    MAYA_VERSION = get_latest_version(MAYA_FOLDER)
+    MAYA_SCRIPT_FOLDER = "{0}{1}/scripts/".format(MAYA_FOLDER,MAYA_VERSION)
+
+
+    pip_script_loc = MAYA_SCRIPT_FOLDER + 'animkit_get-pip.py'
+    print("[GET PIP] PIP script folder location: " + pip_script_loc)
+    execfile(pip_script_loc)
+    # print(execfile("C:/Users/hongj/Documents/maya/2020/scripts/animkit_get-pip.py"))

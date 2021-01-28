@@ -156,6 +156,9 @@ class animkitshelf(_shelf):
         fix_render_cam = self.addSubMenu(p, "Camera")
         self.addMenuItem(fix_render_cam, label="Make render_cam From View", command=animkit_fix_it_felix.create_render_cam_from_view)
 
+        fix_ext = self.addSubMenu(p, "External Packages")
+        self.addMenuItem(fix_ext, label="Install PIP", command=animkit_wrapper.get_pip)
+
         # Character Design
         self.addButton(label="Character Design", 
                         icon="animkit\\animkit_chardesign.png", 

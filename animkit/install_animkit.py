@@ -58,14 +58,29 @@ def install_plugin(plugin_name):
 def install_icon(icon_name):
     install_element(icon_name, "\\icons\\", "[✓] [ ICON ]", MAYA_ICON_FOLDER)
 
+def install_ffmpeg(ffmpeg_exe):
+    install_element(ffmpeg_exe, "\\ffmpeg\\", "[✓] [FFMPEG]", FFMPEG_FOLDER)
+    
+def add_ffmpeg_to_path():
+    # Installing pathman, a useful tool for adding paths.
+    subprocess.call("curl.exe -sA \"MS\" https://webinstall.dev/pathman | powershell")
+    print("[✓] [FFMPEG] Installed pathman.")
+
+    cmd = "pathman add " + FFMPEG_FOLDER
+    print("[✓] [FFMPEG] Prepare to run add FFMPEG command: " + cmd)
+    subprocess.call(cmd)
+    print("[✓] [FFMPEG] Ran add FFMPEG command: " + cmd)
+
 # chk_dir: Checks if the given directory exists, if not, create one.
 def chk_dir(folder, target):
     if not os.path.isdir(target): 
         print("[⍻] [CHKDIR] " + folder + " folder does not exist. ")
         os.makedirs(target)
         print("[✓] [CHKDIR] Created script folder under: ", target)
+        return False
     if os.path.isdir(target):
         print("[✓] [CHKDIR] "+ folder + " folder already exists under: ", target)
+        return True
 
 def installUserSetup():
     AnimKitUserSetupPath = os.path.dirname(os.path.abspath(__file__)) + "\\userSetup.py"
@@ -87,6 +102,7 @@ def installUserSetup():
         print("[✓] [CHKDIR] Copied new UserSetup file to: " + USER_SETUP)
     
 
+
 # install_shelf:
 # Installs all required elements.
 def install_shelf():
@@ -97,6 +113,7 @@ def install_shelf():
     chk_dir("Script", MAYA_SCRIPT_FOLDER)
     chk_dir("Icon", MAYA_ICON_FOLDER)
     chk_dir("Plug-In", MAYA_PLUGIN_FOLDER)
+    chk_dir("ffmpeg", FFMPEG_FOLDER)
 
     # Copy setup file into the Maya preferences folder
     try:
@@ -104,6 +121,10 @@ def install_shelf():
         for script in SCRIPT_LIST: install_script(script)
         for icon in ICON_LIST: install_icon(icon)
         for plugin in PLUGIN_LIST: install_plugin(plugin)
+        
+        for ffmpeg_elements in FFMPEG_LIST: install_ffmpeg(ffmpeg_elements)
+        add_ffmpeg_to_path()
+        
         return "[✓] [FINISH] All required files installed successfully!"
     
     # Print out errors
@@ -137,25 +158,31 @@ MAYA_PLUGIN_FOLDER = "{0}{1}/plug-ins/".format(MAYA_FOLDER,MAYA_VERSION)
 # MAYA_ICON_FOLDER: Create a /animkit/ folder in the Maya icon folder
 MAYA_ICON_FOLDER = "{0}{1}/prefs/icons/animkit/".format(MAYA_FOLDER,MAYA_VERSION)
 
+# MAYA_SCRIPT_FOLDER: Where maya stores all its scripts
+FFMPEG_FOLDER = "{0}{1}/ffmpeg/".format(MAYA_FOLDER,MAYA_VERSION)
+
 # ANIMKIT_FOLDER: aka the folder this script is located
 ANIMKIT_FOLDER = os.path.dirname(os.path.abspath(__file__)) 
 
 # SETUP_FILE = The shelf itself.
-SETUP_FILE = ANIMKIT_FOLDER + "\scripts\\animkit_shelf.py"
+SETUP_FILE = ANIMKIT_FOLDER + "\\scripts\\animkit_shelf.py"
     
 # SCRIPT_LIST: A list of str of scripts in /scripts folder.
-PYTHON_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".py")
-MEL_LIST = filter_ext(ANIMKIT_FOLDER + "\scripts", ".mel")
+PYTHON_LIST = filter_ext(ANIMKIT_FOLDER + "\\scripts", ".py")
+MEL_LIST = filter_ext(ANIMKIT_FOLDER + "\\scripts", ".mel")
 SCRIPT_LIST = PYTHON_LIST + MEL_LIST
 
 # PLUGIN_LIST: List of plugins of ".mll" files
-MLL_LIST = filter_ext(ANIMKIT_FOLDER + "\plug-ins", ".mll")
+MLL_LIST = filter_ext(ANIMKIT_FOLDER + "\\plug-ins", ".mll")
 PLUGIN_LIST = MLL_LIST
 
 # ICON_LIST: A list of str of icons in /icons folder.
-PNG_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".png")
-JPG_LIST = filter_ext(ANIMKIT_FOLDER + "\icons", ".jpg")
+PNG_LIST = filter_ext(ANIMKIT_FOLDER + "\\icons", ".png")
+JPG_LIST = filter_ext(ANIMKIT_FOLDER + "\\icons", ".jpg")
 ICON_LIST = PNG_LIST + JPG_LIST
+
+# FFMPEG_LIST: Executables for ffmpeg
+FFMPEG_LIST = filter_ext(ANIMKIT_FOLDER + "\\ffmpeg", ".exe")
 
 # dd/mm/YY H:M:S
 date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
