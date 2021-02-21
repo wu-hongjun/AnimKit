@@ -54,3 +54,13 @@ def get_pip(self):
     print("[GET PIP] PIP script folder location: " + pip_script_loc)
     execfile(pip_script_loc)
     # print(execfile("C:/Users/hongj/Documents/maya/2020/scripts/animkit_get-pip.py"))
+
+
+# Install stuff via pip
+def install_package_pip(package_name):
+    import subprocess
+    cmd = "pip install " + package_name
+    subprocess.call(cmd)
+
+def try_loop():
+    

@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time 
 from PySide2 import QtCore
+from PySide2.QtCore import QObject, QThread, pyqtSignal
 
 
 def showErrorWindow(errorMessage):
@@ -124,105 +125,46 @@ def save_image_from_current_cam(img_location, captureFrame=1, padding = 4):
 
     print("[Timelapse Creator] Successfully created a snapshot at: " + img_location)
 
-
-
-
-
-
-
-
-
-class BackgroundProcess(QtCore.QObject):
-    """Monitor a process running in the background."""
-
-    Finished = QtCore.Signal()
-    Timeout = QtCore.Signal()
-
-    def __init__(self, cmd, timeout=10.0):
-        super(BackgroundProcess, self).__init__()
-
-        self.cmd = cmd 
-        self.timeout = timeout
-
-        self.start_time = 0.0
-
-    def run(self):
-        process = subprocess.Popen(self.cmd, shell=True)
-        print("[{}] {}".format(process.pid, self.cmd))
-
-        self.start_time = time.time()
-
-        while True:
-            elapsed_time = time.time() - self.start_time
-
-            if elapsed_time > self.timeout:
-                self.Timeout.emit()
-                break
-
-            if process.poll() is not None:
-                self.Finished.emit()
-                break
-
-
-class BackStageTracker(QtCore.QObject):
-    """Test program to demonstrate running a process on a background thread."""
-
-    def __init__(self):
-        super(BackStageTracker, self).__init__()
-
-        self.run_timer = QtCore.QTimer()
-        self.run_timer.timeout.connect(functools.partial(self.tick))
-        
-        delay = random.randint(2, 5)
-        cmd = 'ping -n {} 127.0.0.1 > nul'.format(delay)
-
-        self.start_time = time.time()
-        
-        self.background_thread = QtCore.QThread()
-
-        self.background_process = BackgroundProcess(cmd, timeout=5.0)
-        self.background_process.moveToThread(self.background_thread)
-
-        self.background_process.Finished.connect(self.background_thread.quit)
-        self.background_process.Timeout.connect(self.background_thread.quit)
-        self.background_process.Finished.connect(self.on_work_finished)
-        self.background_process.Timeout.connect(self.on_work_timeout)
-
-        self.background_thread.finished.connect(self.background_thread.deleteLater)
-        self.background_thread.started.connect(self.background_process.run)
-
-        self.background_thread.start() 
-        self.run_timer.start(100)
-
-    def tick(self):                   
-        elapsed_time = time.time() - self.start_time
-        print("Elapsed time: {:.1f} seconds.".format(round(elapsed_time, 2)))
-
-    def on_work_finished(self):
-        print("Work complete")
-        self.exit()
-
-    def on_work_timeout(self):
-        print("Timeout error")
-        self.exit()
-
-    def exit(self):   
-        self.run_timer.stop()
-
-        # Wait for the thread to fully stop
-        self.background_thread.wait()
-
-        QtCore.QCoreApplication.instance().exit(0)           
-
-
-def trigger_background_process():
-    app = QtCore.QCoreApplication(sys.argv)
-    prog = BackStageTracker()  
-    sys.exit(app.exec_())
-
 def create_timelapse_from_viewport():
     check_scene()
     save_image_from_current_cam(get_next_image_dir())
+
+
+# Snip...
+
+# Step 1: Create a worker class
+class Worker(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(int)
+
+    def run(self):
+        # """Long-running task."""
+        # for i in range(5):
+        #     sleep(1)
+        #     self.progress.emit(i + 1)
+        # self.finished.emit()
+        isRun = True # idk maybe I will do something with this later
+
+        while isRun:
+            time.sleep(30)
+            create_timelapse_from_viewport()
+
+
+def snapshot_in_bkgroud():
+    # Step 2: Create a QThread object
+    thread = QThread()
+    # Step 3: Create a worker object
+    worker = Worker()
+    # Step 4: Move worker to the thread
+    worker.moveToThread(thread)
+    # Step 5: Connect signals and slots
+    thread.started.connect(worker.run)
+    worker.finished.connect(thread.quit)
+    worker.finished.connect(worker.deleteLater)
+    thread.finished.connect(thread.deleteLater)
+    # worker.progress.connect(reportProgress)
+    # Step 6: Start the thread
+    thread.start()
 
 def create_timelapse_from_tlcam(tlcam = "tlcam"):
     check_scene()
@@ -232,3 +174,6 @@ def create_timelapse_from_tlcam(tlcam = "tlcam"):
     # mel.eval("lookThroughModelPanel tlcam modelPanel1;")
     
     save_image_from_current_cam(get_next_image_dir())
+
+# if __name__ == "__main__":
+#     create_timelapse_from_tlcam()
