@@ -1,6 +1,5 @@
 # Source: https://bindpose.com/scripting-custom-shelf-in-maya-python/
-
-import maya.cmds as mc
+import maya.cmds as mc 
 import animkit_wrapper
 import animkit_playblast_plus_vp2
 import animkit_iter_pp
@@ -9,7 +8,7 @@ import animkit_fix_it_felix
 import animkit_tweenMachine
 import animkit_char_design
 import animkit_rename_renders
-import animkit_timelapse_creator
+# import animkit_timelapse_creator
 
 def _null(*args):
     pass
@@ -123,13 +122,13 @@ class animkitshelf(_shelf):
         self.addMenuItem(zoetrope_smart_encoder, label="Encode All Renders with Lossless AVI", command=animkit_zoetrope.smart_convert_all_renders_lossless)
 
         # Timelapse
-        self.addButton(label="Timelapse Creator", 
-                        icon="animkit\\animkit_timelapse.png", 
-                        noLabel=True, 
-                        btn_annotation = "Start timelapse recording")
-        p = mc.popupMenu(b=1)
-        self.addMenuItem(p, label="Record timelapse from viewport", command=animkit_timelapse_creator.create_timelapse_from_viewport)
-        self.addMenuItem(p, label="Record timelapse from background", command=animkit_timelapse_creator.snapshot_in_bkgroud)
+        # self.addButton(label="Timelapse Creator", 
+        #                 icon="animkit\\animkit_timelapse.png", 
+        #                 noLabel=True, 
+        #                 btn_annotation = "Start timelapse recording")
+        # p = mc.popupMenu(b=1)
+        # self.addMenuItem(p, label="Record timelapse from viewport", command=animkit_timelapse_creator.create_timelapse_from_viewport)
+        # self.addMenuItem(p, label="Record timelapse from background", command=animkit_timelapse_creator.snapshot_in_bkgroud)
 
         # Fix-it-Felix
         self.addButton(label="Fix-it-Felix", 
