@@ -30,6 +30,7 @@ Me: Ok might just make all my fixes into a shelf collection
 ```
 ## Announcement
 * AnimKit is only supported on machines with Maya 2020 and below that uses Python2.
+* So it is deprecated with no plans for further development.
 * A Python 3 version is in development but with no ETA. 
 
 ## Demo
