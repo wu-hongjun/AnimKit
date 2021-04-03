@@ -113,7 +113,7 @@ def install_shelf():
     chk_dir("Script", MAYA_SCRIPT_FOLDER)
     chk_dir("Icon", MAYA_ICON_FOLDER)
     chk_dir("Plug-In", MAYA_PLUGIN_FOLDER)
-    chk_dir("ffmpeg", FFMPEG_FOLDER)
+    # chk_dir("ffmpeg", FFMPEG_FOLDER)
 
     # Copy setup file into the Maya preferences folder
     try:
@@ -122,8 +122,10 @@ def install_shelf():
         for icon in ICON_LIST: install_icon(icon)
         for plugin in PLUGIN_LIST: install_plugin(plugin)
         
+        '''
         for ffmpeg_elements in FFMPEG_LIST: install_ffmpeg(ffmpeg_elements)
         add_ffmpeg_to_path()
+        '''
         
         return "[✓] [FINISH] All required files installed successfully!"
     
